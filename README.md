@@ -1,37 +1,42 @@
-## Welcome to GitHub Pages
+# 背景
 
-You can use the [editor on GitHub](https://github.com/Quality-Assurance-Platform/quality-assurance-platform.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## 领域现状
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+- 缺陷/用例管理平台多
+- 过程重管理，轻分析
+- 结果重数据，轻过程
+- 操作上依赖平台熟练程度
+- 执行上依赖领域技术知识
+- 总结上依赖领域管理知识
+- 软件质量管理经验者较少
+- 工具传承重于经验传承
+- 没有一套可复用的标准
 
-### Markdown
+## 我们的目标
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+**打造一个软件质量保障平台**
 
-```markdown
-Syntax highlighted code block
+- 对接市场已有平台
+- 制定标准
+- 传承经验
+- 软件质量统一评级
+- 软件质量趋势分析
+- 软件质量风控告警
+- 低学习成本
 
-# Header 1
-## Header 2
-### Header 3
+# 愿景
 
-- Bulleted
-- List
+**简单度量简单管理**
 
-1. Numbered
-2. List
+**分享软件质量保障的配方，把冷冰冰的数据变成有情感的健康指标**
 
-**Bold** and _Italic_ and `Code` text
+# 架构
 
-[Link](url) and ![Image](src)
-```
+# 功能
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+# 安装部署
 
-### Jekyll Themes
+# 使用方法
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Quality-Assurance-Platform/quality-assurance-platform.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+# Q&A
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
