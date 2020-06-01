@@ -1,2 +1,27 @@
-title: Quality Sphere
 theme: jekyll-theme-cayman
+title: QSphere
+subtitle: "Quality Sphere - Quality Assurance Platform"
+timezone: Asia/Shanghai
+encoding: "utf-8"
+components:
+  busuanzi:
+    enabled: true
+    start_date: 2020-06-01
+
+navs:
+  - href: /
+    label: 首页
+  - href: /background/
+    label: 背景
+  - href: /vision/
+    label: 愿景 
+  - href: /framework/
+    label: 架构
+  - href: /feature/
+    label: 功能
+  - href: /deploy/
+    label: 安装部署
+  - href: /usage/
+    label: 使用方法
+  - href: /qa/
+    label: Q&A
