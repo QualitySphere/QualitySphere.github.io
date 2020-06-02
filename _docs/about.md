@@ -1,19 +1,23 @@
 ---
-title: 关于我们
+title: 关于
 category: QSphere
 order: 9
 ---
 
+### GitHub
+
+- https://github.com/QualitySphere/qsphere
+
 ### 石巍
 
-> **一个超过35岁的油腻大叔**
-> 软件测试工作者
+> **一个超过35岁的油腻大叔**<br>
+> 软件测试工作者<br>
 > 推崇软件质量保障数字化
 
 - 地点: 中国苏州
 - 电话: 18501599266
 - 邮箱: v.stone@163.com
 
-扫二维码加微信
+扫二维码加微信 ↓↓↓
 
-<img src="/images/will-wechat.jpeg" width="400px" />
+<img src="/images/will-wechat.jpeg" width="200px" />
