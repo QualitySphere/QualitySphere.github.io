@@ -1,7 +1,7 @@
 ---
 title: 人员
 category: 关于
-order: 2
+order: 10
 ---
 
 ### 石巍
