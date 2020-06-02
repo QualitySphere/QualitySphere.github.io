@@ -1,10 +1,10 @@
 ---
-title: 欢迎
+title: 欢迎使用
 ---
 
-# Quality Sphere
+## QSphere
 
-![Quality Assurance Platform](https://raw.githubusercontent.com/QualitySphere/qsphere/master/docs/qap.png)
+<img src="/images/qap.png" width="400" />
 
 > 开源软件质量保障平台
 
