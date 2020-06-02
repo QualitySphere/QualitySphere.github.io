@@ -4,26 +4,65 @@ category: QSphere
 order: 5
 ---
 
-## 领域现状
+### 安装/升级
 
-- 缺陷/用例管理平台多
-- 过程重管理，轻分析
-- 结果重数据，轻过程
-- 操作上依赖平台熟练程度
-- 执行上依赖领域技术知识
-- 总结上依赖领域管理知识
-- 软件质量管理经验者较少
-- 工具传承重于经验传承
-- 没有一套可复用的标准
+```bash
+docker-compose -f docker-compose.yaml pull
+docker-compose -f docker-compose.yaml up -d
+```
 
-## 我们的目标
+#### docker-compose.yaml
+```yaml
+version: "3"
+services:
+  qsphere-db:
+    container_name: qsphere-db
+    image: postgres:10
+    restart: always
+    environment:
+      POSTGRES_DB: 'qsphere'
+      POSTGRES_PASSWORD: 'password'
+    volumes:
+      - ./qsphere-pgdata:/var/lib/postgresql/data
+    command: ["-c", "max_connections=2000"]
 
-#### 打造一个软件质量保障平台
+  qsphere-svc:
+    container_name: qsphere-svc
+    image: bxwill/qsphere:svc-latest
+    restart: always
+    ports:
+      - 6001:6001
+    environment:
+      PG_DB: 'qsphere'
+      PG_SERVER: qsphere-db
+      PG_USER: 'postgres'
+      PG_PASSWORD: 'password'
+    depends_on:
+      - qsphere-db
 
-- 对接市场已有平台
-- 制定标准
-- 传承经验
-- 软件质量统一评级
-- 软件质量趋势分析
-- 软件质量风控告警
-- 低学习成本
+  qsphere-grafana:
+    container_name: qsphere-grafana
+    image: bxwill/qsphere:grafana-latest
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      PG_DB: 'qsphere'
+      PG_SERVER: qsphere-db
+      PG_PORT: '5432'
+      PG_USER: 'postgres'
+      PG_PASSWORD: 'password'
+    depends_on:
+      - qsphere-db
+      - qsphere-svc
+
+  qsphere-ui:
+    container_name: qsphere-ui
+    image: bxwill/qsphere:ui-latest
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - qsphere-svc
+      - qsphere-grafana
+```

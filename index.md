@@ -2,7 +2,7 @@
 title: 欢迎使用
 ---
 
-## QSphere
+### QSphere
 
 <img src="/images/qap.png" width="400" />
 
@@ -19,10 +19,10 @@ title: 欢迎使用
 [![postgresql](https://img.shields.io/static/v1?style=for-the-badge&logo=PostgresQL&label=postgresql&message=10&color=336791)]()
 [![docker](https://img.shields.io/static/v1?style=for-the-badge&logo=docker&label=docker&message=bxwill/qsphere&color=2496ED)](https://hub.docker.com/r/bxwill/qsphere)
 
-## 平台预览
+### 平台预览
 
-![Tracker](https://raw.githubusercontent.com/QualitySphere/qsphere/master/docs/tracker.png)
-![Project](https://raw.githubusercontent.com/QualitySphere/qsphere/master/docs/project.png)
-![Sprint](https://raw.githubusercontent.com/QualitySphere/qsphere/master/docs/sprint.png)
-![Dashboard](https://raw.githubusercontent.com/QualitySphere/qsphere/master/docs/dashboard.png)
+![Tracker](/images/tracker.png)
+![Project](/images/project.png)
+![Sprint](/images/sprint.png)
+![Dashboard](/images/dashboard.png)
 
