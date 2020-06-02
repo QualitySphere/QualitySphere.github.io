@@ -1,12 +1,8 @@
 ---
-title: 关于
-category: QSphere
-order: 9
+title: 人员
+category: 关于
+order: 2
 ---
-
-### GitHub
-
-- https://github.com/QualitySphere/qsphere
 
 ### 石巍
 
