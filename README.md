@@ -1,87 +1,66 @@
-# 背景
+# Edition
 
-#### 领域现状
+Product documentation template for Jekyll. Browse through a [live demo](https://long-pig.cloudvent.net/).
+Start documenting your product, application, service or website with this configurable theme.
 
-- 缺陷/用例管理平台多
-- 过程重管理，轻分析
-- 结果重数据，轻过程
-- 操作上依赖平台熟练程度
-- 执行上依赖领域技术知识
-- 总结上依赖领域管理知识
-- 软件质量管理经验者较少
-- 工具传承重于经验传承
-- 没有一套可复用的标准
+![Edition template screenshot](images/_screenshot.png)
 
-#### 我们的目标
+Edition was made by [CloudCannon](http://cloudcannon.com/), the Cloud CMS for Jekyll.
 
-**打造一个软件质量保障平台**
+Find more templates, themes and step-by-step Jekyll tutorials at [CloudCannon Academy](https://learn.cloudcannon.com/).
 
-- 对接市场已有平台
-- 制定标准
-- 传承经验
-- 软件质量统一评级
-- 软件质量趋势分析
-- 软件质量风控告警
-- 低学习成本
+## Features
 
-# 愿景
+* Two column layout
+* Full text search
+* Pre-styled components
+* Auto-generated navigation based on category
+* Optimised for editing in [CloudCannon](http://cloudcannon.com/)
+* Change log
+* RSS/Atom feed
+* SEO tags
+* Google Analytics
 
-**简单度量简单管理**
+## Setup
 
-**分享软件质量保障的配方，把冷冰冰的数据变成有情感的健康指标**
+1. Add your site and author details in `_config.yml`.
+2. Get a workflow going to see your site's output (with [CloudCannon](https://app.cloudcannon.com/) or Jekyll locally).
 
-# 架构
+## Develop
 
-# 功能
+Edition was built with [Jekyll](http://jekyllrb.com/) version 3.3.1, but should support newer versions as well.
 
-#### 配置管理
+Install the dependencies with [Bundler](http://bundler.io/):
 
-用于配置连接缺陷管理服务器和用例管理服务器的信息，如 JIRA「已部分支持」、禅道「暂不支持」、Bugzilla「暂不支持」、TestLink「暂不支持」。
+~~~bash
+$ bundle install
+~~~
 
-#### 项目管理
+Run `jekyll` commands through Bundler to ensure you're using the right versions:
 
-只需要定义项目名称和关联所在的服务器，项目名称应当与所在服务器上的项目同名。
+~~~bash
+$ bundle exec jekyll serve
+~~~
 
-#### 迭代管理
+## Editing
 
-管理迭代信息，信息量较大，所有信息都应与服务器上同名。提供默认值以反向指导用户如何规划缺陷管理服务器和用例管理服务器。
+Edition is already optimised for adding, updating and removing documentation pages in CloudCannon.
 
-#### 同步
+### Documentation pages
 
-默认每小时自动与服务器同步数据，可额外对每个迭代进行手动同步操作，激活状态的迭代同步时会抓取所有信息，暂停状态的迭代也会同步，但抓取的信息有所删选，只抓取在迭代发布之后需要关注的数据。
+* Add, update or remove a documentation page in the *Documentation* collection.
+* Change the category of a documentation page to move it to another section in the navigation.
+* Documentation pages are organised in the navigation by category, with URLs based on the path inside the `_docs` folder.
 
-#### 数据收集与分析
+### Change log
 
-按照迭代管理中的配置，从对应服务器抓取数据，经过初次整理后存入数据库，二次分析后产生更多的指标数据。
+* Add, update or remove change log entries from your posts.
+* Tag entries as minor or major in the front matter.
 
-#### 看板
+### Search
 
-展示数据整理分析之后的图表和信息，用以辅助关注者进行软件质量情况的评判。
+* Add `excluded_in_search: true` to any documentation page's front matter to exclude that page in the search results.
 
-# 安装部署
+### Navigation
 
-#### 安装部署
-
-```bash
-docker-compose -f docker-compose.yaml pull
-docker-compose -f docker-compose.yaml up -d
-```
-
-#### 升级
-
-> 同安装
-
-```bash
-docker-compose -f docker-compose.yaml pull
-docker-compose -f docker-compose.yaml up -d
-```
-
-# 使用方法
-
-#### 快速开始
-
-# Q&A
-
-#### Q: 项目/迭代的激活/暂停是什么意思？
-
-> A: 激活代表迭代进行中，发布后建议手动设置为暂停，不再需要对研发过程进行数据抓取，激活状态抓取的数据更全更多。
+* Change `site.show_full_navigation` to control all or only the current navigation group being open.

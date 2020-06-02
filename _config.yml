@@ -1,27 +1,79 @@
-theme: jekyll-theme-cayman
-title: QSphere
-subtitle: "Quality Sphere - Quality Assurance Platform"
-timezone: Asia/Shanghai
-encoding: "utf-8"
-components:
-  busuanzi:
-    enabled: true
-    start_date: 2020-06-01
+# ----
+# Site
 
-navs:
-  - href: /
-    label: 首页
-  - href: /background/
-    label: 背景
-  - href: /vision/
-    label: 愿景 
-  - href: /framework/
-    label: 架构
-  - href: /feature/
-    label: 功能
-  - href: /deploy/
-    label: 安装部署
-  - href: /usage/
-    label: 使用方法
-  - href: /qa/
-    label: Q&A
+title: Quality Sphere
+url: "https://qualitysphere.github.io"
+baseurl:
+google_analytics_key:
+show_full_navigation: true
+
+# Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
+logo: /siteicon.png
+description: Product documentation template for Jekyll.
+author:
+  name:
+  email:
+  twitter: # twitter username without the @ symbol
+social:
+  name: QSphere
+  links:
+    - https://github.com/QualitySphere/qsphere
+
+# -----
+# Build
+
+timezone: Aisa/Shanghai
+
+permalink: pretty
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENCE
+
+collections:
+  docs:
+    title: Documentation
+    permalink: /:path/
+    output: true
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: default
+  -
+    scope:
+      path: ""
+      type: "docs"
+    values:
+      seo:
+        type: Article
+      _comments:
+        category: Group navigation links with this field
+        order: Used to sort links in the navigation
+      _options:
+        content:
+          width: 800
+          height: 2000
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      _comments:
+        type: Marks the impact of this release
+
+# -----------
+# CloudCannon
+
+types:
+  - minor
+  - major
