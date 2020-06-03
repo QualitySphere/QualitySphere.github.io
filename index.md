@@ -4,7 +4,7 @@ title: 欢迎使用
 
 ### QSphere
 
-<img src="/images/qap.png" width="400" /><img src="/images/logo.png" width="400" />
+<img src="/images/qap.png" width="240" /><img src="/images/logo.png" width="240" />
 
 > 开源软件质量保障平台
 
