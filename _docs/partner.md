@@ -1,6 +1,6 @@
 ---
 title: Nirvana
-category: 合作
+category: 联盟
 order: 12
 ---
 
