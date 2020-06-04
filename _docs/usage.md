@@ -1,7 +1,7 @@
 ---
 title: 快速开始
 category: QSphere
-order: 6
+order: 16
 ---
 
 ### 配置追踪服务器

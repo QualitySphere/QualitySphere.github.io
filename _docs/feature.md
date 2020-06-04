@@ -1,7 +1,7 @@
 ---
 title: 功能
 category: QSphere
-order: 4
+order: 14
 ---
 
 ### 追踪服务器管理 

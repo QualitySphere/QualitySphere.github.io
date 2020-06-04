@@ -1,7 +1,7 @@
 ---
 title: 安装部署
 category: QSphere
-order: 5
+order: 15
 ---
 
 ### 安装/升级
