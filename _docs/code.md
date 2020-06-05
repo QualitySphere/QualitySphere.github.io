@@ -8,6 +8,12 @@ order: 31
 
 [View in GitHub](https://github.com/QualitySphere/qsphere)
 
+#### Gitee
+
+[View in Gitee](https://gitee.com/QualitySphere/qsphere)
+
+#### File Tree
+
 ```text
 .
 ├── LICENSE
