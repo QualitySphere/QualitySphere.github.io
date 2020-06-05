@@ -4,5 +4,5 @@ category: 关于
 order: 32
 ---
 
-![emc-atmos](/images/emc.png)
-![daocloud-dcs](/images/daocloud.png)
+<img src="/images/emc-atmos.png" width="400" />
+<img src="/images/daocloud-dcs.png" width="400" />
