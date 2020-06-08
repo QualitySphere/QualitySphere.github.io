@@ -6,11 +6,11 @@ order: 31
 
 #### GitHub
 
-[View in GitHub](https://github.com/QualitySphere/qsphere)
+[View in GitHub](https://github.com/QualitySphere)
 
 #### Gitee
 
-[View in Gitee](https://gitee.com/QualitySphere/qsphere)
+[View in Gitee](https://gitee.com/QualitySphere)
 
 #### File Tree
 
