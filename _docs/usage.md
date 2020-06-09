@@ -6,17 +6,17 @@ order: 16
 
 ### 配置追踪服务器
 
-打开 QSphere 页面，点击`Settings`, 进入配置页
+打开 QSphere 页面，点击 `Settings` , 进入配置页
 
 点击 `New Tracker` 填入 Tracker 服务器的信息，点击 `Save` 保存
 
 ### 新增项目
 
-点击 `New Project`，选择配置好的服务器，输入 Tracker 上的项目名称，点击 `Save` 保存
+点击 `New Project` ，选择配置好的服务器，输入 Tracker 上的项目名称，点击 `Save` 保存
 
 ### 新增迭代
 
-点击 `New Sprint`，输入 Tracker 上的对应信息，点击`Save` 保存
+点击 `New Sprint` ，输入 Tracker 上的对应信息，点击 `Save` 保存
 
 `Sprint Name` 需要是跟 Tracker 上 Sprint 的名称一致，其他均为 Tracker 上的标签
 

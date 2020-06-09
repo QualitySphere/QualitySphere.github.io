@@ -40,9 +40,9 @@ services:
     depends_on:
       - qsphere-db
 
-  qsphere-grafana:
-    container_name: qsphere-grafana
-    image: bxwill/qsphere:grafana-latest
+  qsphere-dashboard:
+    container_name: qsphere-dashboard
+    image: bxwill/qsphere:dashboard-latest
     restart: always
     ports:
       - 3000:3000
@@ -64,5 +64,5 @@ services:
       - 8080:80
     depends_on:
       - qsphere-svc
-      - qsphere-grafana
+      - qsphere-dashboard
 ```
