@@ -17,8 +17,8 @@ KEY | VALUE
 -- | --
 IMG_PG | PostgresQL 容器镜像 
 IMG_SVC | QSphere SVC 容器镜像 
-IMG_DASHBOARD | QSphere SVC 容器镜像 
-IMG_UI | QSphere SVC 容器镜像 
+IMG_DASHBOARD | QSphere Dashboard 容器镜像 
+IMG_UI | QSphere UI 容器镜像 
 PG_SERVER | 数据库服务器
 PG_PORT | 数据库端口
 PG_DB | 数据库名称
