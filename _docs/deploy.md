@@ -6,63 +6,28 @@ order: 15
 
 ### 安装/升级
 
-```bash
-docker-compose -f docker-compose.yaml pull
-docker-compose -f docker-compose.yaml up -d
-```
+1. 下载[配置文件](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/config)
+2. 下载[安装脚本](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/qsphere-deploy.sh)
+3. 编辑配置文件，也可以跳过该步骤
+4. 执行`./qsphere-deploy.sh config`进行自动化在线安装/升级部署
 
-#### docker-compose.yaml
-```yaml
-version: "3"
-services:
-  qsphere-db:
-    container_name: qsphere-db
-    image: postgres:10
-    restart: always
-    environment:
-      POSTGRES_DB: 'qsphere'
-      POSTGRES_PASSWORD: 'password'
-    volumes:
-      - ./qsphere-pgdata:/var/lib/postgresql/data
-    command: ["-c", "max_connections=2000"]
+### 配置文件说明
 
-  qsphere-svc:
-    container_name: qsphere-svc
-    image: bxwill/qsphere:svc-latest
-    restart: always
-    ports:
-      - 6001:6001
-    environment:
-      PG_DB: 'qsphere'
-      PG_SERVER: qsphere-db
-      PG_USER: 'postgres'
-      PG_PASSWORD: 'password'
-    depends_on:
-      - qsphere-db
-
-  qsphere-dashboard:
-    container_name: qsphere-dashboard
-    image: bxwill/qsphere:dashboard-latest
-    restart: always
-    ports:
-      - 3000:3000
-    environment:
-      PG_DB: 'qsphere'
-      PG_SERVER: qsphere-db
-      PG_PORT: '5432'
-      PG_USER: 'postgres'
-      PG_PASSWORD: 'password'
-    depends_on:
-      - qsphere-db
-      - qsphere-svc
-
-  qsphere-ui:
-    container_name: qsphere-ui
-    image: bxwill/qsphere:ui-latest
-    restart: always
-    ports:
-      - 8080:80
-    depends_on:
-      - qsphere-svc
-      - qsphere-dashboard
-```
+KEY | VALUE
+-- | --
+IMG_PG | PostgresQL 容器镜像 
+IMG_SVC | QSphere SVC 容器镜像 
+IMG_DASHBOARD | QSphere SVC 容器镜像 
+IMG_UI | QSphere SVC 容器镜像 
+PG_SERVER | 数据库服务器
+PG_PORT | 数据库端口
+PG_DB | 数据库名称
+PG_USER | 数据库账户
+PG_PASSWORD | 数据库密码
+PG_VOL | 宿主机上挂载数据库数据的目录
+SVC_NAME | QSphere SVC 服务名称
+SVC_PORT | QSphere SVC 服务映射宿主机端口
+DASHBOARD_NAME| QSphere Dashboard 服务名称
+DASHBOARD_PORT| QSphere Dashboard 服务射宿主机端口
+UI_NAME| QSphere UI 服务名称
+UI_PORT| QSphere UI 服务射宿主机端口
