@@ -6,10 +6,10 @@ order: 15
 
 ### 安装/升级
 
-1. 下载[配置文件](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/config)
-2. 下载[安装脚本](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/qsphere-deploy.sh)
+1. 下载 [配置文件](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/config)
+2. 下载 [安装脚本](https://gitee.com/QualitySphere/qsphere-deploy/raw/master/qsphere-deploy.sh)
 3. 编辑配置文件，也可以跳过该步骤
-4. 执行`./qsphere-deploy.sh config`进行自动化在线安装/升级部署
+4. 执行 `./qsphere-deploy.sh config` 进行自动化在线安装/升级部署
 
 ### 配置文件说明
 
