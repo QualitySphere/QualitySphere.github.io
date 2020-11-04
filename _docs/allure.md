@@ -1,13 +1,14 @@
 ---
 title: Allure Framework
 layout: allure
+category: DOC
 ---
 
-**Allure Framework is a flexible lightweight multi-language test report tool that not only shows a very concise representation of what have been tested in a neat web report form, but allows everyone participating in the development process to extract maximum of useful information from everyday execution of tests.**
+**Allure 框架是一个既灵活又轻量的多语言测试报告工具，它不仅以简洁的web报表形式展示了所测试的内容，而且允许参与开发过程的每个人从每天执行的测试中提取最大限度的有用信息。**
 
-From the dev/qa perspective Allure reports shorten common defect lifecycle: test failures can be divided on bugs and broken tests, also logs, steps, fixtures, attachments, timings, history and integrations with TMS and bug-tracking systems can be configured, so the responsible developers and testers will have all information at hand.
+站在研发/质量的视角，Allure 报告缩短了常见缺陷的生命周期：测试用例的失败得以通过产品缺陷和测试脚本缺陷来区分，再通过日志、步骤、装置、附件、时间、历史以及与测试管理系统和缺陷追踪系统集成，使得相应的开发人员和测试人员可以掌握所有信息。
 
-From the managers perspective Allure provides a clear 'big picture' of what features have been covered, where defects are clustered, how the timeline of execution looks like and many other convenient things. Modularity and extensibility of Allure guarantees that you will always be able to fine-tune something to make Allure suit you better.
+而从管理视角来看，Allure 提供了一个清晰的“大图”来说明覆盖了哪些特性，缺陷集中在哪里，执行的时间轴是怎样的，以及许多其他实用信息。Allure 具有模块化和可扩展性，从而保证了您始终能够对某些东西进行微调，使其更适合您。
 
 <div id='_about'></div>
 
@@ -17,30 +18,25 @@ From the managers perspective Allure provides a clear 'big picture' of what feat
 
 #### 1.1. 版权
 
-The Allure reference guide is available as HTML documents. The latest copy is available at https://docs.qameta.io/allure/
+Allure 参考指南以 HTML 文档的形式提供。最新版本可在 https://docs.qameta.io/allure/ 获取
 
-Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.
+本文档的副本可供自己使用或分发给他人，但不得收取任何费用，并且，无论以印刷或电子方式，每个副本均包含此版权声明。
 
 <div id='_get_help'></div>
 
 #### 1.2. 获得帮助
 
-There are several places to get help:
+可以从以下几处得到支持：
 
-Contact the community on Gitter. We also have a Russian-speaking room.
-
-Ask a question on Stack Overflow or Stack Overflow in Russian.
-
-Report bugs in GitHub issues.
+- 联系我们再 Gitter 上的社区，我们也有俄语讨论室。
+- 在 Stack Overflow 或是俄版 Stack Overflow 提问
+- 在 GitHub 的问题板块给我们报告
 
 <div id='_how_to_proceed'></div>
 
-#### 1.3. 如何进行
+#### 1.3. 如何开始
 
-Open the demo version to see what an Allure report looks like.
-
-Go to Get started to build a report for an existing project.
-
-Learn more about report structure and features.
-
-Integrate your favorite testing framework with Allure. Supported frameworks are grouped by language: Java, Python, JavaScript, Ruby, Groovy, PHP, .Net, and Scala.##
+- 打开 [demo version](http://demo.qameta.io/allure/latest/)，看看 Allure 报告的样子。
+- [开始](#_get_started)为现有项目构建报告。
+- 了解更多关于[报表结构和特性](#_report_structure)的信息。
+- 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#_java)、[Python](#_python)、[JavaScript](#_javascript)、[Ruby](_ruby)、[Groovy](#_groovy)、[PHP](#_php)、[.net](__net) 和 [Scala](#_scale)
