@@ -1,6 +1,5 @@
 ---
-title: Allure
-category: DOC
+title: Allure Framework
 layout: allure
 ---
 
@@ -12,11 +11,11 @@ From the managers perspective Allure provides a clear 'big picture' of what feat
 
 <div id='_about'></div>
 
-### 1. About
+### 1. 关于
 
 <div id='_copyright'></div>
 
-#### 1.1. Copyright
+#### 1.1. 版权
 
 The Allure reference guide is available as HTML documents. The latest copy is available at https://docs.qameta.io/allure/
 
@@ -24,7 +23,7 @@ Copies of this document may be made for your own use and for distribution to oth
 
 <div id='_get_help'></div>
 
-#### 1.2. Get Help
+#### 1.2. 获得帮助
 
 There are several places to get help:
 
@@ -36,7 +35,7 @@ Report bugs in GitHub issues.
 
 <div id='_how_to_proceed'></div>
 
-#### 1.3. How to Proceed
+#### 1.3. 如何进行
 
 Open the demo version to see what an Allure report looks like.
 
