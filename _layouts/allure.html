@@ -1,73 +1,71 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		{% seo %}
-		{% feed_meta %}
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
-		<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
-		<link rel="apple-touch-icon" href="{{ site.baseurl }}/allure-apple-touch-icon.png">
-		<link rel="icon" type="image/png" href="{{ site.baseurl }}/allure-touch-icon.png" sizes="192x192">
-		<link rel="icon" type="image/png" href="{{ site.baseurl }}/images/allure.png">
+	{% seo %}
+	{% feed_meta %}
 
-		{% if jekyll.environment == 'production' and site.google_analytics_key != '' %}
-			<script>
-				window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-				ga('create', '{{ site.google_analytics_key }}', 'auto');
-				ga('send', 'pageview');
-			</script>
-			<script async src='https://www.google-analytics.com/analytics.js'></script>
-		{% endif %}
-	</head>
+	<link rel="stylesheet"
+		href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+	<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+	<link rel="apple-touch-icon" href="{{ site.baseurl }}/allure-apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="{{ site.baseurl }}/allure-touch-icon.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="{{ site.baseurl }}/images/allure.png">
 
-	<body>
-		<header>
-			<h1>
-				<a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/allure-emblem.svg" width="40" height="40" alt="{{ site.title }} logo"></a>
-				{{ site.title }}
-				<button type="button" class="open-nav" id="open-nav"></button>
-			</h1>
-			<nav {% if site.show_full_navigation %}class="full-navigation"{% endif %}>
-				<ul>
-					<li class="nav-item top-level {% if page.url == '/' %}current{% endif %}">
-						{% assign home = site.html_pages | where: 'url', '/' | first %}
-						<a href="#">手册目录</a>
-					</li>
-				</ul>
+	{% if jekyll.environment == 'production' and site.google_analytics_key != '' %}
+	<script>
+		window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+		ga('create', '{{ site.google_analytics_key }}', 'auto');
+		ga('send', 'pageview');
+	</script>
+	<script async src='https://www.google-analytics.com/analytics.js'></script>
+	{% endif %}
+</head>
 
-				<ul>
-					<li class="nav-item top-level">
-							<a href="#_about">1.关于</a>
-							<ul>
-									<li class="nav-item"><a href="#_copyright">1.1.版权</a></li>
-							</ul>
-						</li>
-				</ul>
+<body>
+	<header>
+		<h1>
+			<a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/allure-emblem.svg" width="40" height="40"
+					alt="{{ site.title }} logo"></a>Allure
+			<button type="button" class="open-nav" id="open-nav"></button>
+		</h1>
+		<nav {% if site.show_full_navigation %}class="full-navigation" {% endif %}>
+			<ul>
+				<li class="nav-item top-level {% if page.url == '/' %}current{% endif %}">
+					{% assign home = site.html_pages | where: 'url', '/' | first %}
+					<a href="https://docs.qameta.io/allure/">英文官网</a>
+				</li>
+			</ul>
 
-				<ul>
-					<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">
-						{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}
-						<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>
-					</li>
-				</ul>
-			</nav>
-		</header>
+			<ul>
+				<li class="nav-item top-level">
+					<a href="#_about">1.关于</a>
+					<ul>
+						<li class="nav-item"><a href="#_copyright">1.1.版权</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
 
-		<section class="main">
+	<section class="main">
+		<div class="page-header">
 			<h3>Allure Framework</h3>
-			<article class="content">
-				{{ content }}
-			</article>
-		</section>
+		</div>
+		<article class="content">
+			{{ content }}
+		</article>
+	</section>
 
-		<script>
-			document.getElementById("open-nav").addEventListener("click", function () {
-				document.body.classList.toggle("nav-open");
-			});
-		</script>
-	</body>
+	<script>
+		document.getElementById("open-nav").addEventListener("click", function () {
+			document.body.classList.toggle("nav-open");
+		});
+	</script>
+</body>
+
 </html>

@@ -11,7 +11,9 @@ From the dev/qa perspective Allure reports shorten common defect lifecycle: test
 
 From the managers perspective Allure provides a clear 'big picture' of what features have been covered, where defects are clustered, how the timeline of execution looks like and many other convenient things. Modularity and extensibility of Allure guarantees that you will always be able to fine-tune something to make Allure suit you better.
 
-### <div id='_about'>1. About</div>
+<div id='_about'></div>
+
+### 1. About
 
 #### 1.1. Copyright
 
