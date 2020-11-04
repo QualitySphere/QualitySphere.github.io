@@ -29,7 +29,7 @@ Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://
 可以从以下几处得到支持：
 - 联系我们再 [Gitter](https://gitter.im/allure-framework/allure-core) 上的社区，我们也有 [Russian-speaking room](https://gitter.im/allure-framework/allure-ru)。
 - 在 [Stack Overflow](https://stackoverflow.com/questions/ask?tags=allure) 或是 [Stack Overflow in Russian](https://ru.stackoverflow.com/questions/ask?tags=allure) 提问
-- 在 [GitHub issues](https://github.com/allure-framework/allure2/issues/new?) 给我们报告
+- 在 [GitHub issues](https://github.com/allure-framework/allure2/issues/new?) 给我们提问
 
 <div id='_how_to_proceed'></div>
 
@@ -100,6 +100,7 @@ scoop update allure
 5. 添加 allure 到系统 PATH。
 
 > 注意：命令行应用程序需要 Java 运行环境的支持
+
 > 信息：老版本(⇐2.8.0) 可从 [bintray](https://bintray.com/qameta/generic/allure2) 获取
 
 ##### 2.1.5. 检查安装结果
@@ -131,13 +132,96 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 它以提供的路径中的数据，生成一个报告到临时目录中，然后创建一个本地 Jetty 服务器实例，加载生成的报告并在默认浏览器中打开它。它可以通过使用 **--profile** 选项，启用一些预先配置的 Allure 设置，**junit** 配置文件默认是启用的，您将在后面的[章节](#_commandline)中了解更多关于配置文件的信息。
 
-This would produce a report with a minimum of information extracted from the xml data that will lack nearly all of the advanced allure features but will allow you to get a nice visual representation of executed tests.
-
 虽然这样生成的报告只包含从 xml 数据中提取的最少信息，这些信息几乎缺乏所有高级的 Allure 特性，但可以让您那些已经执行的测试获得良好的可视化展示。
 
 ![Report generated on xml data](https://docs.qameta.io/allure/images/get_started_report_overview.png)
 
-## 3. 
+<div id="_report_structure"></div>
+
+## 3. 报告结构
+
+当你知道报告长什么样子，就可能想要获得更多数据丰富的报告。为此你得考虑为你的测试框架使用一个 Allure 适配器，它将被允许收集更多的信息。可以到集成章节，了解关于测试框架集成的更多信息。
+
+典型的报告由“概览”选项卡、导航栏、几个针对不同类型的测试数据表示的选项卡以及针对每个单独测试的测试用例页面组成。每个 Allure 报告都有一个类似于树的数据结构支持，它表示一个测试执行过程。不同的选项卡允许在原始数据结构的视图之间切换，从而提供不同的透视图。注意所有类似树的表示，包括行为、类别、xUnit 和包，它们都支持过滤和排序。
+
+<div id="_overview_page"></div>
+
+#### 3.1. 概览
+
+每个报告的入口点都是带有仪表板和小控件的“概览”页面:
+![Overview](https://docs.qameta.io/allure/images/tab_overview.png)
+
+概览页面展现了一些默认小控件，来表示项目和测试环境的基本特征。
+
+- 统计数字 - 整体报告统计数字。
+- 执行 - 如果此报告表示几次测试执行，这里将显示每次执行的统计数据。
+- 行为 - 根据故事和特性聚合的结果信息。
+- 执行器 - 用于运行测试的测试执行器的信息。
+- 历史趋势 - 如果测试积累了一些历史数据，它的趋势将被计算并显示在图表中。
+- 环境 - 关于测试环境的信息(参见[如何定义环境](#_environment))。
+
+主页小控件是可拖动并且可配置的。此外，Allure 提供自身的插件系统，所以它可以提供完全不同的控件布局。
+
+导航栏可折叠，使您能够切换到几种基本的结果概览模式。
+
+<div id="_categories"></div>
+
+#### 3.2. 类别
+
+类别选项卡提供了创建[自定义缺陷分类](#_categories_2)的方法，以应用于测试结果。
+
+![Categories](https://docs.qameta.io/allure/images/tab_categories.png)
+
+<div id="_suites"></div>
+
+#### 3.3. 测试集
+
+在测试集选项卡上，可以按套件和类分组展示已执行测试。
+
+On the Suites tab a standard structural representation of executed tests, grouped by suites and classes can be found.
+
+![Suites](https://docs.qameta.io/allure/images/tab_suites.png)
+
+<div id="_graphs"></div>
+
+#### 3.4. 图表
+
+图表页上可以查看从测试数据收集的不同统计信息: 状态分解或严重性和持续时间图。
+
+![Graphs](https://docs.qameta.io/allure/images/tab_graphs.png)
+
+<div id="_timeline"></div>
+
+#### 3.5. 时间轴
+
+时间轴选项卡能够回顾可视化测试执行，Allure 适配器收集精确的测试时间，并且在这个选项卡上，它们根据顺序或并行时间结构进行排列。
+
+![Timeline](https://docs.qameta.io/allure/images/tab_timeline.png)
+
+<div id="_behaviors"></div>
+
+#### 3.6. 行为
+For Behavior-driven approach, this tab groups test results according to Epic, Feature and Story tags.
+
+支持行为驱动测试的展示，该选项卡根据史诗、特性和故事标签对测试结果进行分组。
+
+![Behaviors](https://docs.qameta.io/allure/images/tab_behaviors.png)
+
+<div id="_packages"></div>
+
+#### 3.7. 包
+
+包选项卡根据不同的包来分组表示测试结果的树状布局。
+
+![Packages](https://docs.qameta.io/allure/images/tab_packages.png)
+
+<div id="_test_case_page"></div>
+
+#### 3.8. 测试用例
+
+在概览页，可以单击单个测试，跳转到测试用例页面。这个页面通常包含许多与测试用例相关的个人数据: 测试期间执行的步骤、耗时、附件、分类标签、描述和链接。
+
+![Test result page](https://docs.qameta.io/allure/images/testcase.png)
 
 ## 4. 
 
