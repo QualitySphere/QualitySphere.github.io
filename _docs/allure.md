@@ -1,7 +1,6 @@
 ---
 title: Allure
-category: 文档站
-order: 51
+category: DOC
 layout: allure
 ---
 
@@ -15,11 +14,15 @@ From the managers perspective Allure provides a clear 'big picture' of what feat
 
 ### 1. About
 
+<div id='_copyright'></div>
+
 #### 1.1. Copyright
 
 The Allure reference guide is available as HTML documents. The latest copy is available at https://docs.qameta.io/allure/
 
 Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.
+
+<div id='_get_help'></div>
 
 #### 1.2. Get Help
 
@@ -30,6 +33,8 @@ Contact the community on Gitter. We also have a Russian-speaking room.
 Ask a question on Stack Overflow or Stack Overflow in Russian.
 
 Report bugs in GitHub issues.
+
+<div id='_how_to_proceed'></div>
 
 #### 1.3. How to Proceed
 
