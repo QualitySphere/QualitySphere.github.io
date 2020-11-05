@@ -250,7 +250,7 @@ public void aTestWhichFailsFromTimeToTime {
 
 要向环境小控件添加信息，只需在生成报告之前，在 allure-results 目录中创建 environment.properties （或 environment.xml）文件。
 
-##### environment.properties
+*environment.properties*
 
 ```text
 Browser=Chrome
@@ -258,7 +258,7 @@ Browser.Version=63.0
 Stand=Production
 ```
 
-##### environment.xml
+*environment.xml*
 
 ```xml
 <environment>
@@ -279,7 +279,7 @@ Stand=Production
 
 <div id="_categories_2"></div>
 
-#### 4.3. 类别
+#### 4.3. 分类
 
 默认存在两类缺陷:
 - 产品缺陷（测试失败）
@@ -287,7 +287,7 @@ Stand=Production
 
 要创建自定义的缺陷分类，可在生成报告之前，在 allure-results 目录中添加 categories.json 文件。
 
-##### categories.json
+*categories.json*
 
 ```json
 [
@@ -325,22 +325,1194 @@ Stand=Production
 
 > **提示**：如果用 [allure-maven](#_maven_5) 插件或者 [allure-gradle](#_gradle_4) 插件可以把 categories.json 文件可以存放在测试资源目录中。
 
-## 5. 
+<div id="_java"></div>
 
-## 6. 
+## 5. Java
 
-## 7. 
+<div id="_junit_4"></div>
 
-## 8. 
+#### 5.1. jUnit 4
 
-## 9. 
+##### 5.1.1. 安装
 
-## 10.
+`allure-junit4` 的最新可用版本：
+![Allure JUnit4](https://img.shields.io/maven-central/v/io.qameta.allure/allure-junit4.svg)
 
-## 11. 
+**Maven**
 
-## 12. 
+增加以下内容到你的 **pom.xml**：
 
-## 13. 
+*pom.xml*
+```xml
+<properties>
+    <aspectj.version>1.8.10</aspectj.version>
+</properties>
 
-## 14. 
+<dependencies>
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-junit4</artifactId>
+        <version>LATEST_VERSION</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+                <testFailureIgnore>false</testFailureIgnore>
+                <argLine>
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                </argLine>
+                <properties>
+                    <property>
+                        <name>listener</name>
+                        <value>io.qameta.allure.junit4.AllureJunit4</value>
+                    </property>
+                </properties>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                    <version>${aspectj.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+...
+```
+
+然后像往常一样运行构建:
+```bash
+$ mvn clean test
+```
+
+**Gradle**
+
+对于 Gradle 用户，可以利用 allure-gradle 插件来自动配置所有需要的依赖:
+
+*build.gradle*
+```groovy
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
+}
+
+plugins {
+    id 'io.qameta.allure'
+}
+
+allure {
+    version = '2.2.1'
+    autoconfigure = true
+    aspectjweaver = true
+    allureJavaVersion = LATEST_VERSION
+}
+```
+
+然后像往常一样运行构建:
+```bash
+$ ./gradlew clean test
+```
+
+Allure 的结果会输出到 **build/allure-results** 文件夹中。要想生成 html 报告并在 web 浏览器中自动打开它，运行以下命令:
+
+```bash
+$ ./gradlew allureServe build/allure-results
+```
+
+##### 5.1.2. 特性
+
+Java 的装饰器可用来使用主要的 Allure 特性。
+
+**DisplayName**
+
+为了给任何测试方法添加一个人类可读的名称，使用 **@DisplayName** 装饰器:
+
+```java
+package my.company.tests;
+
+import org.junit.Test;
+import io.qameta.allure.junit4.DisplayName;
+
+public class MyTests {
+
+    @Test
+    @DisplayName("Human-readable test name")
+    public void testSomething() throws Exception {
+        //...
+    }
+
+}
+```
+
+**Description**
+
+类似地，您可以为每个测试方法添加详细的描述。要添加该描述，可使用 **@Description** 装饰器:
+
+```java
+package my.company.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Description;
+
+@Test
+public class MyTests {
+
+    @Test
+    @Description("Some detailed test description")
+    public void testSomething() throws Exception {
+        ...
+    }
+
+}
+```
+
+**Steps**
+
+测试场景由于步骤构成，步骤可以是任意操作。在不同的测试场景中都可以使用步骤。它们可以：被参数化、进行检查、具有嵌套步骤和创建附件。每一步都有一个名字。
+
+为了在 Java 代码中定义步骤，需要使用 **@Step** 装饰器对各自的方法进行注释。如果未指定，则步骤名称等于装饰器名称。
+
+请注意步骤的机制已经被修改了。现在它支持字段智能分析，在 Allure 1 中用户必须指定索引来引用他们想要注入到步骤中的那些参数值，而 Allure 2 使用了映射方法，这提供了通过名称来提取解析的能力。
+
+假设你有以下实体：
+
+```java
+public class User {
+
+     private String name;
+     private String password;
+     ...
+}
+```
+
+您可以通过名称直接访问这些字段的值:
+
+```java
+import io.qameta.allure.Step;
+
+...
+
+@Step("Type {user.name} / {user.password}.")
+public void loginWith(User user) {
+     ...
+}
+```
+
+由于友好的支持了**数组**和**集合**，因此您不再需要为您的自定义对象重写 **toString()**。
+
+**Attachments**
+
+在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
+
+```java
+import io.qameta.allure.Attachment;
+
+...
+
+@Attachment
+public String performedActions(ActionSequence actionSequence) {
+    return actionSequence.toString();
+}
+
+@Attachment(value = "Page screenshot", type = "image/png")
+public byte[] saveScreenshot(byte[] screenShot) {
+    return screenShot;
+}
+```
+
+或者你也可以使用 Allure helper 方法
+
+```java
+import io.qameta.allure.Allure;
+
+...
+
+Allure.addAttachment("My attachment", "My attachment content");
+
+Path content = Paths.get("path-to-my-attachment-contnet");
+try (InputStream is = Files.newInputStream(content)) {
+    Allure.addAttachemnt("My attachment", is);
+}
+```
+
+> **提示**：如果用 **@Attachment** 装饰器返回类型与 **String** 或 **byte[]** 不同，会在返回值上调用 **toString()** 来获取附件内容。
+
+您可以如上所示一般，使用 **@Attachment** 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
+
+**Links**
+
+您可以将您的测试链接到其他服务器资源上，如 TMS（测试管理系统）或缺陷追踪系统。
+
+```java
+import io.qameta.allure.Link;
+import io.qameta.allure.Issue;
+import io.qameta.allure.TmsLink;
+
+@Link("https://example.org")
+@Link(name = "allure", type = "mylink")
+public void testSomething() {
+     ...
+}
+
+@Issue("123")
+@Issue("432")
+public void testSomething() {
+     ...
+}
+
+@TmsLink("test-1")
+@TmsLink("test-2")
+public void testSomething() {
+     ...
+}
+```
+
+为了指定链接样式，您可以使用以下格式的系统属性: `allure.link.my-link-type.pattern=https://example.org/custom/{}/path`，Allure 将用装饰器中指定的值替换 `{}`。例如:
+
+```java
+allure.link.mylink.pattern=https://example.org/mylink/{}
+allure.link.issue.pattern=https://example.org/issue/{}
+allure.link.tms.pattern=https://example.org/tms/{}
+```
+
+**Severity**
+
+**@Severity** 装饰器会根据严重程度对测试方法进行优先级排序：
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+
+public class MyTest {
+
+    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+**Behaviours Mapping**
+
+在一些研发方法中，测试是按特性和故事分类的。要添加这样的映射，你可以使用 `Epic`、`Feature` 和 `Stories` 装饰器:
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+
+@Epic("Allure examples")
+@Feature("Junit 4 support")
+public class MyTest {
+
+    @Test
+    @Story("Base support for bdd annotations")
+    @Story("Advanced support for bdd annotations")
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+<div id="_junit_5"></div>
+
+#### 5.2. jUnit 5
+
+##### 5.2.1. 安装
+
+`allure-junit5` 最新版：![Allure JUnit5](https://img.shields.io/maven-central/v/io.qameta.allure/allure-junit5.svg)
+
+`allure-maven` 最新版：![Allure Maven](https://img.shields.io/maven-central/v/io.qameta.allure/allure-maven.svg)
+
+`allure-gradle` 最新版：![Allure Gradle](https://img.shields.io/maven-central/v/io.qameta.allure/allure-gradle.svg)
+
+**Maven**
+
+添加以下内容到你的 **pom.xml**：
+
+*pom.xml*
+```xml
+<properties>
+    <aspectj.version>1.8.10</aspectj.version>
+</properties>
+
+<dependencies>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>LATEST_VERSION</version>
+            <scope>test</scope>
+        </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21</version>
+                <configuration>
+                <testFailureIgnore>false</testFailureIgnore>
+                        <argLine>
+                            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        </argLine>
+                    <systemProperties>
+                        <property>
+                            <name>junit.jupiter.extensions.autodetection.enabled</name>
+                            <value>true</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.2.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    <dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>LATEST_VERSION</version>
+                <configuration>
+                    <reportVersion>2.4.1</reportVersion>
+                </configuration>
+            </plugin>
+    </plugins>
+</build>
+...
+```
+
+然后正常进行构建：
+
+```bash
+$ mvn clean test
+```
+
+**Gradle**
+
+对于 Gradle 用户，可以使用 allure-gradle 插件，该插件会自动配置依赖：
+
+*build.gradle*
+```groovy
+plugins {
+    id 'io.qameta.allure' version '2.5' // Latest Plugin Version
+    id 'java'
+}
+
+allure {
+    autoconfigure = true
+    version = '2.7.0'  // Latest Allure Version
+
+    useJUnit5 {
+        version = '2.7.0' // Latest Allure Version
+    }
+
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+    )
+}
+
+test {
+    useJUnitPlatform()
+}
+```
+
+然后正常构建：
+
+```bash
+$ ./gradlew clean test
+```
+
+在项目根目录下会生成 allure-results 目录，要生成 html 报告并且自动打开 web 浏览器浏览报告，只需要运行一下命令：
+```bash
+$ ./gradlew allureServe
+```
+
+##### 5.2.2. 特性
+
+Java 装饰器可用来使用主要的 Allure 特性。
+
+**DisplayName**
+
+**@DisplayName** 装饰器已被移除。
+
+**Description**
+
+类似地，您可以为每个测试方法添加详细的描述。要添加该描述，可使用 `@Description` 装饰器:
+
+```java
+package my.company.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Description;
+
+@Test
+public class MyTests {
+
+    @Test
+    @Description("Some detailed test description")
+    public void testSomething() throws Exception {
+        ...
+    }
+
+}
+```
+
+**Steps**
+
+测试场景由于步骤构成，步骤可以是任意操作。在不同的测试场景中都可以使用步骤。它们可以：被参数化、进行检查、具有嵌套步骤和创建附件。每一步都有一个名字。
+
+为了在 Java 代码中定义步骤，需要使用 `@Step` 装饰器对各自的方法进行注释。如果未指定，则步骤名称等于装饰器名称。
+
+请注意步骤的机制已经被修改了。现在它支持字段智能分析，在 Allure 1 中用户必须指定索引来引用他们想要注入到步骤中的那些参数值，而 Allure 2 使用了映射方法，这提供了通过名称来提取解析的能力。
+
+假设你有以下实体：
+
+```java
+public class User {
+
+     private String name;
+     private String password;
+     ...
+}
+```
+
+您可以通过名称直接访问这些字段的值：
+```java
+import io.qameta.allure.Step;
+
+...
+
+@Step("Type {user.name} / {user.password}.")
+public void loginWith(User user) {
+     ...
+}
+```
+
+由于友好的支持了**数组**和**集合**，因此您不再需要为您的自定义对象重写 **toString()**。
+
+**Attachments**
+
+在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
+
+```java
+import io.qameta.allure.Attachment;
+
+...
+
+@Attachment
+public String performedActions(ActionSequence actionSequence) {
+    return actionSequence.toString();
+}
+
+@Attachment(value = "Page screenshot", type = "image/png")
+public byte[] saveScreenshot(byte[] screenShot) {
+    return screenShot;
+}
+```
+
+或者你也可以使用 Allure helper 方法
+
+```java
+import io.qameta.allure.Allure;
+
+...
+
+Allure.addAttachment("My attachment", "My attachment content");
+
+Path content = Paths.get("path-to-my-attachment-contnet");
+try (InputStream is = Files.newInputStream(content)) {
+    Allure.addAttachemnt("My attachment", is);
+}
+```
+
+> **提示**：如果用 `@Attachment` 装饰器返回类型与 **String** 或 **byte[]** 不同，会在返回值上调用 **toString()** 来获取附件内容。
+
+您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
+
+**Links**
+
+您可以将您的测试链接到其他服务器资源上，如 TMS（测试管理系统）或缺陷追踪系统。
+
+```java
+import io.qameta.allure.Link;
+import io.qameta.allure.Issue;
+import io.qameta.allure.TmsLink;
+
+@Link("https://example.org")
+@Link(name = "allure", type = "mylink")
+public void testSomething() {
+     ...
+}
+
+@Issue("123")
+@Issue("432")
+public void testSomething() {
+     ...
+}
+
+@TmsLink("test-1")
+@TmsLink("test-2")
+public void testSomething() {
+     ...
+}
+```
+
+为了指定链接样式，您可以使用以下格式的系统属性: `allure.link.my-link-type.pattern=https://example.org/custom/{}/path`，Allure 将用装饰器中指定的值替换 `{}`。例如:
+
+```java
+allure.link.mylink.pattern=https://example.org/mylink/{}
+allure.link.issue.pattern=https://example.org/issue/{}
+allure.link.tms.pattern=https://example.org/tms/{}
+```
+
+**Severity**
+
+`@Severity` 装饰器会根据严重程度对测试方法进行优先级排序：
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+
+public class MyTest {
+
+    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+**Behaviours Mapping**
+
+在一些研发方法中，测试是按特性和故事分类的。要添加这样的映射，你可以使用 `Epic`、`Feature` 和 `Stories` 装饰器:
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+
+@Epic("Allure examples")
+@Feature("Junit 4 support")
+public class MyTest {
+
+    @Test
+    @Story("Base support for bdd annotations")
+    @Story("Advanced support for bdd annotations")
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+<div id="_testng"></div>
+
+#### 5.3. TestNG
+
+##### 5.3.1. 安装
+
+`allure-testng` 最新版: ![Allure TestNG](https://img.shields.io/maven-central/v/io.qameta.allure/allure-testng.svg)
+
+**Maven**
+
+添加以下内容到你的 **pom.xml**：
+
+*pom.xml*
+```xml
+<properties>
+    <aspectj.version>1.8.10</aspectj.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-testng</artifactId>
+        <version>LAST_VERSION</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+                <argLine>
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                </argLine>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                    <version>${aspectj.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+```
+
+然后正常进行构建：
+
+```bash
+$ mvn clean test
+```
+
+在 **target/allure-results** 目录下生成 Allure 结果数据，要生成 html 报告并且自动打开 web 浏览器浏览报告，只需要运行一下命令：
+```bash
+$ allure serve target/allure-results
+```
+
+**Gradle**
+
+对于 Gradle 用户，可以使用 allure-gradle 插件，该插件会自动配置依赖：
+
+*build.gradle*
+```groovy
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
+}
+
+plugins {
+    id 'io.qameta.allure'
+}
+
+allure {
+    version = '2.2.1'
+    autoconfigure = true
+    aspectjweaver = true
+    allureJavaVersion = LATEST_VERSION
+}
+```
+
+然后正常构建：
+```bash
+$ ./gradlew clean test
+```
+
+会生成 **build/allure-results** 目录，要生成 html 报告并且自动打开 web 浏览器浏览报告，只需要运行一下命令：
+```bash
+$ ./gradlew allureServe build/allure-results
+```
+
+##### 5.3.2. 特性
+
+该适配器附带了一组 Java 装饰器，来使用主要的 Allure 特性。
+
+**DisplayName**
+
+使用 `@Test` 装饰器中的 `description` 属性来注释测试方法的名称，增强可读性：
+
+```java
+package my.company.tests;
+
+import org.testng.annotations.Test;
+
+public class MyTests {
+
+    @BeforeMethod(description = "Configure something before test")
+    public void setUp() {
+        //...
+    }
+
+    @Test(description = "Human-readable test name")
+    public void testSomething() throws Exception {
+        //...
+    }
+
+}
+```
+
+**Description**
+
+类似地，您可以为每个测试方法添加详细的描述。要添加该描述，可使用 `@Description` 装饰器:
+
+```java
+package my.company.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Description;
+
+@Test
+public class MyTests {
+
+    @Test
+    @Description("Some detailed test description")
+    public void testSomething() throws Exception {
+        ...
+    }
+
+}
+```
+
+**Steps**
+
+测试场景由于步骤构成，步骤可以是任意操作。在不同的测试场景中都可以使用步骤。它们可以：被参数化、进行检查、具有嵌套步骤和创建附件。每一步都有一个名字。
+
+为了在 Java 代码中定义步骤，需要使用 `@Step` 装饰器对各自的方法进行注释。如果未指定，则步骤名称等于装饰器名称。
+
+请注意步骤的机制已经被修改了。现在它支持字段智能分析，在 Allure 1 中用户必须指定索引来引用他们想要注入到步骤中的那些参数值，而 Allure 2 使用了映射方法，这提供了通过名称来提取解析的能力。
+
+假设你有以下实体：
+
+```java
+public class User {
+
+     private String name;
+     private String password;
+     ...
+}
+```
+
+您可以通过名称直接访问这些字段的值：
+```java
+import io.qameta.allure.Step;
+
+...
+
+@Step("Type {user.name} / {user.password}.")
+public void loginWith(User user) {
+     ...
+}
+```
+
+由于友好的支持了**数组**和**集合**，因此您不再需要为您的自定义对象重写 **toString()**。
+
+**Attachments**
+
+在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
+
+```java
+import io.qameta.allure.Attachment;
+
+...
+
+@Attachment
+public String performedActions(ActionSequence actionSequence) {
+    return actionSequence.toString();
+}
+
+@Attachment(value = "Page screenshot", type = "image/png")
+public byte[] saveScreenshot(byte[] screenShot) {
+    return screenShot;
+}
+```
+
+或者你也可以使用 Allure helper 方法
+
+```java
+import io.qameta.allure.Allure;
+
+...
+
+Allure.addAttachment("My attachment", "My attachment content");
+
+Path content = Paths.get("path-to-my-attachment-contnet");
+try (InputStream is = Files.newInputStream(content)) {
+    Allure.addAttachemnt("My attachment", is);
+}
+```
+
+> **提示**：如果用 `@Attachment` 装饰器返回类型与 **String** 或 **byte[]** 不同，会在返回值上调用 **toString()** 来获取附件内容。
+
+您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
+
+**Links**
+
+您可以将您的测试链接到其他服务器资源上，如 TMS（测试管理系统）或缺陷追踪系统。
+
+```java
+import io.qameta.allure.Link;
+import io.qameta.allure.Issue;
+import io.qameta.allure.TmsLink;
+
+@Link("https://example.org")
+@Link(name = "allure", type = "mylink")
+public void testSomething() {
+     ...
+}
+
+@Issue("123")
+@Issue("432")
+public void testSomething() {
+     ...
+}
+
+@TmsLink("test-1")
+@TmsLink("test-2")
+public void testSomething() {
+     ...
+}
+```
+
+为了指定链接样式，您可以使用以下格式的系统属性: `allure.link.my-link-type.pattern=https://example.org/custom/{}/path`，Allure 将用装饰器中指定的值替换 `{}`。例如:
+
+```java
+allure.link.mylink.pattern=https://example.org/mylink/{}
+allure.link.issue.pattern=https://example.org/issue/{}
+allure.link.tms.pattern=https://example.org/tms/{}
+```
+
+**Severity**
+
+`@Severity` 装饰器会根据严重程度对测试方法进行优先级排序：
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+
+public class MyTest {
+
+    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+**Behaviours Mapping**
+
+在一些研发方法中，测试是按特性和故事分类的。要添加这样的映射，你可以使用 `Epic`、`Feature` 和 `Stories` 装饰器:
+
+```java
+package org.example.tests;
+
+import org.junit.Test;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+
+@Epic("Allure examples")
+@Feature("Junit 4 support")
+public class MyTest {
+
+    @Test
+    @Story("Base support for bdd annotations")
+    @Story("Advanced support for bdd annotations")
+    public void testSomething() throws Exception {
+        // ...
+    }
+
+}
+```
+
+<div id="_cucumber_jvm"></div>
+
+#### 5.4. Cucumber JVM
+
+##### 5.4.1. 安装
+
+Cucumber JVM 的每个主要版本都需要一个特定版本的 Allure Cucumber JVM 适配器。
+
+可用的最新版本的适配器:
+- Cucumber JVM 1.x - `allure-cucumber-jvm` ![Allure Cucumber JVM 1.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber-jvm.svg)
+- Cucumber JVM 2.x - `allure-cucumber2-jvm` ![Allure Cucumber JVM 2.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber2-jvm.svg)
+- Cucumber JVM 3.x - `allure-cucumber3-jvm` ![Allure Cucumber JVM 3.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber3-jvm.svg)
+- Cucumber JVM 4.x - `allure-cucumber4-jvm` ![Allure Cucumber JVM 4.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber4-jvm.svg)
+
+**Maven**
+
+添加 `allure-cucumber4-jvm` 插件到你的项目中并将其添加到CucumberOptions 中：
+
+*pom.xml*
+```xml
+<properties>
+    <aspectj.version>1.8.10</aspectj.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-cucumber4-jvm</artifactId>
+        <version>LATEST_VERSION</version>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+                <argLine>
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    -Dcucumber.options="--plugin io.qameta.allure.cucumber4jvm.AllureCucumber4Jvm"
+                </argLine>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                    <version>${aspectj.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+```
+
+然后执行 `mvn clean test`，测试执行后的 allure JSON 文件会默认生成在 **allure-results** 目录下。
+
+**Features**
+
+此适配器提供运行时集成，允许将 Gherkin dsl 特性转换为基本的 Allure 特性。
+
+**Display Name**
+
+测试标题和测试集标题在运行时从 `.feature` 文件中提取。
+
+**Description**
+
+特性的描述会出现在每个场景中。
+
+**Steps**
+
+所有场景步骤自动转换成 Allure 步骤。
+
+**Attachments**
+
+在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
+
+```java
+import io.qameta.allure.Attachment;
+
+...
+
+@Attachment
+public String performedActions(ActionSequence actionSequence) {
+    return actionSequence.toString();
+}
+
+@Attachment(value = "Page screenshot", type = "image/png")
+public byte[] saveScreenshot(byte[] screenShot) {
+    return screenShot;
+}
+```
+
+或者你也可以使用 Allure helper 方法
+
+```java
+import io.qameta.allure.Allure;
+
+...
+
+Allure.addAttachment("My attachment", "My attachment content");
+
+Path content = Paths.get("path-to-my-attachment-contnet");
+try (InputStream is = Files.newInputStream(content)) {
+    Allure.addAttachemnt("My attachment", is);
+}
+```
+
+> **提示**：如果用 `@Attachment` 装饰器返回类型与 **String** 或 **byte[]** 不同，会在返回值上调用 **toString()** 来获取附件内容。
+
+您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
+
+**Links**
+
+要关联问题到报告上，只需在 `.feature` 文件中的场景顶部添加 `@issue=<ISSUE-NUMBER>`。
+
+要关联 TMS 链接到报告上，只需在 `.feature` 文件中的场景顶部添加添加 `@tmsLink=<TEST-CASE-ID>`。
+
+> **提示**：不要忘记在 Allure 属性中配置链接模式。
+
+**Severity**
+
+要设置 severity，可以在 `.Feature` 文件中的的场景顶部添加 `@severity=blocker`。
+
+如果严重性有错误的值，它将被强制为正常（默认）。
+
+支持的严重性值: `blocker`, `critical`, `normal`, `minor`, `trivial`
+
+**Test markers**
+
+每个特性或场景都可以通过以下标记进行装饰: `@flaky`, `@muted`, `@known`
+
+**Test fixtures**
+
+所有方法都由装饰器 `@import cucumber.api.java.After` 或者 `@cucumber.api.java.Before` 装饰。它们将作为带有方法名称的步骤出现在报表中。
+
+如果 `@Before` 执行失败，该场景将被标记为跳过。
+如果 `@After` 执行失败，该场景将被标记为已通过，并且仅在方法的步骤之后将被标记为失败。
+
+**Behaviours Mapping**
+
+Allure Cucumber JVM 集成请参考特性章节。
+
+**Configuration**
+
+`allure-results` 目录的位置，以及 `@TmsLink` 和 `@Issue` 链接都可以通过 `allure.properties` 文件来设置，该文件在资源目录: `src/test/resources`
+
+*allure.properties*
+```text
+allure.results.directory=target/allure-results
+allure.link.issue.pattern=https://example.org/browse/{}
+allure.link.tms.pattern=https://example.org/browse/{}
+```
+
+或者设置系统配置 `pom.xml`
+
+*pom.xml*
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+                ...
+                <systemPropertyVariables>
+                    <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    <allure.link.issue.pattern>https://example.org/browse/{}</allure.link.issue.pattern>
+                    <allure.link.tms.pattern>https://example.org/browse/{}</allure.link.tms.pattern>
+                </systemPropertyVariables>
+            </configuration>
+            ...
+        </plugin>
+    </plugins>
+</build>
+```
+
+<div id="_selenide"></div>
+
+#### 5.5 Selenide
+
+##### 5.5.1. 安装
+
+`allure-selenide` 最新可用版本：![Allure Maven](https://img.shields.io/maven-central/v/io.qameta.allure/allure-selenide.svg)
+
+**Maven**
+
+你可以添加以下内容到你的 `pom.xml`：
+
+*pom.xml*
+```xml
+<dependencies>
+    ...
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-selenide</artifactId>
+        <version>LAST_VERSION</version>
+        <scope>test</scope>
+    </dependency>
+    ...
+</dependencies>
+```
+
+**Gradle**
+
+*build.gradle*
+```groovy
+...
+compile group: 'io.qameta.allure', name: 'allure-selenide', version: '2.0-BETA22'
+...
+```
+
+**Listener**
+
+添加监听器到 Selenide:
+```java
+import io.qameta.allure.selenide.AllureSelenide;
+...
+SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
+```
+
+<div id="_python"></div>
+
+## 6. Python
+
+<div id="_python"></div>
+
+## 7. JavaScript
+
+<div id="_ruby"></div>
+
+## 8. Ruby
+
+<div id="_groovy"></div>
+
+## 9. Groovy
+
+<div id="_php"></div>
+
+## 10. PHP
+
+<div id="__net"></div>
+
+## 11. .NET
+
+<div id="_scala"></div>
+
+## 12. Scala
+
+<div id="_reporting"></div>
+
+## 13. 报告
+
+<div id="_allure_plugins_system"></div>
+
+## 14. Allure 插件系统
