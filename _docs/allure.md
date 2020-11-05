@@ -206,9 +206,9 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 <div id="_packages"></div>
 
-#### 3.7. 包
+#### 3.7. 软件包
 
-包选项卡根据不同的包来分组表示测试结果的树状布局。
+软件包选项卡根据不同的软件包来分组表示测试结果的树状布局。
 
 ![Packages](https://docs.qameta.io/allure/images/tab_packages.png)
 
@@ -1485,7 +1485,670 @@ SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(tr
 
 ## 6. Python
 
-<div id="_python"></div>
+<div id="_pytest"></div>
+
+#### 6.1. Pytest
+
+##### 6.1.1. 安装
+
+Pytest 可以从 [PyPI](https://pypi.python.org/pypi/allure-pytest) 进行安装，因此建议使用 pip 进行安装。要安装最新版本，请从命令行执行:
+```bash
+$ pip install allure-pytest
+```
+
+这将安装 allure-pytest 和 allure-python-commons 软件包，以生成与 Allure 2 兼容的报告数据。如果您正在使用老版本的适配器 [pytest-allure-adapter]https://pypi.python.org/pypi/pytest-allure-adaptor)，那么您将需要首先卸载它。
+
+##### 6.1.2. 用法
+
+要使 Allure 监听器能够在测试执行期间收集结果，只需添加 `——alluredir` 选项并提供存储结果文件夹的路径。例如:
+```bash
+$ pytest --alluredir=/tmp/my_allure_results
+```
+
+要在测试完成后查看实际的报告，需要使用 Allure 命令行工具从结果生成测试报告。
+
+```bash
+$ allure serve /tmp/my_allure_results
+```
+
+该命令会打开你的默认浏览器展现生成的测试报告。
+
+##### 6.1.3. 基本的报告
+
+您可以在 Allure 报告中看到所有默认的 pytest 状态: 只有那些由于断言错误而没有成功的测试将被标记为失败，任何其他异常将导致测试处于中断状态。
+
+```python
+import pytest
+
+def test_success():
+    """this test succeeds"""
+    assert True
+
+
+def test_failure():
+    """this test fails"""
+    assert False
+
+
+def test_skip():
+    """this test is skipped"""
+    pytest.skip('for a reason!')
+
+
+def test_broken():
+    raise Exception('oops')
+```
+
+##### 6.1.4. Pytest 特性支持
+
+Allure 报告支持的一些常见的 Pytest 特性包括 xfails, fixtures and finalizers, marks, conditional skips and parametrization。
+
+**Xfail**
+
+这是标记预期错误的 Pytest 方法:（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）
+
+```python
+@pytest.mark.xfail(condition=lambda: True, reason='this test is expecting failure')
+def test_xfail_expected_failure():
+    """this test is an xfail that will be marked as expected failure"""
+    assert False
+
+
+@pytest.mark.xfail(condition=lambda: True, reason='this test is expecting failure')
+def test_xfail_unexpected_pass():
+    """this test is an xfail that will be marked as unexpected success"""
+    assert True
+```
+
+这会在测试遇到预期错误而失败时，使用特殊的标记来标识，并且跳过。
+
+![Expected xpass failure](https://docs.qameta.io/allure/images/pytest_xpass_expected_failure.png)
+
+当非预期而意外通过时，使用特殊的标记标识。
+
+![Unexpected xpass pass](https://docs.qameta.io/allure/images/pytest_xpass_unexpected_pass.png)
+
+**Conditional mark**
+
+在 Pytest 中，你可以标记一个在某些特定条件下不被执行的测试（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）:
+
+```python
+@pytest.mark.skipif('2 + 2 != 5', reason='This test is skipped by a triggered condition in @pytest.mark.skipif')
+def test_skip_by_triggered_condition():
+    pass
+```
+
+当条件被评估为 true 时，在报告中测试将收到一个 “Skipped” 状态，装饰器会生成一个标记和一个描述。
+
+![Conditional skip triggered](https://docs.qameta.io/allure/images/pytest_conditional_skip.png)
+
+**Fixtures and Finalizers**
+
+Fixtures and finalizers 是将分别在测试开始之前和结束之后由 Pytest 调用的实用函数。Allure 跟踪每个 fixture 的调用，并详细显示调用了什么方法和什么参数，保持了调用的正确顺序。（[Pytest文档](https://docs.pytest.org/en/latest/reference.html#id30)）
+
+你不需要标记你的 fixtures 使他们在报告中可见，他们将自动检测不同的范围。
+
+```python
+@pytest.fixture(params=[True, False], ids=['param_true', 'param_false'])
+def function_scope_fixture_with_finalizer(request):
+    if request.param:
+        print('True')
+    else:
+        print('False')
+    def function_scope_finalizer():
+        function_scope_step()
+    request.addfinalizer(function_scope_finalizer)
+
+
+@pytest.fixture(scope='class')
+def class_scope_fixture_with_finalizer(request):
+    def class_finalizer_fixture():
+        class_scope_step()
+    request.addfinalizer(class_finalizer_fixture)
+
+
+@pytest.fixture(scope='module')
+def module_scope_fixture_with_finalizer(request):
+    def module_finalizer_fixture():
+        module_scope_step()
+    request.addfinalizer(module_finalizer_fixture)
+
+
+@pytest.fixture(scope='session')
+def session_scope_fixture_with_finalizer(request):
+    def session_finalizer_fixture():
+        session_scope_step()
+    request.addfinalizer(session_finalizer_fixture)
+
+
+class TestClass(object):
+
+    def test_with_scoped_finalizers(self,
+                                    function_scope_fixture_with_finalizer,
+                                    class_scope_fixture_with_finalizer,
+                                    module_scope_fixture_with_finalizer,
+                                    session_scope_fixture_with_finalizer):
+        step_inside_test_body()
+```
+
+![Test with fixtures and finalizers executed within different scopes.](https://docs.qameta.io/allure/images/pytest_skoped_finalizers.png)
+
+根据 fixture 执行的结果，依赖于它的测试可能会收到不同的状态。异常将导致所有依赖测试中断，调用 `pytest.skip()` 将跳过所有依赖测试。
+
+```python
+import pytest
+
+@pytest.fixture
+def skip_fixture():
+    pytest.skip()
+
+
+@pytest.fixture
+def fail_fixture():
+    assert False
+
+
+@pytest.fixture
+def broken_fixture():
+    raise Exception("Sorry, it's broken.")
+
+
+def test_with_pytest_skip_in_the_fixture(skip_fixture):
+    pass
+
+
+def test_with_failure_in_the_fixture(fail_fixture):
+    pass
+
+
+def test_with_broken_fixture(broken_fixture):
+    pass
+```
+
+![Fixture execution outcome resulting in different statuses.](https://docs.qameta.io/allure/images/pytest_fixture_effect.png)
+
+**Parametrization**
+
+您可以使用 `@pytest.mark.parametertrize` 从输入参数集中生成许多测试用例。（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）
+
+所有的参数名称和值都将在报告中被捕获，可选的参数名称将被 `ids` kwarg 中提供的字符串描述替换。
+
+```python
+import allure
+import pytest
+
+
+@allure.step
+def simple_step(step_param1, step_param2 = None):
+    pass
+
+
+@pytest.mark.parametrize('param1', [True, False], ids=['id explaining value 1', 'id explaining value 2'])
+def test_parameterize_with_id(param1):
+    simple_step(param1)
+
+
+@pytest.mark.parametrize('param1', [True, False])
+@pytest.mark.parametrize('param2', ['value 1', 'value 2'])
+def test_parametrize_with_two_parameters(param1, param2):
+    simple_step(param1, param2)
+
+
+@pytest.mark.parametrize('param1', [True], ids=['boolean parameter id'])
+@pytest.mark.parametrize('param2', ['value 1', 'value 2'])
+@pytest.mark.parametrize('param3', [1])
+def test_parameterize_with_uneven_value_sets(param1, param2, param3):
+    simple_step(param1, param3)
+    simple_step(param2)
+```
+
+使用不同的命名和未命名参数集捕获的示例:
+
+![Multiple invocations of tests with different parameters.](https://docs.qameta.io/allure/images/pytest_parameterized_tests.png)
+
+带有命名参数的测试执行详情:
+
+![Multiple invocations of tests with different parameters.](https://docs.qameta.io/allure/images/pytest_parameterized_with_id.png)
+
+
+##### 6.1.5. Allure 特性
+
+除了 environment ，Allure 目前使用 Pytest 可以支持几乎所有可用的特性。
+
+**Steps**
+
+Allure 报告首要并且可能最重要的是，它允许获得每个测试调用的非常详细的分步表示。这是通过 `@allure.step` 装饰器来实现的，它将注释的方法或函数的调用与提供的参数都添加到报表中。
+
+`@step` 可以存储在测试之外，并只在需要时导入。Step 方法可以有任意深嵌套的结构。
+
+```python
+import allure
+import pytest
+
+from .steps import imported_step
+
+
+@allure.step
+def passing_step():
+    pass
+
+
+@allure.step
+def step_with_nested_steps():
+    nested_step()
+
+
+@allure.step
+def nested_step():
+    nested_step_with_arguments(1, 'abc')
+
+
+@allure.step
+def nested_step_with_arguments(arg1, arg2):
+    pass
+
+
+def test_with_imported_step():
+    passing_step()
+    imported_step()
+
+
+def test_with_nested_steps():
+    passing_step()
+    step_with_nested_steps()
+```
+
+每一步的状态都显示在名字右侧的一个小图标上。嵌套的步骤会组织成树状的可折叠结构。
+
+![Nested steps and steps with arguments.](https://docs.qameta.io/allure/images/pytest_nested_steps_and_args.png)
+
+步骤可以有一个描述行，该描述行支持传递的位置参数和关键字参数的占位符，关键字参数的默认参数也将被捕获。
+
+```python
+import allure
+
+@allure.step('Step with placeholders in the title, positional: "{0}", keyword: "{key}"')
+def step_with_title_placeholders(arg1, key=None):
+    pass
+
+
+def test_steps_with_placeholders():
+    step_with_title_placeholders(1, key='something')
+    step_with_title_placeholders(2)
+    step_with_title_placeholders(3, 'anything')
+```
+
+![Nested steps and steps with arguments.](https://docs.qameta.io/allure/images/pytest_step_arguments.png)
+
+Steps are supported in fixtures as well. Here is an example of a test using a fixture defined in conftest.py module (such fixtures will be resolved by Pytest even when not directly imported):
+
+fixture 中也能很好的支持步骤。下面是一个使用 `conftest.py` 模块中定义的 fixture 进行测试的例子（这样的 fixture 即使没有直接导入也会由 Pytest 解析）:
+
+*conftest.py*
+
+```python
+import allure
+import pytest
+
+
+@allure.step('step in conftest.py')
+def conftest_step():
+    pass
+
+
+@pytest.fixture
+def fixture_with_conftest_step():
+    conftest_step()
+```
+```python
+import allure
+
+from .steps import imported_step
+
+
+@allure.step
+def passing_step():
+    pass
+
+
+def test_with_step_in_fixture_from_conftest(fixture_with_conftest_step):
+    passing_step()
+```
+
+setup 和 teardown 将由 fixture 中的步骤显示在单独的树中。
+
+![Step in fixture resolved from conftest.py.](https://docs.qameta.io/allure/images/pytest_step_in_fixture.png)
+
+**Attachments**
+
+报告可以显示许多不同类型的附件，这些附件可以作为测试、步骤或 fixture 结果的补充。附件可以通过 `allure.attach` 创建（`body`, `name`, `attachment_type`, `extension`）:
+
+1. `body` - 要写入文件的原始内容
+2. `name` - 文件名的字符串
+3. `attachment_type` - 一个 `allure.attachment_type` 值
+4. `extension` - 被用作文件的扩展
+
+或者 `allure.attach.file`（`source`, `name`, `attachment_type`, `extension`）:
+
+1. `source` - 包含文件路径的字符串
+
+（其他参数一样）
+
+```python
+import allure
+import pytest
+
+
+@pytest.fixture
+def attach_file_in_module_scope_fixture_with_finalizer(request):
+    allure.attach('A text attacment in module scope fixture', 'blah blah blah', allure.attachment_type.TEXT)
+    def finalizer_module_scope_fixture():
+        allure.attach('A text attacment in module scope finalizer', 'blah blah blah blah',
+                      allure.attachment_type.TEXT)
+    request.addfinalizer(finalizer_module_scope_fixture)
+
+
+def test_with_attacments_in_fixture_and_finalizer(attach_file_in_module_scope_finalizer):
+    pass
+
+
+def test_multiple_attachments():
+    allure.attach.file('./data/totally_open_source_kitten.png', attachment_type=allure.attachment_type.PNG)
+    allure.attach('<head></head><body> a page </body>', 'Attach with HTML type', allure.attachment_type.HTML)
+```
+
+附件显示在它们所属的测试实体的上下文中。HTML 类型的附件将呈现并显示在报告页面上，这是一种方便的方法，可以为您自己的测试结果表示提供一些定制化。
+
+![Attachments in the test body.](https://docs.qameta.io/allure/images/pytest_attachments.png)
+
+**Descriptions**
+
+您可以添加测试的详细描述，以便为报表阅读提供所需的上下文。这可以通过几种方式实现:您可以添加一个 `@allure.description` 装饰器来提供一个描述字符串，或者您可以使用 `@allure.description_html` 来提供一些 HTML，以便在测试用例的 “description” 部分中呈现。或者，描述将简单地从测试方法的文档字符串中获取。
+
+```python
+import allure
+
+@allure.description_html("""
+<h1>Test with some complicated html description</h1>
+<table style="width:100%">
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Age</th>
+  </tr>
+  <tr align="center">
+    <td>William</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr align="center">
+    <td>Vasya</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table>
+""")
+def test_html_description():
+    assert True
+
+
+@allure.description("""
+Multiline test description.
+That comes from the allure.description decorator.
+
+Nothing special about it.
+""")
+def test_description_from_decorator():
+    assert 42 == int(6 * 7)
+
+
+def test_unicode_in_docstring_description():
+    """Unicode in description.
+
+    Этот тест проверяет юникод.
+
+    你好伙计.
+    """
+    assert 42 == int(6 * 7)
+```
+
+Description 支持 unicode 字符串:
+
+![Description from docstring.](https://docs.qameta.io/allure/images/pytest_unicode_description_docstr.png)
+
+通过 `description_html` 渲染 HTML:
+
+![Description from html.](https://docs.qameta.io/allure/images/pytest_html_description.png)
+
+描述也可以使用 `allure.dynamic.description` 从测试体的内部动态更新。
+
+```python
+import allure
+
+@allure.description("""
+This description will be replaced at the end of the test.
+""")
+def test_dynamic_description():
+    assert 42 == int(6 * 7)
+    allure.dynamic.description('A final description.')
+```
+
+**Titles**
+
+特殊的 @allure.title 装饰器可以使测试标题更具可读性。标题支持参数占位符并支持动态替换。
+
+```python
+import allure
+import pytest
+
+
+@allure.title("This test has a custom title")
+def test_with_a_title():
+    assert 2 + 2 == 4
+
+
+@allure.title("This test has a custom title with unicode: Привет!")
+def test_with_unicode_title():
+    assert 3 + 3 == 6
+
+
+@allure.title("Parameterized test title: adding {param1} with {param2}")
+@pytest.mark.parametrize('param1,param2,expected', [
+    (2, 2, 4),
+    (1, 2, 5)
+])
+def test_with_parameterized_title(param1, param2, expected):
+    assert param1 + param2 == expected
+
+
+@allure.title("This title will be replaced in a test body")
+def test_with_dynamic_title():
+    assert 2 + 2 == 4
+    allure.dynamic.title('After a successful test finish, the title was replaced with this line.')
+```
+
+![Description from docstring.](https://docs.qameta.io/allure/images/pytest_titles.png)
+
+**Links**
+
+To integrate report with a bugtracker or test management system Allure has @allure.link, @allure.issue and @allure.testcase descriptors.
+
+```python
+import allure
+
+TEST_CASE_LINK = 'https://github.com/qameta/allure-integrations/issues/8#issuecomment-268313637'
+
+
+@allure.link('https://www.youtube.com/watch?v=4YYzUTYZRMU')
+def test_with_link():
+    pass
+
+
+@allure.link('https://www.youtube.com/watch?v=Su5p2TqZxKU', name='Click me')
+def test_with_named_link():
+    pass
+
+
+@allure.issue('140', 'Pytest-flaky test retries shows like test steps')
+def test_with_issue_link():
+    pass
+
+
+@allure.testcase(TEST_CASE_LINK, 'Test case title')
+def test_with_testcase_link():
+    pass
+```
+
+@allure.link will provide a clickable link to provided url in 'Links' section:
+
+![Description from docstring.]()
+
+@allure.issue will provide a link with a small bug icon. This descriptor takes test case id as the input parameter to use it with provided link template for issue link type. Link templates are specified in --allure-link-pattern configuration option for Pytest. Link templates and types have to be specified using a colon:
+
+$ pytest directory_with_tests/ --alluredir=/tmp/my_allure_report \
+ --allure-link-pattern=issue:http://www.mytesttracker.com/issue/{}
+Template keywords are issue, link and test_case to provide a template for the corresponding type of link.
+
+Test with a link of issue type.
+6.1.6. Retries
+Allure allows you to aggregate information about test being re-executed during a single test run as well as history of test execution over some period of time.
+
+For retries you can use Pytest rerun failures plugin.
+
+For example if we have a very unreliable step method that fails often, after specifying --reruns=5 in the Pytest startup options we would see all unsuccessful attempts to run this test displayed on the Retries tab.
+
+import allure
+import random
+import time
+
+
+@allure.step
+def passing_step():
+    pass
+
+
+@allure.step
+def flaky_broken_step():
+    if random.randint(1, 5) != 1:
+        raise Exception('Broken!')
+
+
+def test_broken_with_randomized_time():
+    passing_step()
+    time.sleep(random.randint(1, 3))
+    flaky_broken_step()
+Retries tab for a test that was rerun.
+Also such a test would receive 'flaky' bomb icon in the list of executed tests.
+
+Flaky icon.
+6.1.7. Tags
+Sometimes you want to be flexible with tests that you want to be executed. Pytest allows that by using marker decorator @pytest.mark (Pytest docs).
+
+Allure allows to mark your tests in a similar way with 3 types of marking decorators that allow to structure representation of your report:
+
+BDD-style markers denoting Epics, Features and Stories
+
+Severity labels
+
+Custom labels
+
+BDD markers
+There are two decorators: @allure.feature and @allure.story to mark your tests according to Feature/Story breakdown specific to your project (for background see BDD article on Wikipedia). To mark that some feature or story belong to an epic, use a name that starts with epic_ prefix.
+
+tests.py
+import allure
+
+
+def test_without_any_annotations_that_wont_be_executed():
+    pass
+
+
+@allure.story('epic_1')
+def test_with_epic_1():
+    pass
+
+
+@allure.story('story_1')
+def test_with_story_1():
+    pass
+
+@allure.story('story_2')
+def test_with_story_2():
+    pass
+
+
+@allure.feature('feature_2')
+@allure.story('story_2')
+def test_with_story_2_and_feature_2():
+    pass
+You can use following commandline options to specify different sets of tests to execute passing a list of comma-separated values:
+
+--allure-epics
+
+--allure-features
+
+--allure-stories
+
+for example:
+
+$ pytest tests.py --allure-stories story_1,story_2
+
+collected 5 items
+
+tests.py ...                                                                    [100%]
+
+============================== 3 passed in 0.01 seconds ==============================
+$ pytest tests.py --allure-features feature2 --allure-stories story2
+
+collected 5 items
+
+tests.py ...                                                                     [100%]
+
+=============================== 2 passed in 0.01 seconds ==============================
+Severity markers
+To mark your tests by severity level you can use @allure.severity decorator. It takes a allure.severity_level enum value as an argument.
+
+tests.py
+import allure
+
+
+def test_with_no_severity_label():
+    pass
+
+
+@allure.severity(allure.severity_level.TRIVIAL)
+def test_with_trivial_severity():
+    pass
+
+
+@allure.severity(allure.severity_level.NORMAL)
+def test_with_normal_severity():
+    pass
+
+
+@allure.severity(allure.severity_level.NORMAL)
+class TestClassWithNormalSeverity(object):
+
+    def test_inside_the_normal_severity_test_class(self):
+        pass
+
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_inside_the_normal_severity_test_class_with_overriding_critical_severity(self):
+        pass
+Severity decorator can be applied to functions, methods or entire classes.
+
+By using --allure-severities commandline option with a list of comma-separated severity levels only tests with corresponding severities will be run.
+
+$ pytest tests.py --allure-severities normal,critical
+
+collected 5 items
+
+bdd_annotations_demo/test_severity_labels.py ...                                [100%]
+
+================================ 3 passed in 0.01 seconds ============================
+
+
+<div id="_javascript"></div>
 
 ## 7. JavaScript
 
