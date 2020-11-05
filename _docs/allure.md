@@ -27,7 +27,7 @@ Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://
 #### 1.2. 获得帮助
 
 可以从以下几处得到支持：
-- 联系我们再 [Gitter](https://gitter.im/allure-framework/allure-core) 上的社区，我们也有 [Russian-speaking room](https://gitter.im/allure-framework/allure-ru)。
+- 联系我们在 [Gitter](https://gitter.im/allure-framework/allure-core) 上的社区，我们也有 [Russian-speaking room](https://gitter.im/allure-framework/allure-ru)。
 - 在 [Stack Overflow](https://stackoverflow.com/questions/ask?tags=allure) 或是 [Stack Overflow in Russian](https://ru.stackoverflow.com/questions/ask?tags=allure) 提问
 - 在 [GitHub issues](https://github.com/allure-framework/allure2/issues/new?) 给我们提问
 
@@ -99,9 +99,9 @@ scoop update allure
 4. 在 Windows 上使用 allure.bat，在其他 Unix 平台上使用 allure。
 5. 添加 allure 到系统 PATH。
 
-> 注意：命令行应用程序需要 Java 运行环境的支持
+> **注意**：命令行应用程序需要 Java 运行环境的支持
 
-> 信息：老版本(⇐2.8.0) 可从 [bintray](https://bintray.com/qameta/generic/allure2) 获取
+> **提示**：老版本(⇐2.8.0) 可从 [bintray](https://bintray.com/qameta/generic/allure2) 获取
 
 ##### 2.1.5. 检查安装结果
 
@@ -178,8 +178,6 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 在测试集选项卡上，可以按套件和类分组展示已执行测试。
 
-On the Suites tab a standard structural representation of executed tests, grouped by suites and classes can be found.
-
 ![Suites](https://docs.qameta.io/allure/images/tab_suites.png)
 
 <div id="_graphs"></div>
@@ -201,7 +199,6 @@ On the Suites tab a standard structural representation of executed tests, groupe
 <div id="_behaviors"></div>
 
 #### 3.6. 行为
-For Behavior-driven approach, this tab groups test results according to Epic, Feature and Story tags.
 
 支持行为驱动测试的展示，该选项卡根据史诗、特性和故事标签对测试结果进行分组。
 
@@ -223,7 +220,110 @@ For Behavior-driven approach, this tab groups test results according to Epic, Fe
 
 ![Test result page](https://docs.qameta.io/allure/images/testcase.png)
 
-## 4. 
+<div id="_features"></div>
+
+## 4. 特性
+
+这一节介绍 Allure 的主要特点。例如，您可以根据故事或特性对测试进行分组，添加附件，并通过一组自定义的步骤分发断言。由于 Java 测试框架支持所有特性，因此我们在这里只提供 Java 示例。有关特定适配器如何与您选择的测试框架一起工作的详细信息，请参考适配器指南。
+
+<div id="_flaky_tests"></div>
+
+#### 4.1. Flaky 测试
+
+在实际场景中，不是所有的测试都很稳定，并且也不可能总是成功或总是失败。一个测试可能会开始“眨眼”，也就是说，它会在没有明显原因的情况下时不时的失败。您可以禁用这样的测试，这是一个简单的解决方案。但是，如果您不想这样做呢? 如果你想知道更多关于可能原因的细节，或者这个测试非常重要，即使是不靠谱的也能提供有用的信息? 你现在可以选择用特殊的方式标记这些测试，这样结果报告就会清楚地显示它们是不稳定的:
+
+```java
+@Flaky
+public void aTestWhichFailsFromTimeToTime {
+     ...
+}
+```
+
+如果测试失败，你会在报告中看到:
+![被标记为 flaky 失败的测试](https://docs.qameta.io/allure/images/flaky_failed.png)
+
+> **提示**：您也可以将整个测试类标记为 flaky。
+
+<div id="_environment"></div>
+
+#### 4.2. 环境
+
+要向环境小控件添加信息，只需在生成报告之前，在 allure-results 目录中创建 environment.properties （或 environment.xml）文件。
+
+##### environment.properties
+
+```text
+Browser=Chrome
+Browser.Version=63.0
+Stand=Production
+```
+
+##### environment.xml
+
+```xml
+<environment>
+    <parameter>
+        <key>Browser</key>
+        <value>Chrome</value>
+    </parameter>
+    <parameter>
+        <key>Browser.Version</key>
+        <value>63.0</value>
+    </parameter>
+    <parameter>
+        <key>Stand</key>
+        <value>Production</value>
+    </parameter>
+</environment>
+```
+
+<div id="_categories_2"></div>
+
+#### 4.3. 类别
+
+默认存在两类缺陷:
+- 产品缺陷（测试失败）
+- 测试缺陷（测试中断）
+
+要创建自定义的缺陷分类，可在生成报告之前，在 allure-results 目录中添加 categories.json 文件。
+
+##### categories.json
+
+```json
+[
+  {
+    "name": "Ignored tests",    # 1
+    "matchedStatuses": ["skipped"]    # 2
+  },
+  {
+    "name": "Infrastructure problems",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*bye-bye.*"     # 3
+  },
+  {
+    "name": "Outdated tests",
+    "matchedStatuses": ["broken"],
+    "traceRegex": ".*FileNotFoundException.*"     # 4
+  },
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Test defects",
+    "matchedStatuses": ["broken"]
+  }
+]
+```
+
+1. （必须）类别名称
+2. （可选）测试状态列表。默认为 `["failed", "broken", "passed", "skipped", "unknown"]`
+3. （可选）用正则表达式检查测试错误消息。默认为 `".*"`
+4. （可选）用正则表达式检查堆栈跟踪。默认为 `".*"`
+
+如果测试结果的状态在列表中，并且错误消息和堆栈跟踪都与正则匹配，那么它就属于这个类别。
+
+> **提示**：如果用 [allure-maven](#_maven_5) 插件或者 [allure-gradle](#_gradle_4) 插件可以把 categories.json 文件可以存放在测试资源目录中。
 
 ## 5. 
 
