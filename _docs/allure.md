@@ -10,6 +10,8 @@ category: DOC
 
 而从管理视角来看，Allure 提供了一个清晰的“大图”来说明覆盖了哪些特性，缺陷集中在哪里，执行的时间轴是怎样的，以及许多其他实用信息。Allure 具有模块化和可扩展性，从而保证了您始终能够对某些东西进行微调，使其更适合您。
 
+----
+
 <div id='_about'></div>
 
 ## 1. 关于
@@ -39,6 +41,8 @@ Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://
 - [开始](#_get_started)为现有项目构建报告。
 - 了解更多关于[报表结构和特性](#_report_structure)的信息。
 - 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#_java)、[Python](#_python)、[JavaScript](#_javascript)、[Ruby](_ruby)、[Groovy](#_groovy)、[PHP](#_php)、[.net](__net) 和 [Scala](#_scala)
+
+----
 
 <div id='_get_started'></div>
 
@@ -136,6 +140,8 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 ![Report generated on xml data](https://docs.qameta.io/allure/images/get_started_report_overview.png)
 
+----
+
 <div id="_report_structure"></div>
 
 ## 3. 报告结构
@@ -219,6 +225,8 @@ allure serve /home/path/to/project/target/surefire-reports/
 在概览页，可以单击单个测试，跳转到测试用例页面。这个页面通常包含许多与测试用例相关的个人数据: 测试期间执行的步骤、耗时、附件、分类标签、描述和链接。
 
 ![Test result page](https://docs.qameta.io/allure/images/testcase.png)
+
+----
 
 <div id="_features"></div>
 
@@ -324,6 +332,8 @@ Stand=Production
 如果测试结果的状态在列表中，并且错误消息和堆栈跟踪都与正则匹配，那么它就属于这个类别。
 
 > **提示**：如果用 [allure-maven](#_maven_5) 插件或者 [allure-gradle](#_gradle_4) 插件可以把 categories.json 文件可以存放在测试资源目录中。
+
+----
 
 <div id="_java"></div>
 
@@ -1481,6 +1491,8 @@ import io.qameta.allure.selenide.AllureSelenide;
 SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
 ```
 
+----
+
 <div id="_python"></div>
 
 ## 6. Python
@@ -2334,34 +2346,427 @@ nosetests my_tests/ --with-allure --logdir=tmp --feature="Feature1, Feature2"
 nosetests my_tests/ --with-allure --logdir=tmp --feature="Feature1, Feature2" --story="Story1, Story2"
 ```
 
+----
+
 <div id="_javascript"></div>
 
 ## 7. JavaScript
+
+<div id="_jasmine"></div>
+
+#### 7.1. Jasmine
+
+插件从 Jasmine 测试生成 Allure 报告。
+
+##### 7.1.1. 安装
+
+**Jasmine2**
+
+将库添加到 `package.json` 中，然后配置插件:
+
+```javascript
+// conf.js
+var AllureReporter = require('jasmine-allure-reporter');
+jasmine.getEnv().addReporter(new AllureReporter({
+  resultsDir: 'allure-results'
+}));
+```
+
+**Protractor**
+
+将以上代码放入 `conf.js` 内的 `onPrepare` 中:
+
+```javascript
+// conf.js
+exports.config = {
+  framework: 'jasmine2',
+  onPrepare: function() {
+    var AllureReporter = require('jasmine-allure-reporter');
+    jasmine.getEnv().addReporter(new AllureReporter({
+      resultsDir: 'allure-results'
+    }));
+  }
+}
+```
+
+##### 7.1.2. 生成 HTML 报告
+
+可以使用 Maven 让 Allure 在 `resultsDir` 中生成 xml 文件，然后需要从中生成 HTML。从 `node_modules/jasmine-allure-reporter` 复制即将使用的 `pom.xml` 并运行:
+
+```bash
+mvn site -Dallure.results_pattern=allure-results
+```
+
+它会把 HTML 文件放到 `target/site/allure-maven-plugin` 文件夹中，并通过 `localhost:1324` 提供服务：
+
+```bash
+mvn jetty:run -Djetty.port=1234
+```
+
+##### 7.1.3. 特性
+
+该适配器提供了一组可以从全局调用 `Jasmine2AllureReporter` 对象的方法。它封装了[常见的 allure JS 适配器](https://github.com/allure-framework/allure-js-commons)，并提供了访问基本 Allure 特性的能力。
+
+**Title**
+
+> **注意**：待定，无代码片段
+
+**Description**
+
+为了给测试添加详细的描述，应该调用 `setDescription(description)` 方法，其中 **description** 是字符串参数。
+
+> **注意**：待定，无代码片段
+
+**Severity**
+
+您可以通过 `severity(severity)` 方法为测试指定一个 severity 属性，其中 **severity** 参数可以包含以下预定义值之一:
+
+- BLOCKER
+- CRITICAL
+- NORMAL
+- MINOR
+- TRIVIAL
+
+> **注意**：待定，无代码片段
+
+**Behaviours**
+
+在一些开发方法中，测试是按[故事](https://github.com/allure-framework/allure-core/wiki/Glossary#user-story)和[特性](https://github.com/allure-framework/allure-core/wiki/Glossary#feature)分类的。如果您正在使用该种方法，那么对于每个测试，您可以分别通过 `story(story)` 和 `feature(feature)` 方法设置 story 和 feature 属性，并提供 **story** 或 **feature** 作为字符串参数。
+
+> **注意**：待定，无代码片段
+
+**Steps**
+
+测试场景的操作需要由一些步骤来构成。命名的步骤，可以创建附件，并且可以在不同的测试场景中使用。您可以通过 `createStep(name, stepFunc)` 方法添加一个步骤，其中：
+
+- **name** 是一个包含步骤名称的字符串参数
+- **stepFunc** 是一个封装好的函数，此步骤在报表中表示其逻辑。
+
+> **注意**：待定，无代码片段
+
+**Attachments**
+
+您可以在其中一个步骤里通过 `createAttachment(name, content, type)` 方法添加附件
+
+- name 是附件的说明
+- content 是一个函数，返回附件对象或附件对象本身
+- type 是一个字符串参数，用于为每个附加文件指定确切的 MIME 类型。然而，不需要为所有附加文件明确指定附件类型，因为 Allure 在默认情况下可以分析附件内容并自动确定附件类型。使用纯文本文件时，通常需要指定附件类型。
+
+示例: 在每个测试的最后添加一个屏幕截图
+
+```javascript
+  onPrepare: function () {
+    var AllureReporter = require('jasmine-allure-reporter');
+    jasmine.getEnv().addReporter(new AllureReporter());
+    jasmine.getEnv().afterEach(function(done){
+      browser.takeScreenshot().then(function (png) {
+        allure.createAttachment('Screenshot', function () {
+          return new Buffer(png, 'base64')
+        }, 'image/png')();
+        done();
+      })
+    });
+  }
+```
+
+注意最后的回调 `done`
+
+**Issues Tracker**
+
+> **注意**：与缺陷追踪系统的集成目前还没有实现
+
+**Test Management System**
+
+> **注意**：与测试管理系统的集成目前还没有实现
+
+**Parameters**
+
+为了添加关于测试方法[参数](https://github.com/allure-framework/allure-core/wiki/Glossary#parameter)的信息，你应该使用以下方法之一:
+
+1. `addArgument(name, value)` - 指定一个测试参数的更多信息
+2. `addEnvironment(name, value)` - 指定一个环境变量的更多信息
+
+> **注意**：待定，无代码片段
+
+##### 7.1.4. 待定
+
+- 当前的附件被添加到测试用例中，而不是当前的步骤中。这需要在 allure-js-commons 中进行修复。
+- 新增对特性的支持。
+- 新增对 Jasmine1 的支持。现在只有 Jasmine2 可用(但我们真的需要这个吗?)
+- 添加使用反射来装饰页面对象的功能，这样我们就不需要编写与所有内容相关的样板文件来将我们自己绑定到一个特定的报告器。
+
+##### 7.1.5. 开发者
+
+查看系统测试，以快速检查 reporter 实际中如何工作:
+```bash
+node_modules/protractor/bin/protractor ./test/system/conf.js
+```
+
+#### 7.2. Cucumber JS
+
+> **注意**：Allure report 版本: 1.4.15
+
+##### 7.2.1. 用法
+
+在功能的软件包中添加 `reporter.js` 文件:
+
+```javascript
+var reporter = require('cucumberjs-allure-reporter');
+reporter.config(
+    {...}
+);
+module.exports = reporter;
+```
+
+支持的配置关键字：
+- targetDir - Allure 保存结果 xml 文件的目录
+- labels - 自定义标签
+
+例如:
+```javascript
+labels : {
+        feature: [/sprint-(\d*)/, /release-(\d)/, /area-(.*)/],
+        issue: [/(bug-\d*)/]
+    }
+```
+
+可能的标签：
+- feature
+- story
+- severity
+- language
+- framework
+- issue
+- testId
+- host
+- thread
+
+如果您想取消步骤或测试，只需抛出带有 'Step cancelled' 或者 'Test cancelled' 消息的新错误。
+
+##### 7.2.2. 通过 Allure 生成 HTML 报告
+
+`targetDir` 中会生成 xml 文件，然后我们需要从中生成 HTML。您可以使用 Maven。从 `node_modules/cucumberjs-allure-reporter` 复制准备使用的 `pom.xml` 并运行:
+
+```bash
+mvn site -Dallure.results_pattern=allure-results
+```
+
+它将把 HTML 文件放到 `target/site/allure-maven-plugin` 文件夹中，并通过 `localhost:1234` 访问:
+```bash
+mvn jetty:run -Djetty.port=1234
+```
+
+除此之外，也可以选择其他方法来生成 HTML。
+
+##### 7.2.3. 开发者
+
+执行测试用例：
+```bash
+./node_modules/.bin/cucumber.js features/<FEATURE_NAME>.feature
+```
+
+可用的测试:
+- basic → 基本测试结果
+- description → 场景描述测试
+- label → cucumber 标签(目前在生成的报告中看不到标签…)
+- exception → 测试抛出异常
+- attachments → docStrings 和 dataTable 测试
+- scenarioOutline → 场景大纲测试
+- subSteps → 使用 allure 对象添加子步骤
+
+或者运行所有的用例：
+```bash
+./node_modules/.bin/cucumber.js features/
+```
+
+要检查量角器截屏测试，请安装 `protractor` 和 `protractor-cucumber-framework`，然后运行测试: 
+```bash
+./node_modules/protractor/bin/protractor miscellaneous/protractorScreenshot/conf.js
+```
+
+检查基本的 logging：
+```bash
+./node_modules/.bin/cucumber.js miscellaneous/logging
+```
+
+检查基本的 configuration：
+```bash
+./node_modules/.bin/cucumber.js miscellaneous/configuration
+```
+
+检查自定义 tag：
+```bash
+./node_modules/.bin/cucumber.js miscellaneous/customTagNames
+```
+
+##### 7.2.4. 发布说明
+
+01/09/2016 version 1.0.3
+- 增加了取消步骤和测试的能力
+
+11/07/2016 version 1.0.2
+- 新增依赖 cucumber (>= 1.2.0) 
+
+06/07/2016 version 1.0.1
+- 依赖更新：allure-js-commons, protractor, cucumber 和 protractor-cucumber-framework
+- 修复 cucumber 异常处理 - getPayload will not be available in upcoming cucumber major release
+- 更新数据表和文档字符串处理
+
+02/12/2015 version 1.0.0
+- 更新插件支持 cucumber 0.9.1
+
+01/09/2015 version 0.0.1
+- 第一次发布
+
+#### 7.3. Karma
+
+Allure XML 格式的生成器，用以制作一份详细的报告
+
+##### 7.3.1. karma-allure-reporter
+
+将 karma-allure-reporter 作为开发依赖安装到项目中
+```json
+{
+  "devDependencies": {
+    "karma": "~0.10",
+    "karma-allure-reporter": "~1.0.0"
+  }
+}
+```
+
+你可以简单操作如下：
+```bash
+npm install karma-allure-reporter --save-dev
+```
+
+##### 7.3.2. Configuration
+
+在 `reporters` 处增加 allure。 Allure-reporter 有一个单独的配置在 `reportDir`，默认情况下，文件保存在该目录中。
+```json
+// karma.conf.js
+module.exports = function(config) {
+  config.set({
+    reporters: ['progress', 'allure'],
+
+    // the default configuration
+    allureReport: {
+      reportDir: '',
+    }
+  });
+};
+```
+
+您也可以将 reporters 列表作为 CLI 参数传递:
+
+```bash
+karma start --reporters allure,dots
+```
+
+##### 7.3.3. API
+
+有了allure reporter，你可以得到一些功能来提供关于测试的额外信息。所有函数都可以作为全局 allure 对象的方法。
+
+- `description(description)` 为当前测试用例指定一个描述
+- `severity(severity)` 为当前测试案例指定一个严重性。枚举为属性的可能值，例如：`allure.severity.BLOCKER`。按其重要性递减: 
+  - BLOCKER
+  - CRITICAL
+  - NORMAL
+  - MINOR
+  - TRIVIAL
+- `createStep(name, stepFunction)` 定义测试步骤。返回包装函数，报告每一步调用。Step 函数可以相互嵌套。它是 allure 最强大的特性，因为它允许编写自我文档化的测试，报告它的每一步。 
+
+有关这些特性及其用途的更多信息，请参阅[文档](https://github.com/allure-framework/allure/blob/master/docs/dictionary.md)。
+
+##### 7.3.4. 举例
+
+你可以在一个[样例项目](https://github.com/allure-examples/allure-karma-example)中看看 allure-reporter 的应用。
+更多关于 Allure 的信息，请看 [Allure core](https://github.com/allure-framework/allure) 项目。
+有关 Karma 的更多信息，请查看 [Karma 主页](http://karma-runner.github.com/)。
+
+<div id="_mocha"></div>
+
+#### 7.4. Mocha
+
+##### 7.4.1. mocha-allure-reporter
+
+Allure 报告的 Mocha 框架
+
+##### 7.4.2. 安装
+
+假设你已经安装了 mocha，可以通过 npm 安装 reporter:
+```bash
+npm install mocha-allure-reporter
+```
+
+然后用它来做其他的 mocha reporter：
+```bash
+mocha --reporter mocha-allure-reporter
+```
+
+运行测试后，您将在 `allure-results` 目录中获得原始测试结果。关于如何从原始结果生成报告，请参阅[生成器列表](https://github.com/allure-framework/allure-core/wiki#generating-a-report)。
+
+还可以查看 [mocha-allure-example](https://github.com/allure-examples/mocha-allure-example)，看看它的实际应用。
+
+##### 7.4.3. 支持的选项
+
+- targetDir (string) - 存储测试结果的目录
+
+##### 7.4.4. Runtime API
+
+Allure是一个测试框架，它提供了比平常更多的测试数据。一旦添加 `mocha-allure-reporter` 就可以使用以下 API 创建全局 `allure` 对象:
+
+- `allure.createStep(name, stepFn)` – 定义步骤。该函数每次调用的结果都将记录到报表中。
+- `allure.createAttachement(name, content, [type])` – 保存附件到测试。如果你在 step 函数内部或在它执行的过程中调用它(例如通过承诺异步调用)，附件将被保存到 step 函数中。
+  - `name` (String) - 附件的名字。注意，它不是文件的名称，而是实际的文件名。
+  - `content` (Buffer|String|Function) – 附件内容。如果您传递缓冲区或字符串，它将立即保存到文件。如果您正在传递函数，您将获得修饰函数，并且您可以多次调用它来触发附件。第二种情况的一般目的是创建用于截图的应用函数。您可以只为测试框架定义一次函数，然后在每次需要截图时调用它。
+  - `type` (String, optional) – 附件的 mime 类型。如果忽略了这个参数，我们将尝试通过文件类型库自动检测类型
+- `allure.description(description)` – 如果测试名称不够，则设置详细的测试描述。 
+- `allure.severity(severity)` – 设置测试严重程度：`blocker`, `critical`, `normal`, `minor`, `trivial`。也可以使用 `allure.SEVERITY.BLOKER`
+- `allure.feature(featureName)` – 分配特征测试
+- `allure.story(storyName)` – 分配用户故事进行测试。详细信息请参阅文档
+- `allure.addArgument(name, value)` - 提供测试中使用的参数。与其他语言不同，javascript 测试方法通常没有特殊的参数(只有回调)，因此开发人员使用其他方法填充参数以进行测试。这种方法只是为了Allure
+- `allure.addEnvironment(name, value)` - 保存环境信息。类似于 `addArgument` 方法，但是它被设计用来存储更详细的数据，比如到测试页面或使用的包版本的 HTTP 链接。
+
+----
 
 <div id="_ruby"></div>
 
 ## 8. Ruby
 
+----
+
 <div id="_groovy"></div>
 
 ## 9. Groovy
+
+----
 
 <div id="_php"></div>
 
 ## 10. PHP
 
+----
+
 <div id="__net"></div>
 
 ## 11. .NET
+
+----
 
 <div id="_scala"></div>
 
 ## 12. Scala
 
+----
+
 <div id="_reporting"></div>
 
 ## 13. 报告
 
+----
+
 <div id="_allure_plugins_system"></div>
 
 ## 14. Allure 插件系统
+
+----
