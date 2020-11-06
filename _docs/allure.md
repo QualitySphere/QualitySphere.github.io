@@ -38,7 +38,7 @@ Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://
 - 打开 [demo version](http://demo.qameta.io/allure/latest/)，看看 Allure 报告的样子。
 - [开始](#_get_started)为现有项目构建报告。
 - 了解更多关于[报表结构和特性](#_report_structure)的信息。
-- 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#_java)、[Python](#_python)、[JavaScript](#_javascript)、[Ruby](_ruby)、[Groovy](#_groovy)、[PHP](#_php)、[.net](__net) 和 [Scala](#_scale)
+- 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#_java)、[Python](#_python)、[JavaScript](#_javascript)、[Ruby](_ruby)、[Groovy](#_groovy)、[PHP](#_php)、[.net](__net) 和 [Scala](#_scala)
 
 <div id='_get_started'></div>
 
@@ -1935,7 +1935,7 @@ def test_dynamic_description():
 
 **Titles**
 
-特殊的 @allure.title 装饰器可以使测试标题更具可读性。标题支持参数占位符并支持动态替换。
+特殊的 `@allure.title` 装饰器可以使测试标题更具可读性。标题支持参数占位符并支持动态替换。
 
 ```python
 import allure
@@ -1971,7 +1971,7 @@ def test_with_dynamic_title():
 
 **Links**
 
-To integrate report with a bugtracker or test management system Allure has @allure.link, @allure.issue and @allure.testcase descriptors.
+要想将报告与缺陷跟踪或测试管理集成，可以使用：`@allure.link`, `@allure.issue` 和 `@allure.testcase`
 
 ```python
 import allure
@@ -1999,24 +1999,30 @@ def test_with_testcase_link():
     pass
 ```
 
-@allure.link will provide a clickable link to provided url in 'Links' section:
+`@allure.link` 会在 “Links” 处提供一个可点击的链接到所提供的 URL:
 
-![Description from docstring.]()
+![Description from docstring.](https://docs.qameta.io/allure/images/pytest_test_with_link.png)
 
-@allure.issue will provide a link with a small bug icon. This descriptor takes test case id as the input parameter to use it with provided link template for issue link type. Link templates are specified in --allure-link-pattern configuration option for Pytest. Link templates and types have to be specified using a colon:
+`@allure.issue` 会提供一个带有缺陷样式小图标的链接。该描述符将测试用例 ID 作为输入参数，以便与问题链接类型提供的链接模板一起使用，链接模板是在 Pytest 的 `--allure-link-pattern` 配置选项中指定的。链接模板和类型必须使用冒号来指定:
 
+```bash
 $ pytest directory_with_tests/ --alluredir=/tmp/my_allure_report \
- --allure-link-pattern=issue:http://www.mytesttracker.com/issue/{}
-Template keywords are issue, link and test_case to provide a template for the corresponding type of link.
+      --allure-link-pattern=issue:http://www.mytesttracker.com/issue/{}
+```
 
-Test with a link of issue type.
-6.1.6. Retries
-Allure allows you to aggregate information about test being re-executed during a single test run as well as history of test execution over some period of time.
+关键字 `issue`、`link` 和 `test_case` 为相应类型的链接提供模板。
 
-For retries you can use Pytest rerun failures plugin.
+![Test with a link of issue type.](https://docs.qameta.io/allure/images/pytest_test_case_with_issue_link.png)
 
-For example if we have a very unreliable step method that fails often, after specifying --reruns=5 in the Pytest startup options we would see all unsuccessful attempts to run this test displayed on the Retries tab.
+##### 6.1.6. Retries
 
+Allure 可以聚合在单个测试运行期间重新执行的测试信息，以及一段时间内测试执行的历史。
+
+对于 `Retries` ，可以使用 [Pytest rerun failures 插件](https://github.com/pytest-dev/pytest-rerunfailures) 。
+
+例如，如果我们有一个非常不可靠的步骤方法，并且经常失败，那么在 Pytest 启动选项中指定 `--reruns=5` 之后，我们会看到在 `Retries` 选项卡上显示所有不成功的尝试。
+
+```python
 import allure
 import random
 import time
@@ -2037,25 +2043,30 @@ def test_broken_with_randomized_time():
     passing_step()
     time.sleep(random.randint(1, 3))
     flaky_broken_step()
-Retries tab for a test that was rerun.
-Also such a test would receive 'flaky' bomb icon in the list of executed tests.
+```
 
-Flaky icon.
-6.1.7. Tags
-Sometimes you want to be flexible with tests that you want to be executed. Pytest allows that by using marker decorator @pytest.mark (Pytest docs).
+![Retries tab for a test that was rerun.](https://docs.qameta.io/allure/images/pytest_retry_tab.png)
 
-Allure allows to mark your tests in a similar way with 3 types of marking decorators that allow to structure representation of your report:
+同样，这样的测试会在已执行测试列表中显示 “flaky” 炸弹图标。
 
-BDD-style markers denoting Epics, Features and Stories
+![Flaky icon.](https://docs.qameta.io/allure/images/pytest_flaky_icon.png)
 
-Severity labels
+##### 6.1.7. Tags
 
-Custom labels
+有时候，您希望灵活地执行您想要执行的测试。Pytest 通过使用标记装饰器 `@pytest.mark` 来实现（[Pytest文档](https://docs.pytest.org/en/latest/example/markers.html)）。
 
-BDD markers
-There are two decorators: @allure.feature and @allure.story to mark your tests according to Feature/Story breakdown specific to your project (for background see BDD article on Wikipedia). To mark that some feature or story belong to an epic, use a name that starts with epic_ prefix.
+Allure 允许用类似的方式对你的测试进行标记，有三种类型的标记装饰器允许你对报告结构化:
 
-tests.py
+- BDD-style 标记来表示史诗、特征和故事
+- Severity 标签
+- 自定义标签
+
+**BDD markers**
+
+有两个装饰器可以根据项目的特性/故事分解来标记测试: `@allure.feature` 和 `@allure.story` （[背景资料请参阅Wikipedia上的BDD文章](https://en.wikipedia.org/wiki/Behavior-driven_development)）。为了表明某个特征或故事属于某个史诗，名字可以使用 `epic_` 前缀开头。
+
+*tests.py*
+```python
 import allure
 
 
@@ -2081,16 +2092,15 @@ def test_with_story_2():
 @allure.story('story_2')
 def test_with_story_2_and_feature_2():
     pass
-You can use following commandline options to specify different sets of tests to execute passing a list of comma-separated values:
+```
 
---allure-epics
+您可以使用以下命令行选项来指定不同的测试集来执行传递一列逗号分隔的值:
+- `--allure-epics`
+- `--allure-features`
+- `--allure-stories`
 
---allure-features
-
---allure-stories
-
-for example:
-
+例子：
+```bash
 $ pytest tests.py --allure-stories story_1,story_2
 
 collected 5 items
@@ -2098,6 +2108,8 @@ collected 5 items
 tests.py ...                                                                    [100%]
 
 ============================== 3 passed in 0.01 seconds ==============================
+```
+```bash
 $ pytest tests.py --allure-features feature2 --allure-stories story2
 
 collected 5 items
@@ -2105,10 +2117,14 @@ collected 5 items
 tests.py ...                                                                     [100%]
 
 =============================== 2 passed in 0.01 seconds ==============================
-Severity markers
-To mark your tests by severity level you can use @allure.severity decorator. It takes a allure.severity_level enum value as an argument.
+```
 
-tests.py
+**Severity markers**
+
+要根据测试的严重程度对测试进行评分，可以使用 `@allure.severity` 装饰器。它需要 `allure.severity_level` 枚举值作为参数。
+
+*tests.py*
+```python
 import allure
 
 
@@ -2135,10 +2151,13 @@ class TestClassWithNormalSeverity(object):
     @allure.severity(allure.severity_level.CRITICAL)
     def test_inside_the_normal_severity_test_class_with_overriding_critical_severity(self):
         pass
-Severity decorator can be applied to functions, methods or entire classes.
+```
 
-By using --allure-severities commandline option with a list of comma-separated severity levels only tests with corresponding severities will be run.
+Severity 装饰器可以应用于函数、方法或整个类。
 
+通过使用带有逗号分隔的严重性级别列表的 `--allure-severities` 命令行选项，只有具有相应严重性的测试才会运行。
+
+```bash
 $ pytest tests.py --allure-severities normal,critical
 
 collected 5 items
@@ -2146,7 +2165,174 @@ collected 5 items
 bdd_annotations_demo/test_severity_labels.py ...                                [100%]
 
 ================================ 3 passed in 0.01 seconds ============================
+```
 
+<div id="_behave"></div>
+
+#### 6.2. Behave
+
+Allure 与 behave 集成为一个外部格式化程序。
+
+##### 6.2.1. 安装
+
+```bash
+$ pip install allure-behave
+```
+
+##### 6.2.2. 用法
+
+您可以在命令行中直接指定格式化程序:
+
+```bash
+$ behave -f allure_behave.formatter:AllureFormatter -o %allure_result_folder% ./features
+```
+
+##### 6.2.3. 特性
+
+**Severity**
+
+与严重性名称（如 critical、trivial 等）匹配的标记将被解释为特性或场景的严重性。如果没有提供，场景将继承特性严重性，或者在另一种情况下覆盖它。如果有多个严重性定义标记，则只使用最后一个。
+
+**Steps and Scenarious status**
+
+带有断言异常的步骤将被标记为失败，在测试执行期间抛出的其他异常将导致状态中断。场景状态将由第一个不成功步骤状态决定。当所有步骤都通过时，则认为整个场景已经通过。
+
+**Step Data**
+
+步骤数据文本或表格数据在报表中表示为步骤附件。
+
+#### 6.3. Nose
+
+[pytest-allure-adaptor](https://github.com/allure-framework/allure-python) 是 [nose 框架](https://github.com/nose-devs/nose)的端口。
+
+##### 6.3.1. 用法
+
+```bash
+nosetests --with-allure --logdir=/path/to/put/results
+nosetests --with-allure --logdir=/path/to/put/results --not-clear-logdir
+```
+
+选项 `--not-clear-logdir` 与选项 `--processes` 一起搭配使用，可以有效防止测试结束时清理 logdir。
+
+##### 6.3.2. Supported features
+
+**Attachment**
+
+在测试报告中附加一些内容:
+
+```python
+import nose
+
+def test_foo():
+    nose.allure.attach('my attach', 'Hello, World')
+```
+
+**Step**
+
+将测试分成几个步骤:
+
+```python
+import nose
+
+def test_foo():
+    with nose.allure.step('step one'):
+        # do stuff
+
+    with nose.allure.step('step two'):
+        # do more stuff
+```
+
+也可以使用装饰器，默认情况下，步骤名是由方法名生成的:
+```python
+import nose
+
+@nose.allure.step
+def make_test_data_foo():
+    # do stuff
+
+def test_foo():
+    assert make_some_data_foo() is not None
+
+@nose.allure.step('make_some_data_foo')
+def make_some_data_bar():
+    # do another stuff
+
+def test_bar():
+    assert make_some_data_bar() is not None
+```
+
+**Environment**
+
+您可以提供测试[环境参数](https://github.com/allure-framework/allure-core/wiki/Environment)，如报表名称、浏览器或测试服务器地址来丰富 Allure 测试报告。
+
+```python
+import nose
+
+def test_dummy():
+    nose.allure.environment(report='Allure report', browser=u'Firefox')
+```
+
+**Severity**
+
+任何测试、类或模块都可以标记不同的严重程度:
+
+```python
+import nose
+
+class TestBar(object):
+
+    @nose.allure.severity(nose.allure.severity_level.CRITICAL)
+    def test_bar(self):
+        pass
+
+# custom severity
+@nose.allure.severity("hard")
+def test_bar(self):
+    pass
+```
+
+运行具有优先级的测试:
+```bash
+nosetests my_tests/ --with-allure --logdir=tmp --severity="critical, hard"
+```
+
+**Issue**
+
+可以为测试设置 issue。
+
+```python
+import nose
+
+@nose.allure.issue('http://jira.lan/browse/ISSUE-1')
+def test_foo():
+    assert False
+```
+
+**Features & Stories**
+
+可以为测试设置 Feature 和 Story。
+
+```python
+import nose
+
+@nose.allure.feature('Feature1')
+@nose.allure.story('Story1')
+def test_minor():
+    assert False
+
+class TestBar(object):
+
+    @nose.allure.feature('Feature2')
+    @nose.allure.story('Story1')
+    def test_bar(self):
+        pass
+```
+
+按 Feature 或 Story 运行测试:
+```bash
+nosetests my_tests/ --with-allure --logdir=tmp --feature="Feature1, Feature2"
+nosetests my_tests/ --with-allure --logdir=tmp --feature="Feature1, Feature2" --story="Story1, Story2"
+```
 
 <div id="_javascript"></div>
 
