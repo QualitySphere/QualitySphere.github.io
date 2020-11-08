@@ -2722,12 +2722,12 @@ Allure是一个测试框架，它提供了比平常更多的测试数据。一�
 - `allure.createStep(name, stepFn)` – 定义步骤。该函数每次调用的结果都将记录到报表中。
 - `allure.createAttachement(name, content, [type])` – 保存附件到测试。如果你在 step 函数内部或在它执行的过程中调用它(例如通过承诺异步调用)，附件将被保存到 step 函数中。
   - `name` (String) - 附件的名字。注意，它不是文件的名称，而是实际的文件名。
-  - `content` (Buffer|String|Function) – 附件内容。如果您传递缓冲区或字符串，它将立即保存到文件。如果您正在传递函数，您将获得修饰函数，并且您可以多次调用它来触发附件。第二种情况的一般目的是创建用于截图的应用函数。您可以只为测试框架定义一次函数，然后在每次需要截图时调用它。
-  - `type` (String, optional) – 附件的 mime 类型。如果忽略了这个参数，我们将尝试通过文件类型库自动检测类型
+  - `content` (Buffer,String,Function) – 附件内容。如果您传递缓冲区或字符串，它将立即保存到文件。如果您正在传递函数，您将获得修饰函数，并且您可以多次调用它来触发附件。第二种情况的一般目的是创建用于截图的应用函数。您可以只为测试框架定义一次函数，然后在每次需要截图时调用它。
+  - `type` (String, optional) – 附件的 mime 类型。如果忽略了这个参数，我们将尝试通过 [file-type](https://github.com/sindresorhus/file-type) 库自动检测类型
 - `allure.description(description)` – 如果测试名称不够，则设置详细的测试描述。 
 - `allure.severity(severity)` – 设置测试严重程度：`blocker`, `critical`, `normal`, `minor`, `trivial`。也可以使用 `allure.SEVERITY.BLOKER`
 - `allure.feature(featureName)` – 分配特征测试
-- `allure.story(storyName)` – 分配用户故事进行测试。详细信息请参阅文档
+- `allure.story(storyName)` – 分配用户故事进行测试。详细信息请参阅[文档](https://github.com/allure-framework/allure-core/wiki/Features-and-Stories)
 - `allure.addArgument(name, value)` - 提供测试中使用的参数。与其他语言不同，javascript 测试方法通常没有特殊的参数(只有回调)，因此开发人员使用其他方法填充参数以进行测试。这种方法只是为了Allure
 - `allure.addEnvironment(name, value)` - 保存环境信息。类似于 `addArgument` 方法，但是它被设计用来存储更详细的数据，比如到测试页面或使用的包版本的 HTTP 链接。
 
@@ -2736,6 +2736,176 @@ Allure是一个测试框架，它提供了比平常更多的测试数据。一�
 <div id="_ruby"></div>
 
 ## 8. Ruby
+
+<div id="_cucumber"></div>
+
+#### 8.1. Cucumber
+
+这章节将介绍 Cucumber 框架下使用 Allure 的方法。 
+
+##### 8.1.1. 安装
+
+添加以下内容到你的 Gemfile：
+```ruby
+gem 'allure-cucumber'
+```
+
+然后执行：
+```bash
+$ bundle
+```
+
+或者自行安装：
+```bash
+$ gem install allure-cucumber
+```
+
+##### 8.1.2. 配置
+
+默认情况下，Allure XML 文件存储在 `gen/allure-results` 中。要自定义存储位置，请在 `features/support/env.rb` 中添加以下内容:
+
+```ruby
+AllureCucumber.configure do |c|
+   c.output_dir = "/output/dir"
+end
+```
+
+默认情况下，在新运行开始时会删除以前运行的 Allure XML 文件。可以通过以下方式禁用:
+```ruby
+AllureCucumber.configure do |c|
+  c.clean_dir  = false
+end
+```
+
+默认情况下，allure-cucumber 会分析 cucumber 标签来设置与测试管理、缺陷管理和严重程度的钩子。这些钩子将会显示在生成的 Allure 报告中(更多信息请参见 allure-core)。
+
+```ruby
+    DEFAULT_TMS_PREFIX      = '@TMS:'
+    DEFAULT_ISSUE_PREFIX    = '@ISSUE:'
+    DEFAULT_SEVERITY_PREFIX = '@SEVERITY:'
+```
+
+举个例子：
+```ruby
+  @SEVERITY:trivial @ISSUE:YZZ-100 @TMS:9901
+  Scenario: Leave First Name Blank
+    When I register an account without a first name
+    Then exactly (1) [validation_error] should be visible
+```
+
+您可以通过进行以下更改来配置 allure-cucumber：
+
+```ruby
+AllureCucumber.configure do |c|
+  c.clean_dir  = false
+  c.tms_prefix      = '@HIPTEST--'
+  c.issue_prefix    = '@JIRA++'
+  c.severity_prefix = '@URGENCY:'
+end
+```
+
+举个例子：
+```ruby
+  @URGENCY:critical @JIRA++YZZ-100 @HIPTEST--9901
+  Scenario: Leave First Name Blank
+    When I register an account without a first name
+    Then exactly (1) [validation_error] should be visible
+```
+
+##### 8.1.3. 用法
+
+将以下内容放在您的 `features/support/env.rb` 文件:
+```ruby
+require 'allure-cucumber'
+```
+
+执行 cucumber 时使用 `--format AllureCucumber::Formatter --out where/you-want-results` 或者将其增加到 cucumber.yml
+
+您还可以将屏幕截图、日志或测试数据作为[附件](https://github.com/allure-framework/allure-core/wiki/Glossary#attachment)附加到[步骤](https://github.com/allure-framework/allure-core/wiki/Glossary#test-step)中。
+
+```ruby
+ #file: features/support/env.rb
+ include AllureCucumber::DSL
+ attach_file(title, file)
+```
+
+##### 8.1.4. 如何生成报告
+
+此适配器只生成包含测试信息的 XML 文件。关于如何生成报告，请参阅[wiki部分](https://github.com/allure-framework/allure-core/wiki#generating-report)。
+
+<div id="_rspec"></div>
+
+#### 8.2. RSpec
+
+适配器使用 Allure框架 和 RSpec。可以参阅[示例项目](https://github.com/allure-examples/allure-rspec-example)以进行快速浏览。
+
+##### 8.2.1. 新功能
+
+参阅 [releases](https://github.com/allure-framework/allure-rspec/releases) 列表。
+
+##### 8.2.2. 设置
+
+将依赖项添加到您的 Gemfile 中。仔细选择版本:
+
+- 0.5.x - for RSpec2.
+- ⇐ 0.6.7 - for RSpec < 3.2.
+- >= 0.6.9 - for RSpec >= 3.2.
+
+```ruby
+gem 'allure-rspec'
+```
+
+然后把它包含在你的 spec_helper.rb 中:
+
+```ruby
+    RSpec.configure do |c|
+      c.include AllureRSpec::Adaptor
+    end
+```
+
+##### 8.2.3. 高级选项
+
+您可以指定 Allure 测试结果的目录。默认目录是在当前目录下的 `gen/allure-results` 。
+
+```ruby
+    AllureRSpec.configure do |c|
+      c.output_dir = "/whatever/you/like" # default: gen/allure-results
+      c.clean_dir = false # clean the output directory first? (default: true)
+      c.logging_level = Logger::DEBUG # logging level (default: DEBUG)
+    end
+```
+
+##### 8.2.4. 用法示例
+
+```ruby
+describe MySpec, :feature => "Some feature", :severity => :normal do
+
+  before(:step) do |s|
+    puts "Before step #{s.current_step}"
+  end
+
+  it "should be critical", :story => "First story", :severity => :critical, :testId => 99 do
+    "string".should == "string"
+  end
+
+  it "should be steps enabled", :story => ["First story", "Second story"], :testId => 31 do |e|
+
+    e.step "step1" do |s|
+      s.attach_file "screenshot1", take_screenshot_as_file
+    end
+
+    e.step "step2" do
+      5.should be > 0
+    end
+
+    e.step "step3" do
+      0.should == 0
+    end
+
+    e.attach_file "screenshot2", take_screenshot_as_file
+  end
+end
+```
 
 ----
 
