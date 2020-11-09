@@ -2837,7 +2837,7 @@ require 'allure-cucumber'
 
 #### 8.2. RSpec
 
-适配器使用 Allure框架 和 RSpec。可以参阅[示例项目](https://github.com/allure-examples/allure-rspec-example)以进行快速浏览。
+适配器使用 Allure 框架 和 RSpec。可以参阅[示例项目](https://github.com/allure-examples/allure-rspec-example)以进行快速浏览。
 
 ##### 8.2.1. 新功能
 
@@ -2849,7 +2849,7 @@ require 'allure-cucumber'
 
 - 0.5.x - for RSpec2.
 - ⇐ 0.6.7 - for RSpec < 3.2.
-- >= 0.6.9 - for RSpec >= 3.2.
+- &nbsp;>= 0.6.9 - for RSpec >= 3.2.
 
 ```ruby
 gem 'allure-rspec'
@@ -2913,11 +2913,349 @@ end
 
 ## 9. Groovy
 
+<div id="_spock"></div>
+
+#### 9.1. Spock
+
+Spock 框架源码 [https://github.com/spockframework/spock](https://github.com/spockframework/spock)
+
+##### 9.1.1. Spock 框架兼容性
+
+- spock-0.7 - [0.7-groovy-2.0](http://repo1.maven.org/maven2/org/spockframework/spock-core/0.7-groovy-2.0/)
+- spock-1.0 - [1.0-groovy-2.0-SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/org/spockframework/spock-core/1.0-groovy-2.0-SNAPSHOT/)
+
 ----
 
 <div id="_php"></div>
 
 ## 10. PHP
+
+<div id="_phpunit"></div>
+
+#### 10.1. PHPUnit
+
+这是 Allure 框架的官方 PHPUnit 适配器，Allure 框架是一个灵活的、轻量级的、多语言的框架，用于编写自编文档的测试。
+
+##### 10.1.1. 作用
+
+此适配器的主要目的是收集有关测试的信息，并将其写入一组 XML 文件: 一个测试类一个 XML 文件。然后，您可以使用独立的命令行工具或流行的持续集成系统的插件来生成一个 HTML 页面，以良好的形式显示您的测试。
+
+##### 10.1.2. 示例项目
+
+示例项目地址：[https://github.com/allure-framework/allure-phpunit-example](https://github.com/allure-framework/allure-phpunit-example)
+
+##### 10.1.3. 如何生成报告
+
+此适配器仅生成包含测试信息的 XML 文件。有关如何生成报告，请参阅 [wiki 部分](https://github.com/allure-framework/allure-core/wiki#generating-report)。
+
+##### 10.1.4. 安装和使用
+
+> **提示**：此适配器只支持 Allure 1.4.x。为了使用此适配器，您需要向 **composer.json** 中添加一个新的依赖项:
+
+```json
+{
+    "require": {
+        "php": ">=5.4.0",
+        "allure-framework/allure-phpunit": "~1.2.0"
+    }
+}
+```
+
+然后在 **phpunit.xml** 文件中添加 Allure 测试监听器:
+
+```xml
+<listeners>
+    <listener class="Yandex\Allure\Adapter\AllureAdapter" file="vendor/allure-framework/allure-phpunit/src/Yandex/Allure/Adapter/AllureAdapter.php">
+        <arguments>
+            <string>build/allure-results</string> <!-- XML files output directory -->
+            <boolean>true</boolean> <!-- Whether to delete previous results on rerun -->
+            <array> <!-- A list of custom annotations to ignore (optional) -->
+                <element key="0">
+                    <string>someCustomAnnotation</string>
+                </element>
+            </array>
+        </arguments>
+    </listener>
+</listeners>
+```
+
+在运行 PHPUnit 测试之后，会创建一个新文件夹(上面示例中是 **build/allure-results**)。这个文件夹将包含生成的 XML 文件。有关如何从 XML 文件生成报告的详细信息，请参见[框架帮助](https://github.com/allure-framework/allure-core/wiki)。默认情况下，生成的报告将只显示有限的一组信息，但是您可以通过增加比较的代码改动来使用炫酷的 Allure 功能。详情请阅读下一节。
+
+##### 10.1.5. 主要特性
+
+这个适配器附带了一组 PHP 注释和特性，允许使用主要的 Allure 特性。
+
+**可读的测试类或测试方法标题**
+
+为了给任何测试类或[测试用例](https://github.com/allure-framework/allure-core/wiki/Glossary#test-case)方法添加这样的标题，你需要用 `@Title` 注释:
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Annotation\Title;
+
+/**
+ * @Title("Human-readable test class title")
+ */
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @Title("Human-readable test method title")
+     */
+    public function testCase()
+    {
+        //Some implementation here...
+    }
+}
+```
+
+**扩展测试类或测试方法描述**
+
+类似地，您可以为每个测试类和测试方法添加详细的描述。要添加这样的描述，只需使用 `@Description` 注释:
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Annotation\Description;
+use Yandex\Allure\Adapter\Model\DescriptionType;
+
+/**
+ * @Description("Detailed description for test class")
+ */
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @Description(value = "Detailed description for <b>test class</b>.", type = DescriptionType::HTML)
+     */
+    public function testCase()
+    {
+        //Some implementation here...
+    }
+}
+```
+
+描述可以以纯文本、HTML 或 Markdown 格式添加 — 只需分配不同的 `type` 值。
+
+**设置测试严重性**
+
+`@Severity` 用于根据严重程度对测试方法进行优先级排序: 
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Annotation\Severity;
+use Yandex\Allure\Adapter\Model\SeverityLevel;
+
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @Severity(level = SeverityLevel::MINOR)
+     */
+    public function testCase()
+    {
+        //Some implementation here...
+    }
+}
+```
+
+**指定测试参数信息**
+
+为了添加关于测试方法[参数](https://github.com/allure-framework/allure-core/wiki/Glossary#parameter)的信息，你应该使用 `@Parameter` 注释:
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Annotation\Parameter;
+use Yandex\Allure\Adapter\Model\ParameterKind;
+
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @Parameter(name = "param1", value = "value1")
+     * @Parameter(name = "param2", value = "value2", kind = ParameterKind::SYSTEM_PROPERTY)
+     */
+    public function testCase()
+    {
+        //Some implementation here...
+    }
+}
+```
+
+**映射测试类和测试方法到特性和故事**
+
+在一些开发方法中，测试是按故事和特性分类的。如果你正在使用这个，那么你可以用 `@Stories` 和 `@Features` 注释你的测试:
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Annotation\Features;
+use Yandex\Allure\Adapter\Annotation\Stories;
+
+/**
+ * @Stories({"story1", "story2"})
+ * @Features({"feature1", "feature2", "feature3"})
+ */
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @Features({"feature2"})
+     * @Stories({"story1"})
+     */
+    public function testCase()
+    {
+        //Some implementation here...
+    }
+}
+```
+
+然后您将能够在生成的 Allure 报告中通过特定的功能和故事过滤测试。
+
+**报告添加附件**
+
+如果你想[附加](https://github.com/allure-framework/allure-core/wiki/Glossary#attachment)一些在 PHPUnit 运行期间生成的文件(屏幕快照，日志文件，转储文件等等)到报告上，那么你需要在你的测试类中使用 **AttachmentSupport** :
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Support\AttachmentSupport;
+
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+
+    use AttachmentSupport;
+
+    public function testCase()
+    {
+        //Some implementation here...
+        $filePath = $this->outputSomeContentToTemporaryFile();
+        $this->addAttachment($filePath, 'Attachment human-readable name', 'text/plain');
+        //Some implementation here...
+    }
+
+    private function outputSomeContentToTemporaryFile()
+    {
+        $tmpPath = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpPath, 'Some content to be outputted to temporary file.');
+        return $tmpPath;
+    }
+
+}
+```
+
+为了创建一个[附件](https://github.com/allure-framework/allure-core/wiki/Glossary#attachment)，只需调用 `AttachmentSupport::addAttachment()` 方法。此方法接受附件类型、可读的名称和一个字符串，该字符串存储我们需要附加的文件或文件内容的完整路径。
+
+**将测试方法划分为步骤**
+
+Allure 框架还支持一种叫做 steps 的实用特性。考虑以下，一个内部具有复杂逻辑和多个断言的测试，当抛出一个异常或一个断言失败时，有时很难确定是哪个断言导致了失败。Allure 步骤允许将测试方法逻辑划分为几个独立的部分，具有独立的运行状态，比如 **passed** 或 **failed** 。这样可以更清楚地了解到底发生了什么。为了使用步骤，只需在你的测试类中导入 **StepSupport** :
+
+```php
+namespace Example\Tests;
+
+use PHPUnit_Framework_TestCase;
+use Yandex\Allure\Adapter\Support\StepSupport;
+
+class SomeTest extends PHPUnit_Framework_TestCase
+{
+
+    use StepSupport;
+
+    public function testCase()
+    {
+        //Some implementation here...
+        $this->executeStep("This is step one", function () {
+            $this->stepOne();
+        });
+
+        $this->executeStep("This is step two", function () {
+            $this-stepTwo();
+        });
+
+        $this->executeStep("This is step three", function () {
+            $this->stepThree('someArgument');
+        });
+        //Some implementation here...
+    }
+
+    private function stepOne()
+    {
+        //Some implementation here...
+    }
+
+    private function stepTwo()
+    {
+        //Some implementation here...
+    }
+
+    private function stepThree($argument)
+    {
+        //Some implementation here...
+    }
+
+}
+```
+
+整个测试方法的执行状态将依赖于每一个步骤，但是关于步骤状态的信息将被单独存储。
+
+<div id="_allurecodeception"></div>
+
+#### 10.2. ALLURECodeception
+
+这是 Allure 框架的 [Codeception](http://codeception.com/) 官方合作适配器。
+
+##### 10.2.1. 作用
+
+此适配器的主要目的是积累有关测试的信息，并将其写入一组 XML 文件: 一个测试类是一个 XML 文件。此适配器仅生成包含测试信息的 XML 文件。有关如何生成报告，请参阅 [wiki 部分](https://github.com/allure-framework/allure-core/wiki#generating-report)。
+
+##### 10.2.2. 示例项目
+
+示例项目地址：[https://github.com/allure-examples/allure-codeception-example](https://github.com/allure-examples/allure-codeception-example)
+
+##### 10.2.3. 安装和用法
+
+为了使用此适配器，您需要添加一个新的依赖项到你的 **composer.json** 文件:
+
+```json
+{
+    "require": {
+        "php": ">=5.4.0",
+        "allure-framework/allure-codeception": "~1.1.0"
+    }
+}
+```
+
+要在 Codeception 测试中启用此适配器，只需将其放入 **codeception.yml** 的 “enabled” 扩展部分:
+
+```yaml
+extensions:
+    enabled:
+        - Yandex\Allure\Adapter\AllureAdapter
+    config:
+        Yandex\Allure\Adapter\AllureAdapter:
+            deletePreviousResults: false
+            outputDirectory: allure-results
+```
+
+`deletePreviousResults` 将清除输出目录中的所有 .xml 文件(这将对完成后的清除工作造成影响)。默认情况下它被设置为 `false`。
+
+`outputDirectory` 用于存储 Allure 结果，并且会相对于 Codeception 的输出目录灵活生成(即 codeception.yml 中的 `paths: log`)，除非你指定了一个绝对路径。您也可以使用 `..` 这样的路径，`outputDirectory` 默认为 `allure-results`。
+
+通过你最喜欢的终端生成报告，可以[安装](https://github.com/allure-framework/allure-cli#installation) allure-cli 并运行以下命令(假设您在项目根目录下并使用默认配置)
+
+```bash
+allure generate --report-version 1.4.5 --report-path tests/_output/allure-report -- tests/_output/allure-results
+```
+
+报告生成在 `tests/_output/allure-report`
+
+##### 10.2.4. 主要功能
+
+请参阅 [PHPUnit](https://github.com/allure-framework/allure-phpunit#advanced-features) 部分。
 
 ----
 
