@@ -3263,11 +3263,265 @@ allure generate --report-version 1.4.5 --report-path tests/_output/allure-report
 
 ## 11. .NET
 
+<div id="_specflow"></div>
+
+#### 11.1. SpecFlow
+
+##### 11.1.1. 安装
+
+1. 下载 [SpecFlow.Allure](https://www.nuget.org/packages/SpecFlow.Allure/) NuGet 软件包
+2. 配置 App.config 使用插件
+3. 配置 AllureConfig.json
+4. 使用任意测试执行器运行测试
+  - [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter) wiki
+
+<div id="_nunit_3"></div>
+
+#### 11.2. NUnit 3
+
+##### 11.2.1. 安装和使用
+
+1. 下载 [NUnit.Allure](https://www.nuget.org/packages/NUnit.Allure/) NuGet 软件包
+2. 配置 AllureConfig.json
+3. 添加 [AllureNUnit] 属性在你想使用 Allure 的测试类，如果有需要，可以添加更多的属性
+4. 使用任意测试执行器运行测试，Allure 报告会生成在 AllureConfig.json 配置的目录中
+
+##### 11.2.2. 配置示例
+
+allureConfig.json 示例
+
+```json
+{
+  "allure": {
+    "directory": "allure-results",
+    "links": [
+      "{link}",
+      "https://testrail.com/browse/{tms}",
+      "https://jira.com/browse/{issue}"
+    ]
+  },
+  "specflow": {
+    "stepArguments": {
+      "convertToParameters": "true",
+      "paramNameRegex": "",
+      "paramValueRegex": ""
+    },
+    "grouping": {
+      "suites": {
+        "parentSuite": "^parentSuite:?(.+)",
+        "suite": "^suite:?(.+)",
+        "subSuite": "^subSuite:?(.+)"
+      },
+      "behaviors": {
+        "epic": "^epic:?(.+)",
+        "story": "^story:(.+)"
+      }
+    },
+    "labels": {
+      "owner": "^author:?(.+)",
+      "severity": "^(normal|blocker|critical|minor|trivial)"
+    },
+    "links": {
+      "tms": "^story:(.+)",
+      "issue": "^issue:(.+)",
+      "link": "^link:(.+)",
+    }
+  }
+}
+```
+
+##### 11.2.3. 测试示例
+
+```csharp
+[TestFixture]
+[AllureNUnit]
+[AllureDisplayIgnored]
+class TestClass
+{
+    [Test(Description = "XXX")]
+    [AllureTag("Regression")]
+    [AllureSeverity(SeverityLevel.critical)]
+    [AllureIssue("ISSUE-1")]
+    [AllureTms("TMS-12")]
+    [AllureOwner("User")]
+    [AllureSuite("PassedSuite")]
+    [AllureSubSuite("NoAssert")]
+    public void TestSample()
+    {
+        Console.WriteLine(DateTime.Now);
+    }
+}
+```
+
+##### 11.2.4. 链接
+
+- [Allure CSharp](https://github.com/allure-framework/allure-csharp/wiki/Allure.Commons)
+- [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter)
+- [Allure NUnit 3](https://github.com/unickq/allure-nunit/wiki)
+
+<div id="_nunit_2"></div>
+
+#### 11.3. NUnit 2
+
+##### 11.3.1. 安装和使用
+
+1. 从[官网](http://www.nunit.org/)下载 NUnit **2.6.3** 或 **2.6.4**;
+2. 下载 [allure-nunit2](https://github.com/allure-framework/allure-nunit/releases) 最新版本(版本在括号中指定);
+3. 将二进制文件解压到 **%NUnit_installation_directory%\bin\addins**;
+4. **注意**: 插件在 **Tools → Addins..** 中将不可见。因为它是基于 **.NET 4.0** 构建的;
+5. 在 **%NUnit_installation_directory%\bin\addins\config.xml** 中指定生成 **xml** 文件的任何文件夹(此文件夹将自动创建)的绝对路径(例如: `<results-path>C:\test-results\AllureResults</results-path>` or `<results-path>/home/user/test-results/AllureResults</results-path>`)
+6. 您还可以在配置中指定是否希望在测试失败后进行截屏，以及是否希望将测试输出写入附件;
+7. 使用 **NUnit GUI** 或使用 **.NET 4.0** 的 nunit-console 运行测试(例如: nunit-console YourAssembly.dll /framework=net-4.0);
+8. 在所有测试完成后，您将看到在步骤 5 中指定的带有生成的 **xml** 文件的新文件夹。
+
+##### 11.3.2. 如何生成报告
+
+此适配器仅生成包含测试信息的 XML 文件。有关如何生成报告，请参阅 [wiki 部分](https://github.com/allure-framework/allure-core/wiki#generating-report)。
+
+##### 11.3.3. 更多内容
+
+- [关于适配器配置](http://ilya-murzinov.github.io/articles/allure-csharp/))
+- [Allure NUnit Wiki](https://github.com/allure-framework/allure-csharp-commons/wiki)
+- [Allure CSharp New](https://github.com/allure-framework/allure-csharp/wiki/Allure.Commons)
+- [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter)
+- [Allure NUnit 3](https://github.com/unickq/allure-nunit/wiki)
+
+<div id="_mstest"></div>
+
+#### 11.4. MSTest
+
+**MSTestAllureAdapter** 允许您将 MSTest trx 文件转换为可以生成 Allure 报告的 xml 文件。
+
+因为 MSTest 没有扩展或钩子机制，所以此适配器不能作为 MSTest 的一部分运行，而是将生成的 trx 文件转换为 allure 所期望的 xml 格式。
+
+它是一个基于 .NET/Mono 的控制台应用程序。
+
+##### 11.4.1. 用法
+
+```bash
+MSTestAllureAdapter.Console.exe <TRX file> [output target dir]
+```
+
+如果缺少 `[output target dir]`，那么结果将保存在当前目录的一个名为 `results` 的文件夹中。
+
+```bash
+$ mono MSTestAllureAdapter.Console.exe sample.trx
+```
+
+把 'sample.trx' 文件生成 allure 报告所需要的 xml 文件。
+
+```bash
+$ mono MSTestAllureAdapter.Console.exe sample.trx output-xmls
+```
+
+把 `output-xmls` 转换成 Allure 报告，如果目标目录不存在，则会自动创建它，使用 [allure-cli](https://github.com/allure-framework/allure-cli/releases/tag/allure-cli-2.1) 生成报告:
+
+
+```bash
+$ allure generate output-xmls -v 1.4.0
+```
+
 ----
 
 <div id="_scala"></div>
 
 ## 12. Scala
+
+<div id="_scalatest"></div>
+
+#### 12.1. ScalaTest
+
+这个适配器允许从 [ScalaTest](http://www.scalatest.org/) 框架检索测试执行数据，并将其转换为适合[生成 Allure 报告](https://github.com/allure-framework/allure-core/wiki#generating-report)的形式。
+
+
+##### 12.1.1. 示例项目
+
+示例项目地址：[https://github.com/allure-framework/allure-scalatest-examp](https://github.com/allure-framework/allure-scalatest-examp)
+
+##### 12.1.2. 安装、配置和使用
+
+这个适配器需要安装 **JDK 1.7+** 环境，然后只需在 build.sbt 中添加以下依赖项:
+
+```scala
+libraryDependencies += "ru.yandex.qatools.allure" % "allure-scalatest_2.10" % "1.4.0-SNAPSHOT"
+```
+
+在 build.sbt 中添加 **AllureReporter**:
+
+```scala
+testOptions in Test ++= Seq(
+    Tests.Argument(TestFrameworks.ScalaTest, "-oD"),
+    Tests.Argument(TestFrameworks.ScalaTest, "-C", "ru.yandex.qatools.allure.scalatest.AllureReporter")
+)
+```
+
+在使用此适配器时，您可能会遇到以下警告:
+
+```text
+[ScalaTest-dispatcher] WARN ru.yandex.qatools.allure.utils.AllureResultsUtils - Can't set "com.sun.xml.bind.marshaller.CharacterEscapeHandler" property to given marshaller
+javax.xml.bind.PropertyException: name: com.sun.xml.bind.marshaller.CharacterEscapeHandler value: ru.yandex.qatools.allure.utils.BadXmlCharacterEscapeHandler@5e652b7b
+    at javax.xml.bind.helpers.AbstractMarshallerImpl.setProperty(AbstractMarshallerImpl.java:358)
+    at com.sun.xml.internal.bind.v2.runtime.MarshallerImpl.setProperty(MarshallerImpl.java:527)
+    at ru.yandex.qatools.allure.utils.AllureResultsUtils.setPropertySafely(AllureResultsUtils.java:199)
+    at ru.yandex.qatools.allure.utils.AllureResultsUtils.marshaller(AllureResultsUtils.java:171)
+    at ru.yandex.qatools.allure.utils.AllureResultsUtils.writeTestSuiteResult(AllureResultsUtils.java:148)
+    at ru.yandex.qatools.allure.Allure.fire(Allure.java:180)
+    at ru.yandex.qatools.allure.scalatest.AllureReporter.testSuiteFinished(AllureReporter.scala:74)
+    at ru.yandex.qatools.allure.scalatest.AllureReporter.apply(AllureReporter.scala:46)
+    at org.scalatest.DispatchReporter$Propagator$$anonfun$run$1.apply(DispatchReporter.scala:240)
+    at org.scalatest.DispatchReporter$Propagator$$anonfun$run$1.apply(DispatchReporter.scala:239)
+    at scala.collection.immutable.List.foreach(List.scala:318)
+    at org.scalatest.DispatchReporter$Propagator.run(DispatchReporter.scala:239)
+    at java.lang.Thread.run(Thread.java:744)
+```
+
+这与 Allure 和 Scalatest 中使用的 JAXB 版本不兼容有关，所以您可以放心地忽略它。
+
+##### 12.1.3. 如何生成报告
+
+此适配器仅生成包含测试信息的 XML 文件。关于如何生成报告，请参阅 [wiki 部分](https://github.com/all-framework/all-core/wiki #generating-report)。
+
+##### 12.1.4. 发布到 Sonatype (适配器开发)
+
+默认的 GPG 密匙环中应该有一个公共可用的(在公共 keyserver 上) GPG 密匙。您需要在 `~/.sbt/<sbt-version>/` 下创建 **sonatype.sbt** 文件：
+
+```scala
+credentials += Credentials("Sonatype Nexus Repository Manager",
+                           "oss.sonatype.org",
+                           "login",
+                           "password")
+```
+
+简单运行一下即可发布:
+
+```bash
+$ sbt publish-signed
+```
+<div id="_specs"></div>
+
+#### 12.2. Specs
+
+这个适配器允许从 Specs 框架检索测试执行数据，并将其转换为适合生成 Allure 报告的形式。
+
+##### 12.2.1. 示例项目
+
+示例项目地址：[https://github.com/allure-framework/allure-specs-example](https://github.com/allure-framework/allure-specs-example)
+
+##### 12.2.2. 用法
+
+适配器需要安装 **JDK 1.7+** ，然后只需在 build.sbt 中添加以下依赖项:
+
+```scala
+libraryDependencies += "ru.yandex.qatools.allure" % "allure-specs2_2.10" % "1.4.0-SNAPSHOT"
+```
+
+然后添加 AllureReporter 到 build.sbt：
+
+```scala
+testOptions in Test ++= Seq(
+  Tests.Argument(TestFrameworks.Specs2, "notifier", "ru.yandex.qatools.allure.specs2.AllureNotifier")
+)
+```
 
 ----
 
