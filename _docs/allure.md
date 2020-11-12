@@ -105,7 +105,7 @@ $ allure --version
 
 #### 2.2. 执行测试
 
-如果您正在使用 IDE 在本地运行测试，它可能会在构建文件中忽略指定的 Allure 配置（就像 IntelliJ IDEA 那样）,可以使用 allure.properties 文件去配置 Allure。查看 [配置章节](#_configuration) 以获得更多信息。
+如果您正在使用 IDE 在本地运行测试，它可能会在构建文件中忽略指定的 Allure 配置（就像 IntelliJ IDEA 那样）,可以使用 allure.properties 文件去配置 Allure。查看 [配置章节](#configuration) 以获得更多信息。
 
 在生成报告之前，您需要运行测试以获取一些基本的测试报告数据。通常它可能是一个 junit-style 的 xml 报告，这几乎是所有流行的测试框架支持的报告格式。比如，假设您有一个由 surefire maven 插件自动生成的测试报告存储在 `target/surefire-reports` 中:
 
@@ -118,7 +118,7 @@ $ allure --version
 allure serve /home/path/to/project/target/surefire-reports/
 ```
 
-它以提供的路径中的数据，生成一个报告到临时目录中，然后创建一个本地 Jetty 服务器实例，加载生成的报告并在默认浏览器中打开它。它可以通过使用 **--profile** 选项，启用一些预先配置的 Allure 设置，**junit** 配置文件默认是启用的，您将在后面的[章节](#_commandline)中了解更多关于配置文件的信息。
+它以提供的路径中的数据，生成一个报告到临时目录中，然后创建一个本地 Jetty 服务器实例，加载生成的报告并在默认浏览器中打开它。它可以通过使用 **--profile** 选项，启用一些预先配置的 Allure 设置，**junit** 配置文件默认是启用的，您将在后面的[章节](#131-命令行)中了解更多关于配置文件的信息。
 
 虽然这样生成的报告只包含从 xml 数据中提取的最少信息，这些信息几乎缺乏所有高级的 Allure 特性，但可以让您那些已经执行的测试获得良好的可视化展示。
 
@@ -144,7 +144,7 @@ allure serve /home/path/to/project/target/surefire-reports/
 - 行为 - 根据故事和特性聚合的结果信息。
 - 执行器 - 用于运行测试的测试执行器的信息。
 - 历史趋势 - 如果测试积累了一些历史数据，它的趋势将被计算并显示在图表中。
-- 环境 - 关于测试环境的信息(参见[如何定义环境](#_environment))。
+- 环境 - 关于测试环境的信息(参见[如何定义环境](#42-环境))。
 
 主页小控件是可拖动并且可配置的。此外，Allure 提供自身的插件系统，所以它可以提供完全不同的控件布局。
 
@@ -194,13 +194,9 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 ----
 
-<div id="_features"></div>
-
 ## 4. 特性
 
 这一节介绍 Allure 的主要特点。例如，您可以根据故事或特性对测试进行分组，添加附件，并通过一组自定义的步骤分发断言。由于 Java 测试框架支持所有特性，因此我们在这里只提供 Java 示例。有关特定适配器如何与您选择的测试框架一起工作的详细信息，请参考适配器指南。
-
-<div id="_flaky_tests"></div>
 
 #### 4.1. Flaky 测试
 
@@ -217,8 +213,6 @@ public void aTestWhichFailsFromTimeToTime {
 ![被标记为 flaky 失败的测试](https://docs.qameta.io/allure/images/flaky_failed.png)
 
 > **提示**：您也可以将整个测试类标记为 flaky。
-
-<div id="_environment"></div>
 
 #### 4.2. 环境
 
@@ -250,8 +244,6 @@ Stand=Production
     </parameter>
 </environment>
 ```
-
-<div id="_categories_2"></div>
 
 #### 4.3. 分类
 
@@ -301,11 +293,7 @@ Stand=Production
 
 ----
 
-<div id="_java"></div>
-
 ## 5. Java
-
-<div id="_junit_4"></div>
 
 #### 5.1. jUnit 4
 
@@ -611,8 +599,6 @@ public class MyTest {
 }
 ```
 
-<div id="_junit_5"></div>
-
 #### 5.2. jUnit 5
 
 ##### 5.2.1. 安装
@@ -623,7 +609,7 @@ public class MyTest {
 
 `allure-gradle` 最新版：![Allure Gradle](https://img.shields.io/maven-central/v/io.qameta.allure/allure-gradle.svg)
 
-**Maven**
+###### Maven
 
 添加以下内容到你的 **pom.xml**：
 
@@ -691,7 +677,7 @@ public class MyTest {
 $ mvn clean test
 ```
 
-**Gradle**
+###### Gradle
 
 对于 Gradle 用户，可以使用 allure-gradle 插件，该插件会自动配置依赖：
 
@@ -748,11 +734,11 @@ $ ./gradlew allureServe
 
 Java 装饰器可用来使用主要的 Allure 特性。
 
-**DisplayName**
+###### DisplayName
 
 **@DisplayName** 装饰器已被移除。
 
-**Description**
+###### Description
 
 类似地，您可以为每个测试方法添加详细的描述。要添加该描述，可使用 `@Description` 装饰器:
 
@@ -774,7 +760,7 @@ public class MyTests {
 }
 ```
 
-**Steps**
+###### Steps
 
 测试场景由于步骤构成，步骤可以是任意操作。在不同的测试场景中都可以使用步骤。它们可以：被参数化、进行检查、具有嵌套步骤和创建附件。每一步都有一个名字。
 
@@ -807,7 +793,7 @@ public void loginWith(User user) {
 
 由于友好的支持了**数组**和**集合**，因此您不再需要为您的自定义对象重写 **toString()**。
 
-**Attachments**
+###### Attachments
 
 在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
 
@@ -846,7 +832,7 @@ try (InputStream is = Files.newInputStream(content)) {
 
 您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
 
-**Links**
+###### Links
 
 您可以将您的测试链接到其他服务器资源上，如 TMS（测试管理系统）或缺陷追踪系统。
 
@@ -882,7 +868,7 @@ allure.link.issue.pattern=https://example.org/issue/{}
 allure.link.tms.pattern=https://example.org/tms/{}
 ```
 
-**Severity**
+###### Severity
 
 `@Severity` 装饰器会根据严重程度对测试方法进行优先级排序：
 
@@ -904,7 +890,7 @@ public class MyTest {
 }
 ```
 
-**Behaviours Mapping**
+###### Behaviours Mapping
 
 在一些研发方法中，测试是按特性和故事分类的。要添加这样的映射，你可以使用 `Epic`、`Feature` 和 `Stories` 装饰器:
 
@@ -930,15 +916,13 @@ public class MyTest {
 }
 ```
 
-<div id="_testng"></div>
-
 #### 5.3. TestNG
 
 ##### 5.3.1. 安装
 
 `allure-testng` 最新版: ![Allure TestNG](https://img.shields.io/maven-central/v/io.qameta.allure/allure-testng.svg)
 
-**Maven**
+###### Maven
 
 添加以下内容到你的 **pom.xml**：
 
@@ -991,7 +975,7 @@ $ mvn clean test
 $ allure serve target/allure-results
 ```
 
-**Gradle**
+###### Gradle
 
 对于 Gradle 用户，可以使用 allure-gradle 插件，该插件会自动配置依赖：
 
@@ -1032,7 +1016,7 @@ $ ./gradlew allureServe build/allure-results
 
 该适配器附带了一组 Java 装饰器，来使用主要的 Allure 特性。
 
-**DisplayName**
+###### DisplayName
 
 使用 `@Test` 装饰器中的 `description` 属性来注释测试方法的名称，增强可读性：
 
@@ -1056,7 +1040,7 @@ public class MyTests {
 }
 ```
 
-**Description**
+###### Description
 
 类似地，您可以为每个测试方法添加详细的描述。要添加该描述，可使用 `@Description` 装饰器:
 
@@ -1078,7 +1062,7 @@ public class MyTests {
 }
 ```
 
-**Steps**
+###### Steps
 
 测试场景由于步骤构成，步骤可以是任意操作。在不同的测试场景中都可以使用步骤。它们可以：被参数化、进行检查、具有嵌套步骤和创建附件。每一步都有一个名字。
 
@@ -1111,7 +1095,7 @@ public void loginWith(User user) {
 
 由于友好的支持了**数组**和**集合**，因此您不再需要为您的自定义对象重写 **toString()**。
 
-**Attachments**
+###### Attachments
 
 在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
 
@@ -1150,7 +1134,7 @@ try (InputStream is = Files.newInputStream(content)) {
 
 您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
 
-**Links**
+###### Links
 
 您可以将您的测试链接到其他服务器资源上，如 TMS（测试管理系统）或缺陷追踪系统。
 
@@ -1186,7 +1170,7 @@ allure.link.issue.pattern=https://example.org/issue/{}
 allure.link.tms.pattern=https://example.org/tms/{}
 ```
 
-**Severity**
+###### Severity
 
 `@Severity` 装饰器会根据严重程度对测试方法进行优先级排序：
 
@@ -1208,7 +1192,7 @@ public class MyTest {
 }
 ```
 
-**Behaviours Mapping**
+###### Behaviours Mapping
 
 在一些研发方法中，测试是按特性和故事分类的。要添加这样的映射，你可以使用 `Epic`、`Feature` 和 `Stories` 装饰器:
 
@@ -1233,8 +1217,6 @@ public class MyTest {
 
 }
 ```
-
-<div id="_cucumber_jvm"></div>
 
 #### 5.4. Cucumber JVM
 
@@ -1413,15 +1395,13 @@ allure.link.tms.pattern=https://example.org/browse/{}
 </build>
 ```
 
-<div id="_selenide"></div>
-
 #### 5.5 Selenide
 
 ##### 5.5.1. 安装
 
 `allure-selenide` 最新可用版本：![Allure Maven](https://img.shields.io/maven-central/v/io.qameta.allure/allure-selenide.svg)
 
-**Maven**
+###### Maven
 
 你可以添加以下内容到你的 `pom.xml`：
 
@@ -1439,7 +1419,7 @@ allure.link.tms.pattern=https://example.org/browse/{}
 </dependencies>
 ```
 
-**Gradle**
+###### Gradle
 
 *build.gradle*
 ```groovy
@@ -1448,7 +1428,7 @@ compile group: 'io.qameta.allure', name: 'allure-selenide', version: '2.0-BETA22
 ...
 ```
 
-**Listener**
+###### Listener
 
 添加监听器到 Selenide:
 ```java
@@ -1459,11 +1439,7 @@ SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(tr
 
 ----
 
-<div id="_python"></div>
-
 ## 6. Python
-
-<div id="_pytest"></div>
 
 #### 6.1. Pytest
 
@@ -1521,7 +1497,7 @@ def test_broken():
 
 Allure 报告支持的一些常见的 Pytest 特性包括 xfails, fixtures and finalizers, marks, conditional skips and parametrization。
 
-**Xfail**
+###### Xfail
 
 这是标记预期错误的 Pytest 方法:（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）
 
@@ -1546,7 +1522,7 @@ def test_xfail_unexpected_pass():
 
 ![Unexpected xpass pass](https://docs.qameta.io/allure/images/pytest_xpass_unexpected_pass.png)
 
-**Conditional mark**
+###### Conditional mark
 
 在 Pytest 中，你可以标记一个在某些特定条件下不被执行的测试（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）:
 
@@ -1560,7 +1536,7 @@ def test_skip_by_triggered_condition():
 
 ![Conditional skip triggered](https://docs.qameta.io/allure/images/pytest_conditional_skip.png)
 
-**Fixtures and Finalizers**
+###### Fixtures and Finalizers
 
 Fixtures and finalizers 是将分别在测试开始之前和结束之后由 Pytest 调用的实用函数。Allure 跟踪每个 fixture 的调用，并详细显示调用了什么方法和什么参数，保持了调用的正确顺序。（[Pytest文档](https://docs.pytest.org/en/latest/reference.html#id30)）
 
@@ -1645,7 +1621,7 @@ def test_with_broken_fixture(broken_fixture):
 
 ![Fixture execution outcome resulting in different statuses.](https://docs.qameta.io/allure/images/pytest_fixture_effect.png)
 
-**Parametrization**
+###### Parametrization
 
 您可以使用 `@pytest.mark.parametertrize` 从输入参数集中生成许多测试用例。（[Pytest文档](https://docs.pytest.org/en/latest/skipping.html)）
 
@@ -1693,7 +1669,7 @@ def test_parameterize_with_uneven_value_sets(param1, param2, param3):
 
 除了 environment ，Allure 目前使用 Pytest 可以支持几乎所有可用的特性。
 
-**Steps**
+###### Steps
 
 Allure 报告首要并且可能最重要的是，它允许获得每个测试调用的非常详细的分步表示。这是通过 `@allure.step` 装饰器来实现的，它将注释的方法或函数的调用与提供的参数都添加到报表中。
 
@@ -1797,7 +1773,7 @@ setup 和 teardown 将由 fixture 中的步骤显示在单独的树中。
 
 ![Step in fixture resolved from conftest.py.](https://docs.qameta.io/allure/images/pytest_step_in_fixture.png)
 
-**Attachments**
+###### Attachments
 
 报告可以显示许多不同类型的附件，这些附件可以作为测试、步骤或 fixture 结果的补充。附件可以通过 `allure.attach` 创建（`body`, `name`, `attachment_type`, `extension`）:
 
@@ -1839,7 +1815,7 @@ def test_multiple_attachments():
 
 ![Attachments in the test body.](https://docs.qameta.io/allure/images/pytest_attachments.png)
 
-**Descriptions**
+###### Descriptions
 
 您可以添加测试的详细描述，以便为报表阅读提供所需的上下文。这可以通过几种方式实现:您可以添加一个 `@allure.description` 装饰器来提供一个描述字符串，或者您可以使用 `@allure.description_html` 来提供一些 HTML，以便在测试用例的 “description” 部分中呈现。或者，描述将简单地从测试方法的文档字符串中获取。
 
@@ -1911,7 +1887,7 @@ def test_dynamic_description():
     allure.dynamic.description('A final description.')
 ```
 
-**Titles**
+###### Titles
 
 特殊的 `@allure.title` 装饰器可以使测试标题更具可读性。标题支持参数占位符并支持动态替换。
 
@@ -1947,7 +1923,7 @@ def test_with_dynamic_title():
 
 ![Description from docstring.](https://docs.qameta.io/allure/images/pytest_titles.png)
 
-**Links**
+###### Links
 
 要想将报告与缺陷跟踪或测试管理集成，可以使用：`@allure.link`, `@allure.issue` 和 `@allure.testcase`
 
@@ -2039,7 +2015,7 @@ Allure 允许用类似的方式对你的测试进行标记，有三种类型的�
 - Severity 标签
 - 自定义标签
 
-**BDD markers**
+###### BDD markers
 
 有两个装饰器可以根据项目的特性/故事分解来标记测试: `@allure.feature` 和 `@allure.story` （[背景资料请参阅Wikipedia上的BDD文章](https://en.wikipedia.org/wiki/Behavior-driven_development)）。为了表明某个特征或故事属于某个史诗，名字可以使用 `epic_` 前缀开头。
 
@@ -2097,7 +2073,7 @@ tests.py ...                                                                    
 =============================== 2 passed in 0.01 seconds ==============================
 ```
 
-**Severity markers**
+###### Severity markers
 
 要根据测试的严重程度对测试进行评分，可以使用 `@allure.severity` 装饰器。它需要 `allure.severity_level` 枚举值作为参数。
 
@@ -2145,8 +2121,6 @@ bdd_annotations_demo/test_severity_labels.py ...                                
 ================================ 3 passed in 0.01 seconds ============================
 ```
 
-<div id="_behave"></div>
-
 #### 6.2. Behave
 
 Allure 与 behave 集成为一个外部格式化程序。
@@ -2167,15 +2141,15 @@ $ behave -f allure_behave.formatter:AllureFormatter -o %allure_result_folder% ./
 
 ##### 6.2.3. 特性
 
-**Severity**
+###### Severity
 
 与严重性名称（如 critical、trivial 等）匹配的标记将被解释为特性或场景的严重性。如果没有提供，场景将继承特性严重性，或者在另一种情况下覆盖它。如果有多个严重性定义标记，则只使用最后一个。
 
-**Steps and Scenarious status**
+###### Steps and Scenarious status
 
 带有断言异常的步骤将被标记为失败，在测试执行期间抛出的其他异常将导致状态中断。场景状态将由第一个不成功步骤状态决定。当所有步骤都通过时，则认为整个场景已经通过。
 
-**Step Data**
+###### Step Data
 
 步骤数据文本或表格数据在报表中表示为步骤附件。
 
@@ -2194,7 +2168,7 @@ nosetests --with-allure --logdir=/path/to/put/results --not-clear-logdir
 
 ##### 6.3.2. Supported features
 
-**Attachment**
+###### Attachment
 
 在测试报告中附加一些内容:
 
@@ -2205,7 +2179,7 @@ def test_foo():
     nose.allure.attach('my attach', 'Hello, World')
 ```
 
-**Step**
+###### Step
 
 将测试分成几个步骤:
 
@@ -2239,7 +2213,7 @@ def test_bar():
     assert make_some_data_bar() is not None
 ```
 
-**Environment**
+###### Environment
 
 您可以提供测试[环境参数](https://github.com/allure-framework/allure-core/wiki/Environment)，如报表名称、浏览器或测试服务器地址来丰富 Allure 测试报告。
 
@@ -2250,7 +2224,7 @@ def test_dummy():
     nose.allure.environment(report='Allure report', browser=u'Firefox')
 ```
 
-**Severity**
+###### Severity
 
 任何测试、类或模块都可以标记不同的严重程度:
 
@@ -2314,11 +2288,7 @@ nosetests my_tests/ --with-allure --logdir=tmp --feature="Feature1, Feature2" --
 
 ----
 
-<div id="_javascript"></div>
-
 ## 7. JavaScript
-
-<div id="_jasmine"></div>
 
 #### 7.1. Jasmine
 
@@ -2468,8 +2438,6 @@ mvn jetty:run -Djetty.port=1234
 node_modules/protractor/bin/protractor ./test/system/conf.js
 ```
 
-<div id="_cucumber_js"></div>
-
 #### 7.2. Cucumber JS
 
 > **注意**：Allure report 版本: 1.4.15
@@ -2586,7 +2554,7 @@ mvn jetty:run -Djetty.port=1234
 01/09/2015 version 0.0.1
 - 第一次发布
 
-<div id="_karma"></div>
+ 
 
 #### 7.3. Karma
 
@@ -2653,7 +2621,7 @@ karma start --reporters allure,dots
 更多关于 Allure 的信息，请看 [Allure core](https://github.com/allure-framework/allure) 项目。
 有关 Karma 的更多信息，请查看 [Karma 主页](http://karma-runner.github.com/)。
 
-<div id="_mocha"></div>
+ 
 
 #### 7.4. Mocha
 
@@ -2699,11 +2667,11 @@ Allure是一个测试框架，它提供了比平常更多的测试数据。一�
 
 ----
 
-<div id="_ruby"></div>
+ 
 
 ## 8. Ruby
 
-<div id="_cucumber"></div>
+ 
 
 #### 8.1. Cucumber
 
@@ -2799,7 +2767,7 @@ require 'allure-cucumber'
 
 此适配器只生成包含测试信息的 XML 文件。关于如何生成报告，请参阅[wiki部分](https://github.com/allure-framework/allure-core/wiki#generating-report)。
 
-<div id="_rspec"></div>
+ 
 
 #### 8.2. RSpec
 
@@ -2875,11 +2843,11 @@ end
 
 ----
 
-<div id="_groovy"></div>
+ 
 
 ## 9. Groovy
 
-<div id="_spock"></div>
+ 
 
 #### 9.1. Spock
 
@@ -2892,11 +2860,11 @@ Spock 框架源码 [https://github.com/spockframework/spock](https://github.com/
 
 ----
 
-<div id="_php"></div>
+ 
 
 ## 10. PHP
 
-<div id="_phpunit"></div>
+ 
 
 #### 10.1. PHPUnit
 
@@ -3168,7 +3136,7 @@ class SomeTest extends PHPUnit_Framework_TestCase
 
 整个测试方法的执行状态将依赖于每一个步骤，但是关于步骤状态的信息将被单独存储。
 
-<div id="_allurecodeception"></div>
+ 
 
 #### 10.2. ALLURECodeception
 
@@ -3225,11 +3193,11 @@ allure generate --report-version 1.4.5 --report-path tests/_output/allure-report
 
 ----
 
-<div id="__net"></div>
+ 
 
 ## 11. .NET
 
-<div id="_specflow"></div>
+ 
 
 #### 11.1. SpecFlow
 
@@ -3241,7 +3209,7 @@ allure generate --report-version 1.4.5 --report-path tests/_output/allure-report
 4. 使用任意测试执行器运行测试
   - [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter) wiki
 
-<div id="_nunit_3"></div>
+ 
 
 #### 11.2. NUnit 3
 
@@ -3325,7 +3293,7 @@ class TestClass
 - [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter)
 - [Allure NUnit 3](https://github.com/unickq/allure-nunit/wiki)
 
-<div id="_nunit_2"></div>
+ 
 
 #### 11.3. NUnit 2
 
@@ -3352,7 +3320,7 @@ class TestClass
 - [Allure SpecFlow](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter)
 - [Allure NUnit 3](https://github.com/unickq/allure-nunit/wiki)
 
-<div id="_mstest"></div>
+ 
 
 #### 11.4. MSTest
 
@@ -3389,11 +3357,11 @@ $ allure generate output-xmls -v 1.4.0
 
 ----
 
-<div id="_scala"></div>
+ 
 
 ## 12. Scala
 
-<div id="_scalatest"></div>
+ 
 
 #### 12.1. ScalaTest
 
@@ -3463,7 +3431,7 @@ credentials += Credentials("Sonatype Nexus Repository Manager",
 ```bash
 $ sbt publish-signed
 ```
-<div id="_specs"></div>
+ 
 
 #### 12.2. Specs
 
@@ -4180,9 +4148,598 @@ Allure 的默认版本是 **2.7.0**
 
 ## 14. Allure 插件系统
 
+Allure 的设计是高度可定制的，因为实践表明，世界各地的许多团队可能有不同的度量标准，或者开发出了独特的测试方法，他们的产品可能会要求与 Allure 最初构建时要满足的要求完全不同。为了应对这类挑战，Allure 提供了一个插件系统，它为报表表示提供了很大的灵活性。
+
+确切地说，所有的基本功能都模块化到插件中，由于太长就不在这里列出了。但是几乎所有在特性部分中描述的特性都是通过内部插件实现的。
+
 #### 14.1. Java 插件 API
+
+让我们看看 Allure 插件系统中顶层类的类图。
+
+![Top interfaces hierarchy](https://docs.qameta.io/allure/images/plugins_api_uml_diagram.png)
+
+插件类可以扩展 3 个基本接口，提供不同方面的功能:
+- **Reader** 允许实现一个 `readResults` 方法，该方法定义了使用 `ResultsVisitor` 实例从带有测试结果的目录中读取结果的逻辑。
+- **Aggregator** 允许实现 `aggregate` 方法，该方法定义了聚合所有结果文件夹中已处理结果的逻辑，并将结果数据写入报表目录。
+- **Widget** 允许实现 `getData` 方法，它再次定义了处理结果聚合的逻辑，但这次结果数据被保存到 `widget.json` 中，根据 `getName` 中提供的值命名。
+- **Context<T>** 带有 `T getValue()` 方法，能够通过配置实例中提供的方法 `Configuration.requireContext(Class<T>)` 创建一些实用程序类用于所有插件，并作为上述 3 种方法中的一个参数提供。
+
 #### 14.2. JS 插件 API
+
+Allure 的前端是用 [BackboneJS](http://backbonejs.org/) 框架构建的。因此，对其内部机制的一些基本了解有时是必要的。
+
+Api 可以从全局对象 allure.api 访问。让我们看看它提供的函数列表:
+
+- `addTab(tabName, {title, icon, route, onEnter = notFound} = {})` - 可以用来为报表定义一个新的选项卡，它将出现在左侧面板菜单上，名称为 **tabName**，它的 **icon** 将由 css 样式中提供的图标字符串定义，**route** 将为一个新的选项卡页面定义一个地址。**onEnter** 是一个函数，它实例化一个管理新选项卡表示的视图类。
+- `addTranslation(lang, json)` - 提供了在创建的选项卡、小部件或测试用例块中多语言命名的能力。**lang** 是一个语言键，而 **json** 是一个 json 对象，它包含指定语言中的字符串值的映射。
+- `translate(name, options)` - 如果您在插件中生成 html 代码，并且不使用 `allure.components` 中提供的现有组件，则需要该函数。在上面的选项卡示例中，您必须在这个函数调用的模板中封装字符串，以使字符串转换能够从全局注册表中获得。更多信息见 [i18next](https://www.npmjs.com/package/i18next-text) 的文档。
+- `addWidget(name, Widget)` - 这是在报告的 Overview 页面上创建新小部件的方法。**name** 将定义其显示的名称，而 **Widget** 是要添加到 Widget 网格的 `View`。Api 在 `allure.components.WidgetStatusView` 中为小部件提供了一个基类，我们将在后面的 Behaviors 插件部分中研究它。但您可以根据自己的需要设计一个从 `Backbone.Marionette.view` 扩展的小部件，只是要记住，此小部件定义设计用于从小部件弹出数据来填充此视图的模型 ，这些数据来自 `widgets.json` 文件中 **name** 参数对应的键值。 
+- `addTestcaseBlock(view, {position})` - 允许将视图类添加到测试用例页面中，在 3 个可能的块组中，由 **position** 参数确定。Position 可以是以下值之一: `tag`, `after` 或 `before`。要理解您可以附加到测试用例页面的什么类型的信息，请跳转到相关特性部分。
+
 #### 14.3. 写一个新插件
+
+这里我们将介绍构建一个新插件通常需要的步骤。
+
+##### 14.3.1. 第1步: 创建一个新的插件项目
+
+###### 插件结构
+
+基本上，任何插件都将由两个主要部分组成:
+
+- **Java classes** 处理报表数据并在报表文件夹中生成一些结果
+- **JS script** 获取存储的结果并在报表前端为其创建表示形式，例如一个小部件或一个附加选项卡
+
+典型的插件模块结构是这样的:
+```text
+/my-plugin
+    /src
+        /dist
+            /static
+            allure-plugin.yml
+        /main
+            /java
+                /my.company.plugin
+    build.gradle
+```
+
+这里所有静态的 `.js` 和 `.css` 文件都存储在 `src/dist/static` 中，而 `src/main/java` 下的所有东西都是一个数据处理的 Java 代码。`allure-plugin.yml` 是一个配置文件。
+
+**allure-plugin.yml 文件的内容**
+
+该文件包含可读的指令，插件加载器将进一步使用这些指令来定位资源和连接插件。
+
+*allure-plugin.yml*
+```yaml
+id: my-plugin
+name: Plugin name goes here
+description: More detailed explanation of what does this plugin do.
+extensions:
+- my.company.allure.CustomPlugin // - Fully qualified names of classes that implement `Extension` interface and comprise data processing functionality.
+- my.company.allure.CustomWidget
+jsFiles:
+- index.js
+cssFiles:
+- styles.css
+```
+
+**添加 allure-plugin-api 依赖**
+
+要使用该 API，您只需从 [jcenter 存储库](https://mvnrepository.com/artifact/io.qameta.allure/allure-plugin-api)下载 `allure-plugin-api` 依赖项。请添加以下内容到您的项目构建脚本中:
+
+in Gradle:
+```groovy
+dependencies {
+    compileOnly('io.qameta.allure:allure-plugin-api:${allureVersion}')
+}
+```
+
+in Maven:
+```xml
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-plugin-api</artifactId>
+            <version>${allureVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+```
+
+##### 14.3.2. 第2步: 编写处理测试结果的 Java 类
+
+有一些非常简单的参数化测试集，其中典型的结果将包含 `parameters` 中捕获的测试用例参数。
+
+```json
+{
+  "uuid":"0edd28b1-3c7f-4593-8dda-db9aa004891f",
+  "fullName":"io.qameta.allure.animals.AnimalsTest.angryCat",
+  "name":"angryCat",
+  "status":"passed",
+  "stage":"finished",
+  "start":1495467840415,
+  "stop":1495467840416,
+  "parameters":[
+    {
+      "name":"arg0",
+      "value":"Hiss!"
+    }
+  ]
+}
+```
+
+我们正在准备编写一个功能齐全的新插件，它将添加一个带有一些测试结果表示的新标签，并创建一个小部件，将其放置在 Overview 标签上，并带有一些经过整理的数据。例如，从这个参数化测试中提取通过的和失败的参数，创建一个新选项卡，以及一个只显示最近失败的小部件。
+
+我们应该从编写实现 `Aggregator` 和 `Widget` 接口的Java类开始。
+
+*MyPlugin.java*
+```java
+public class MyPlugin implements Aggregator, Widget {
+
+    @Override
+    public void aggregate(final Configuration configuration,
+                          final List<LaunchResults> launches,
+                          final Path outputDirectory) throws IOException {
+    final JacksonContext jacksonContext = configuration
+        .requireContext(JacksonContext.class);
+    final Path dataFolder = Files.createDirectories(outputDirectory.resolve("data"));
+    final Path dataFile = dataFolder.resolve("myplugindata.json");
+    final Stream<TestResult> resultsStream = launches.stream()
+        .flatMap(launch -> launch.getAllResults().stream());
+    try (OutputStream os = Files.newOutputStream(dataFile)) {
+        jacksonContext.getValue().writeValue(os, extractData(resultsStream));
+    }
+    }
+
+    private Collection<Map> extractData(final Stream<TestResult> testResults) {
+        //extraction logic
+    }
+
+    @Override
+    public Object getData(Configuration configuration, List<LaunchResults> launches) {
+        Stream<TestResult> filteredResults = launches.stream().flatMap(launch -> launch.getAllResults().stream())
+                .filter(result -> result.getStatus().equals(Status.FAILED));
+        return extractData(filteredResults);
+    }
+
+    @Override
+    public String getName() {
+        return "mywidget";
+    }
+}
+```
+
+上面的代码中发生了什么?
+
+- 在 `aggregate` 方法中，在 `extractData` 方法中从测试结果中提取的数据被写入 `myplugindata.json` 文件，该文件存储在报表的 `data` 文件夹中。为了创建一个正确的 .json 文件，`JacksonContext` 被用来获取一个 mapper 实例。这些数据将显示在新选项卡上。
+- getData 方法实现创建要在新小部件中使用的数据，getName 方法定义数据将存储 widgets.json 文件入口。
+
+*myplugindata.json*
+```json
+[ {
+  "sounds" : [ "Growl!", "Hiss!" ],
+  "name" : "angryCat"
+}, {
+  "sounds" : [ "Oink!", "Meow!" ],
+  "name" : "hungryCat"
+}, {
+  "sounds" : [ "Bark!", "Woof!", "Moo!" ],
+  "name" : "bigDog"
+} ]
+```
+
+*widgets.json*
+```json
+...
+"mywidget" : [ {
+    "sounds" : [ "Oink!" ],
+    "name" : "hungryCat"
+  }, {
+    "sounds" : [ "Moo!" ],
+    "name" : "bigDog"
+  } ],
+...
+```
+
+##### 14.3.3. 添加实用程序上下文
+
+您的插件可能需要共享一些公共的实用程序，这种按需提供的方式将很明智。`JacksonContext` 是此类实用程序类的一个简单示例，它可用于获取映射器，以便将带有数据的 Java 对象序列化到报告 JSON 文件中。
+
+```java
+public class JacksonContext implements Context<ObjectMapper> {
+
+    private final ObjectMapper mapper;
+
+    public JacksonContext() {
+        this.mapper = new ObjectMapper()
+                .configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true)
+                .setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()))
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @Override
+    public ObjectMapper getValue() {
+        return mapper;
+    }
+}
+```
+
+然后，从一个插件类中可以像第 2 步那样从 `Configuration` 实例中访问它。
+
+##### 14.3.4. 第3步: 为报告添加一个新选项卡
+
+这里，我们切换到 Allure 报告的前端，开始向 `index.js` 文件添加一些 JavaScript 代码。
+
+主干通过 [Models](http://backbonejs.org/#Model) 或 [Collections](http://backbonejs.org/#Collection) 来管理数据，在上一步中，我们将页面的数据保存为一个 `Collection<Map>`，因此标签的模型应该扩展为 `Backbone.Collection` 。这个对象将包含在 url 中指定的文件中的数据。然后，对于您的新选项卡，您需要从已经包含报表左侧导航菜单的基础 `AppLayout` 类扩展一个 [View](http://backbonejs.org/#View) 类。它在全局 `allure` 对象中提供:
+
+```javascript
+var MyTabModel = Backbone.Collection.extend({
+    url: 'data/myplugindata.json'
+})
+
+class MyLayout extends allure.components.AppLayout {
+
+    initialize() {
+        this.model = new MyTabModel();
+    }
+
+    loadData() {
+        return this.model.fetch();
+    }
+
+    getContentView() {
+        return new MyView({items: this.model.models});
+    }
+}
+```
+
+在 `MyLayout` 类中，你可以覆盖一个 `getContentView` 方法来定义一些其他的视图类，这些视图类将管理标签的内容。下面是视图类的一些简单实现，`template` 是一些返回带有添加数据的 html 模板的模板函数。
+
+```javascript
+const template = function (data) {
+    html = '<h3 class="pane__title">My Tab</h3>';
+    for (var item of data.items) {
+        html += '<p>' + item.attributes.name + ' says: ' + item.attributes.sounds + '</p>';
+    }
+    return html;
+}
+
+var MyView = Backbone.Marionette.View.extend({
+    template: template,
+
+    render: function () {
+        this.$el.html(this.template(this.options));
+        return this;
+    }
+})
+```
+
+完成之后 `addTab` 函数调用看起来是这样的:
+```javascript
+allure.api.addTab('mytab', {
+    title: 'My Tab', icon: 'fa fa-trophy',
+    route: 'mytab',
+    onEnter: (function () {
+        return new MyLayout()
+    })
+});
+```
+
+这将最终给你一个新的标签:
+![Hello world tab example](https://docs.qameta.io/allure/images/plugins_add_tab_example.png)
+
+##### 14.3.5. 第4步: 在 Overview 页面上添加一个新部件
+
+要创建一个新的小部件，您需要实现一个小视图类来管理您放入第2步 `widgets.json` 中的数据。注意，如果您将 `getData` 的数据作为集合返回，它随后将作为数组提供给小部件，可以通过 `this.model.get('items')` 获得。在下面的代码中，`template` 函数定义了要在小部件中显示的实际 html。
+
+*index.js*
+```javascript
+class MyWidget extends Backbone.Marionette.View {
+
+    template(data) {
+            return widgetTemplate(data)
+    }
+
+    serializeData() {
+        return {
+            items: this.model.get('items'),
+        }
+    }
+}
+
+allure.api.addWidget('mywidget', MyWidget);
+```
+
+这最终在 Overview 仪表板上为我们提供了一个新的小部件。
+
+![A new widget on the Overview](https://docs.qameta.io/allure/images/plugins_add_widget_example.png)
+
+##### 14.3.6. 第5步: 添加字符串翻译
+
+回到选项卡示例，很容易在其中启用翻译后的字符串。在模板中，你需要用纯文本字符串代替占位符并使用 `translate` 功能，你还需要通过 `addTranslation` 注册翻译。
+
+```javascript
+const template = function (data) {
+    html = '<h3 class="pane__title">' + allure.api.translate(mytab.name) + '</h3>';
+    for (var item of data.items) {
+        html += '<p>' + item.attributes.name + ' says: ' + item.attributes.sounds + '</p>';
+    }
+    return html;
+}
+
+allure.api.addTranslation('en', {
+    mytab: {
+        name: 'My Tab',
+    }
+},
+});
+
+allure.api.addTranslation('ru', {
+    mytab: {
+        name: 'Моя Вкладка',
+    }
+},
+});
+```
+
+##### 14.3.7. 第6步: 为测试用例页面添加新的部分
+
+在内部，很多 Allure 的特性都是使用插件 api 实现的，让我们看看如何将示例链接添加到测试用例页面。
+
+通过 `addTestcaseBlock` 方法，您可以定义一个视图，您可以假设该视图会有一个测试用例对象作为在 `this.model` 中可用的模型。
+
+一个 View 类:
+
+*LinksView.js*
+```javascript
+import './styles.css';
+import {View} from 'backbone.marionette';
+import {className} from '../../decorators';
+import template from './LinksView.hbs';
+
+@className('pane__section')
+class LinksView extends View {
+    template = template;
+
+    serializeData() {
+        return {
+            links: this.model.get('links')
+        };
+    }
+}
+```
+
+Handlebars 作为模板引擎:
+
+*LinksView.hbs*
+```html
+{{#if links}}
+    <h3 class="pane__section-title">{{t 'testCase.links.name'}}</h3>
+    {{#each links}}
+        <span class="testcase-link">
+        {{#if (eq type "issue")}}
+            <span class="fa fa-bug"></span>
+        {{/if}}
+        {{#if (eq type "tms")}}
+            <span class="fa fa-database"></span>
+        {{/if}}
+        <a class="link" href="{{this.url}}" target="_blank">{{name}}</a>
+    </span>
+    {{/each}}
+{{/if}}
+```
+
+*index.js*
+```javascript
+import LinksView from './LinksView';
+
+allure.api.addTestcaseBlock(LinksView, {position: 'before'});
+```
+
+它向测试用例添加了一个 Links 部分:
+
+![New test case block](https://docs.qameta.io/allure/images/plugins_add_testcase_block_example.png)
+
+##### 14.3.8. 第7步: 插件发布
+
+当你构建一个插件时，你应该想发布以下结构，然后可以复制到 Allure commandline 插件文件夹。
+
+```text
+/my-plugin
+    allure-plugin.yml
+    plugin.jar
+    /lib
+        dependency.jar
+    /static
+        styles.css
+        index.js
+```
+- **plugin.jar** - 一个带有已编译插件类的 jar 包
+- **/lib** - 存放所有你的插件依赖
+- **/static** - 一个包含所有静态 `.js` 和 `.css` 文件的文件夹
+
+下面是一个 gradle 构建脚本的模板，用于一个插件项目，它使用 [Java Library Distribution Plugin](https://docs.gradle.org/current/userguide/javaLibraryDistribution_plugin.html) 来打包插件类，并将文件和依赖复制到一个 .zip 归档文件中。
+
+*build.gradle*
+```groovy
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java-library-distribution'
+
+jar {
+    archiveName = 'plugin.jar'
+}
+
+dependencies {
+    compileOnly('io.qameta.allure:allure-plugin-api:2.0-BETA8')
+}
+```
+
+##### 14.3.9. 第8步: 启用插件
+
+Allure commandline 有以下文件夹结构:
+
+```text
+/allure-commandline
+    /bin
+    /config
+        allure.yml
+    /lib
+    /plugins
+        /behaviors-plugin
+        /junit-plugin
+        /screen-diff-plugin
+```
+
+这里的 `plugins` 文件夹，是报告生成时使用的插件分布路径。默认情况下，已经有几个插件加入了 Allure，它们的使用情况由默认的构建配置文件 `/config/allure.yml` 管理。在这个文件中，plugins 插件目录下面列出了要使用的插件，所以它的内容应该是这样的:
+
+*allure.yml*
+```yaml
+plugins:
+  - behaviors-plugin
+  - junit-plugin
+  - screen-diff-plugin
+```
+
+要启用自己的插件，将构建好的插件文件夹复制到 `plugins` 文件夹中，然后将文件夹名称添加到相应的构建配置文件配置中:
+
+```text
+/allure-commandline
+    /bin
+    /config
+        allure.yml
+    /lib
+    /plugins
+        /behaviors-plugin
+        /junit-plugin
+        /screen-diff-plugin
+        /my-plugin
+```
+
+*allure.yml*
+```yaml
+plugins:
+  - behaviors-plugin
+  - junit-plugin
+  - screen-diff-plugin
+  - my-plugin
+```  
+
 #### 14.4. 已有的插件
+
+几个重要的 Allure 特性被实现为解耦的插件，它们独立地存储在 Allure 命令行发行版的 `plugins` 文件夹下。它们的使用可以通过构建概要文件功能来管理。
+
+##### 14.4.1. 自定义 Logo
+
+让我们从学习一个最简单的插件如何工作开始。在本节中，我们将快速学习 Allure 中的一个可用插件，它可以让你改变显示在报告左上角的 logo 图片。
+
+![Custom logo in the report](https://docs.qameta.io/allure/images/plugins_custom_logo.png)
+
+插件源目录结构:
+```text
+/src
+    /dist
+        allure-plugin.yml
+        /static
+            custom-logo.svg
+            styles.css
+    build.gradle
+```
+
+*allure-plugin.yml*
+```yaml
+id: custom-logo
+name: Custom logo aggregator
+description: The aggregator replaces default Allure logo with a custom one
+cssFiles:
+  - styles.css
+custom-logo.svg - is a vector graphics file with a logo to use
+
+styles.css - a css file that adds the style, that will override default logotype.
+```
+
+*styles.css*
+```css
+.side-nav__brand {
+  background: url('custom-logo.svg') no-repeat left center;
+  margin-left: 10px;
+}
+```
+
+##### 14.4.2. Behaviors
+
+Behaviors 插件的创建是为了支持 Allure 报告展示 behavior-driven 的测试。测试用例应该有 Feature 和 Story 标签，该插件将聚合并创建一个小部件，显示每个特性的故事结果的统计数据，以及一个新的标签，其中所有测试结果将根据它们的特性和故事进行分组。
+
+- 在基于 java 的适配器中，你可以用 `@Feature` 和 `@Story` 注释标记你的测试
+- 在基于 java 的适配器中，你可以实用 `allure.feature(featureName)` 和 `allure.story(storyName)` 方法
+- 在 CucumberJVM 中，Features 和 Stories 的提取出来做测试和在组织后的 Features 和 Scenarios 完全一样
+
+一旦你的测试被正确地标记，你可以立即开始使用 Behaviors 插件，因为它默认包含在 Allure 发行版中。你可以在 [Allure 2 项目的 plugins 文件夹](https://github.com/allure-framework/allure2/tree/master/plugins)中找到插件资源
+
+Behaviors 插件结构:
+```text
+/src
+    /dist
+        allure-plugin.yml
+        /static
+            index.js
+    /main
+        /java
+            /io.qameta.allure.behaviors
+                BehaviorsPlugin.java
+    build.gradle
+```
+
+**BehavioursPlugin.java**
+
+这个插件为测试结果树创建了一个不同的展现，这就是为什么它的 `BehaviorsPlugin` 类继承了一个提供树聚合的基类 `AbstractTreeAggregator`，并实现了一个 `Widget` 接口来为概述报告仪表板上的窗口小部件准备数据。
+
+- 要提供聚合分类器，插件应该实现一个方法 `List<TreeGroup> getGroups(final TestResult result)`
+```java
+@Override
+    protected List<TreeGroup> getGroups(final TestResult result) {
+        return Arrays.asList(
+                TreeGroup.allByLabel(result, LabelName.FEATURE, DEFAULT_FEATURE),
+                TreeGroup.allByLabel(result, LabelName.STORY, DEFAULT_STORY)
+        );
+    }
+```
+
+当构建一个重新组合的结果树以存储在 `behaviors.json` 文件中时，这个组将确定每个 `TestResult` 的位置。
+
+- `BehaviorsPlugin` 类的另一部分是一个 `getData` 方法，它包含了 `Widget` 接口的实现。此方法收集每个特性传递的故事数量的聚合信息，这些信息将被放到 `widget.json` 文件中。
+
+**index.js**
+
+之后，在 `index.js` api 中创建一个新标签和一个新部件:
+```javascript
+allure.api.addTab('behaviors', {
+    title: 'tab.behaviors.name', icon: 'fa fa-list',
+    route: 'behaviors(/:testcaseId)',
+    onEnter: (function () {
+        var routeParams = Array.prototype.slice.call(arguments);
+        return new allure.components.TreeLayout({
+            routeParams: routeParams,
+            tabName: 'tab.behaviors.name',
+            baseUrl: 'behaviors',
+            url: 'data/behaviors.json'
+        });
+    })
+});
+
+allure.api.addWidget('behaviors', allure.components.WidgetStatusView.extend({
+    title: 'widget.behaviors.name',
+    baseUrl: 'behaviors',
+    showLinks: false,
+    showAllText: 'widget.behaviors.showAll'
+}));
+```
+
+注意，一个特殊的 `TreeLayout` 组件可用于显示由 `AbstractTreeAggregator` 实现生成的所有类型的数据。同样，`route` 属性为到测试用例页面的链接定义了一种模式。
+
+##### 14.4.3. Junit
+
+Junit 插件没有前端部分，它是为了启用 Allure generator 来处理 Junit 报告的 xml 格式，这个插件是默认启用的，所以当你对一个包含 Junit 测试结果的文件夹使用 `allure generate` 命令时，就会生成一份报告。
 
 ----
