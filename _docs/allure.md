@@ -12,19 +12,13 @@ category: DOC
 
 ----
 
-<div id='_about'></div>
-
 ## 1. 关于
-
-<div id='_copyright'></div>
 
 #### 1.1. 版权
 
 Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/) 获取
 
 本文档的副本可供自己使用或分发给他人，但不得收取任何费用，并且，无论以印刷或电子方式，每个副本均包含此版权声明。
-
-<div id='_get_help'></div>
 
 #### 1.2. 获得帮助
 
@@ -33,26 +27,20 @@ Allure 参考指南以 HTML 文档的形式提供。最新版本可在 [https://
 - 在 [Stack Overflow](https://stackoverflow.com/questions/ask?tags=allure) 或是 [Stack Overflow in Russian](https://ru.stackoverflow.com/questions/ask?tags=allure) 提问
 - 在 [GitHub issues](https://github.com/allure-framework/allure2/issues/new?) 给我们提问
 
-<div id='_how_to_proceed'></div>
-
 #### 1.3. 如何开始
 
 - 打开 [demo version](http://demo.qameta.io/allure/latest/)，看看 Allure 报告的样子。
-- [开始](#_get_started)为现有项目构建报告。
-- 了解更多关于[报表结构和特性](#_report_structure)的信息。
-- 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#_java)、[Python](#_python)、[JavaScript](#_javascript)、[Ruby](_ruby)、[Groovy](#_groovy)、[PHP](#_php)、[.net](__net) 和 [Scala](#_scala)
+- [开始](#2-开始)为现有项目构建报告。
+- 了解更多关于[报表结构和特性](#3-报告结构)的信息。
+- 将 Allure 集成到您最喜欢的测试框架中。支持的框架按语言分组: [Java](#5-java)、[Python](#6-python)、[JavaScript](#7-javascript)、[Ruby](8-ruby)、[Groovy](#9-groovy)、[PHP](#10-php)、[.net](11-net) 和 [Scala](#12-scala)
 
 ----
-
-<div id='_get_started'></div>
 
 ## 2. 开始
 
 只需要几个简单步骤就可以生成你的第一份报告：
 - 下载并安装 Allure 命令行应用套件到你的环境
 - 定位测试执行数据，构建一份报告
-
-<div id='_installing_a_commandline'></div>
 
 #### 2.1. 安装
 
@@ -115,17 +103,13 @@ $ allure --version
 2.0.1
 ```
 
-<div id='_test_execution'></div>
-
 #### 2.2. 执行测试
 
-如果您正在使用 IDE 在本地运行测试，它可能会在构建文件中忽略指定的 Allure 配置（就像 IntelliJ IDEA 那样）,可以使用 allure.properties 文件去配置 Allure。查看 [configuration 章节](#_configuration) 以获得更多信息。
+如果您正在使用 IDE 在本地运行测试，它可能会在构建文件中忽略指定的 Allure 配置（就像 IntelliJ IDEA 那样）,可以使用 allure.properties 文件去配置 Allure。查看 [配置章节](#_configuration) 以获得更多信息。
 
 在生成报告之前，您需要运行测试以获取一些基本的测试报告数据。通常它可能是一个 junit-style 的 xml 报告，这几乎是所有流行的测试框架支持的报告格式。比如，假设您有一个由 surefire maven 插件自动生成的测试报告存储在 `target/surefire-reports` 中:
 
 ![Surefire report folder](https://docs.qameta.io/allure/images/get_started_surefire-report.png)
-
-<div id='_report_generation'></div>
 
 #### 2.3. 生成报告
 
@@ -142,15 +126,11 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 ----
 
-<div id="_report_structure"></div>
-
 ## 3. 报告结构
 
 当你知道报告长什么样子，就可能想要获得更多数据丰富的报告。为此你得考虑为你的测试框架使用一个 Allure 适配器，它将被允许收集更多的信息。可以到集成章节，了解关于测试框架集成的更多信息。
 
 典型的报告由“概览”选项卡、导航栏、几个针对不同类型的测试数据表示的选项卡以及针对每个单独测试的测试用例页面组成。每个 Allure 报告都有一个类似于树的数据结构支持，它表示一个测试执行过程。不同的选项卡允许在原始数据结构的视图之间切换，从而提供不同的透视图。注意所有类似树的表示，包括行为、类别、xUnit 和包，它们都支持过滤和排序。
-
-<div id="_overview_page"></div>
 
 #### 3.1. 概览
 
@@ -170,15 +150,11 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 导航栏可折叠，使您能够切换到几种基本的结果概览模式。
 
-<div id="_categories"></div>
-
 #### 3.2. 类别
 
-类别选项卡提供了创建[自定义缺陷分类](#_categories_2)的方法，以应用于测试结果。
+类别选项卡提供了创建[自定义缺陷分类](#43-分类)的方法，以应用于测试结果。
 
 ![Categories](https://docs.qameta.io/allure/images/tab_categories.png)
-
-<div id="_suites"></div>
 
 #### 3.3. 测试集
 
@@ -186,15 +162,11 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 ![Suites](https://docs.qameta.io/allure/images/tab_suites.png)
 
-<div id="_graphs"></div>
-
 #### 3.4. 图表
 
 图表页上可以查看从测试数据收集的不同统计信息: 状态分解或严重性和持续时间图。
 
 ![Graphs](https://docs.qameta.io/allure/images/tab_graphs.png)
-
-<div id="_timeline"></div>
 
 #### 3.5. 时间轴
 
@@ -202,23 +174,17 @@ allure serve /home/path/to/project/target/surefire-reports/
 
 ![Timeline](https://docs.qameta.io/allure/images/tab_timeline.png)
 
-<div id="_behaviors"></div>
-
 #### 3.6. 行为
 
 支持行为驱动测试的展示，该选项卡根据史诗、特性和故事标签对测试结果进行分组。
 
 ![Behaviors](https://docs.qameta.io/allure/images/tab_behaviors.png)
 
-<div id="_packages"></div>
-
 #### 3.7. 软件包
 
 软件包选项卡根据不同的软件包来分组表示测试结果的树状布局。
 
 ![Packages](https://docs.qameta.io/allure/images/tab_packages.png)
-
-<div id="_test_case_page"></div>
 
 #### 3.8. 测试用例
 
@@ -1282,7 +1248,7 @@ Cucumber JVM 的每个主要版本都需要一个特定版本的 Allure Cucumber
 - Cucumber JVM 3.x - `allure-cucumber3-jvm` ![Allure Cucumber JVM 3.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber3-jvm.svg)
 - Cucumber JVM 4.x - `allure-cucumber4-jvm` ![Allure Cucumber JVM 4.x](https://img.shields.io/maven-central/v/io.qameta.allure/allure-cucumber4-jvm.svg)
 
-**Maven**
+###### Maven
 
 添加 `allure-cucumber4-jvm` 插件到你的项目中并将其添加到CucumberOptions 中：
 
@@ -1326,23 +1292,23 @@ Cucumber JVM 的每个主要版本都需要一个特定版本的 Allure Cucumber
 
 然后执行 `mvn clean test`，测试执行后的 allure JSON 文件会默认生成在 **allure-results** 目录下。
 
-**Features**
+###### Features
 
 此适配器提供运行时集成，允许将 Gherkin dsl 特性转换为基本的 Allure 特性。
 
-**Display Name**
+###### Display Name
 
 测试标题和测试集标题在运行时从 `.feature` 文件中提取。
 
-**Description**
+###### Description
 
 特性的描述会出现在每个场景中。
 
-**Steps**
+###### Steps
 
 所有场景步骤自动转换成 Allure 步骤。
 
-**Attachments**
+###### Attachments
 
 在 Java 代码中只需要用一个简单的 **@Attachment** 装饰器，就可以添加附件，它将返回一个 **String** 或 **byte[]** 添加到报告中:
 
@@ -1381,7 +1347,7 @@ try (InputStream is = Files.newInputStream(content)) {
 
 您可以如上所示一般，使用 `@Attachment` 装饰器的 **type** 参数为每个附加文件指定精确的 MIME 类型。但实际上，完全没有必要为所有附加文件指定附件类型，Allure 在默认情况下会分析附件内容，并能自动确定附件类型。只不过在使用纯文本文件时，通常需要指定一下附件类型。
 
-**Links**
+###### Links
 
 要关联问题到报告上，只需在 `.feature` 文件中的场景顶部添加 `@issue=<ISSUE-NUMBER>`。
 
@@ -1389,7 +1355,7 @@ try (InputStream is = Files.newInputStream(content)) {
 
 > **提示**：不要忘记在 Allure 属性中配置链接模式。
 
-**Severity**
+###### Severity
 
 要设置 severity，可以在 `.Feature` 文件中的的场景顶部添加 `@severity=blocker`。
 
@@ -1397,22 +1363,22 @@ try (InputStream is = Files.newInputStream(content)) {
 
 支持的严重性值: `blocker`, `critical`, `normal`, `minor`, `trivial`
 
-**Test markers**
+###### Test markers
 
 每个特性或场景都可以通过以下标记进行装饰: `@flaky`, `@muted`, `@known`
 
-**Test fixtures**
+###### Test fixtures
 
 所有方法都由装饰器 `@import cucumber.api.java.After` 或者 `@cucumber.api.java.Before` 装饰。它们将作为带有方法名称的步骤出现在报表中。
 
 如果 `@Before` 执行失败，该场景将被标记为跳过。
 如果 `@After` 执行失败，该场景将被标记为已通过，并且仅在方法的步骤之后将被标记为失败。
 
-**Behaviours Mapping**
+###### Behaviours Mapping
 
 Allure Cucumber JVM 集成请参考特性章节。
 
-**Configuration**
+###### Configuration
 
 `allure-results` 目录的位置，以及 `@TmsLink` 和 `@Issue` 链接都可以通过 `allure.properties` 文件来设置，该文件在资源目录: `src/test/resources`
 
@@ -3525,14 +3491,698 @@ testOptions in Test ++= Seq(
 
 ----
 
-<div id="_reporting"></div>
-
 ## 13. 报告
+
+适配器创建 XML 文件后，可以使用以下工具之一生成 Allure 报告
+
+#### 13.1. 命令行
+
+使用 Allure 命令行工具，您可以从现有的 Allure 结果生成报告。
+
+##### 13.1.1. 安装
+
+Allure CLI 是一个Java应用程序，所以它适用于所有平台。在使用 Allure CLI 之前，您必须手动安装 Java 1.8
+
+**Mac OS**
+
+你可以通过 [Homebrew](http://brew.sh/) 安装 Allure CLI
+
+```bash
+$ brew tap qameta/allure
+$ brew install allure
+```
+
+安装后，您将有 allure 命令可用。了解更多关于 [Allure Homebrew Formula](https://formulae.brew.sh/formula/allure) 。
+
+**Debian**
+
+对于基于 Debian 的源，我们提供了一个 PPA，所以安装很简单:
+
+```bash
+$ sudo apt-add-repository ppa:yandex-qatools/allure-framework
+$ sudo apt-get update
+$ sudo apt-get install allure-commandline
+```
+
+支持的发行版是: [Trusty](http://releases.ubuntu.com/14.04) 和 [Precise](http://releases.ubuntu.com/12.04)。安装后，您将有 allure 命令可用。了解更多关于 [Allure Debian 软件包](https://github.com/allure-framework/allure-debian)。
+
+**Windows 和 其他 Unix**
+
+- 从 [Maven Central](http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/) 下载最新版本的 zip 文件。
+- (老版本,⇐2.8.0) 从 [bintray](https://bintray.com/qameta/generic/allure2) 下载所需版本的 zip 包。
+- 解压到 **allure-commandline** 目录。
+- 软链接到 **bin** 目录。
+- Windows 使用 **allure.bat** ，其他 Unix 系统使用 **allure**
+- 添加 **allure** 到系统 PATH。
+
+##### 13.1.2. 配置
+
+**命令行选项**
+
+命令行可以使用一些选项，执行以下命令来查看它们：
+
+```bash
+$ allure help
+```
+
+**用法**
+
+可用的命令并不多
+
+**生成报告**
+
+要从现有的 Allure 结果生成报告，你可以使用以下命令:
+
+```bash
+$ allure generate <directory-with-results>
+```
+
+报告将生成到 **allure-report** 文件夹下。当然，你可以使用 **-o** 来改变目标文件夹:
+
+```bash
+$ allure generate <directory-with-results> -o <directory-with-report>
+```
+
+有关更多信息，请使用 `allure help` 命令。
+
+**打开报告**
+
+生成报表后，可以在默认的系统浏览器中打开它。只要运行
+
+```bash
+$ allure open <directory-with-report>
+```
+
+> **提示**：还可以使用 `allure serve` 命令，将报表生成到临时文件夹并打开它。
+
+**清理报告**
+
+如果要删除生成的报表数据，请使用 `allure report clean` 命令。
+
+默认情况下，报表命令将在 **allure-results** 文件夹中查找报表。如果您想从不同的位置使用报表，您可以使用 **-o** 选项。
+
+#### 13.2. Jenkins
+
+##### 13.2.1. 安装
+
+安装指南的第一部分是关于 Allure 插件及其命令行工具的全局安装。注意，与之前的版本不同，Jenkins Allure 插件 2.11 不需要配置 Jenkins 内容安全策略属性。
+
+1. 在插件管理页安装最新版的 [Allure Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Allure+Plugin)
+2. 打开插件的高级设置（在 **<your_jenkins_host>/pluginManager/advanced**)
+3. 点击右上角 "Check Updates" 按钮
+4. 在 “Global Tools Configuration” 配置 Allure 命令行
+
+**Build agents have connection to Maven repository with Allure distribution**
+
+1. 打开 "Global Tool Configuration"
+2. 找到 "Allure Commandline" 配置部分
+![Find Allure Commandline](https://docs.qameta.io/allure/images/jenkins_plugin_find_cmd.jpeg)
+3. 点击 "Add Allure Commandline" 按钮
+![Install Allure Commandline](https://docs.qameta.io/allure/images/jenkins_plugin_install.jpeg)
+4. 填写名称并从 “From Maven Central” 下拉框选择版本
+
+同样的效果可以使用系统 groovy 脚本：
+```groovy
+import ru.yandex.qatools.allure.jenkins.tools.*
+import hudson.tools.InstallSourceProperty
+import hudson.tools.ToolProperty
+import hudson.tools.ToolPropertyDescriptor
+import hudson.util.DescribableList
+
+def isp = new InstallSourceProperty()
+def autoInstaller = new AllureCommandlineInstaller("2.6.0")
+isp.installers.add(autoInstaller)
+
+def proplist = new DescribableList<ToolProperty<?>, ToolPropertyDescriptor>()
+proplist.add(isp)
+
+def installation = new AllureCommandlineInstallation("allure260", "", proplist)
+
+def allureDesc = jenkins.model.Jenkins.instance.getExtensionList(AllureCommandlineInstallation.DescriptorImpl.class)[0]
+
+allureDesc.setInstallations(installation)
+allureDesc.save()
+```
+
+**Downloading and installing Allure from archive**
+
+1. 到 [Maven Central 页面](http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/)，单击最新发布的版本，并下载 allure-commandline-[version].zip 文件。
+2. (老版本,⇐2.8.0) 去 [Bintray 页面](https://bintray.com/qameta/generic/allure2),单击所需的版本,下载 allure-[version].zip  文件。
+3. 上传下载好的文件到任何文件服务器。构建代理节点必须能够通过 url 访问文件。
+4. 打开 “Global Tool Configuration”。并找到 “Allure Commandline” 配置部分。
+5. 点击“Add Allure Commandline”按钮。
+![Install Allure Commandline](https://docs.qameta.io/allure/images/jenkins_plugin_install_cmd.jpeg)
+6. 点击“Add Installer”并选择“Extract **.zip**/.tar.gz”。
+![Install Allure Commandline](https://docs.qameta.io/allure/images/jenkins_plugin_add_installer.jpeg)
+7. 填写名称和下载 url 。注意，Jenkins 会立即检查所提供的 url，如果url不可用，则会显示一个警告。
+![Install Allure Commanline](https://docs.qameta.io/allure/images/jenkins_plugin_fill_name_and_url.jpeg)
+
+##### 13.2.2. 配置
+
+**Job 配置**
+
+1. 打开 job 配置页面
+2. 确保您构建生成的数据是 Allure 命令行工具能够理解的其中一种格式
+3. 添加 **Allure Report**
+![Select](https://docs.qameta.io/allure/images/jenkins_plugin_add_allure_report.jpeg)
+4. 配置 Allure Report.
+![install allure commanline](https://docs.qameta.io/allure/images/jenkins_plugin_configure_allure_report.jpeg)
+
+**测试管理和缺陷追踪系统集成**
+
+目前所有版本的 Allure 都支持设置 url 模式，以使直接链接到你的 TMS 或 缺陷追踪报告中。可以通过设置特殊的系统属性来完成:
+
+1. allure.tests.management.pattern:
+
+![Filling TMS link property](https://docs.qameta.io/allure/images/jenkins_plugin_setup_tms.jpeg)
+
+2. allure.issues.tracker.pattern:
+
+![Filling bug-tracker link property](https://docs.qameta.io/allure/images/jenkins_plugin_setup_tracker.jpeg)
+
+在这两种模式中，%s 将被替换为从添加到测试用例的标签中获得的字符串值。
+
+**高级选项**
+
+"Advanced…​" 按钮提供几个额外设置:
+
+- 使用 jdk
+- 构建策略
+- 包含环境标签 - 目前还没有实施
+- 报告路径 - 您可以指定报表输出文件夹。目前，不建议修改该值。更改此值时，将丢失以前的历史信息。
+
+![Allure build step advanced options](https://docs.qameta.io/allure/images/jenkins_plugin_advanced_options.jpeg)
+
+##### 13.2.3. 用法
+
+当构建完成后，Allure 报告的链接将出现在构建页面和构建历史记录中:
+
+![Install Allure Commanline](https://docs.qameta.io/allure/images/jenkins_plugin_allure_sidebar.png)
+
+生成的 Allure 报告存储在 build 的 artifacts 文件夹中，可以像处理所有其他工件一样进行处理，或者作为.zip 归档文件下载。
+
+![install allure commanline](https://docs.qameta.io/allure/images/jenkins_plugin_allure_report.png)
+
+##### 13.2.4. 历史文件
+
+从 Allure 2 开始，支持历史测试报告。在每次生成报告时，Jenkins 插件会尝试访问前一个构建的工作目录，并将 `allure-report\history` 文件夹中的内容复制到当前的报告内容中。此时，测试用例的历史记录条目存储了最多 5 个以前结果的信息。
+
+##### 13.2.5. 扩展
+
+**Job DSL Plugin**
+
+[job-dsl-plugin](https://github.com/jenkinsci/job-dsl-plugin/wiki) 允许使用 DSL 创建项目。
+```groovy
+// default
+publishers {
+    allure(['allure-results'])
+}
+
+// advanced
+publishers {
+    allure(['first-results', 'second-results']) {
+        jdk('java7')
+        commandline('1.4.18')
+
+        buildFor('UNSTABLE')
+        includeProperties(true)
+        property('allure.issues.tracker.pattern', 'http://tracker.company.com/%s')
+        property('allure.tests.management.pattern', 'http://tms.company.com/%s')
+    }
+}
+```
+
+**Pipeline Plugin**
+
+可以使用 Pipeline Syntax builder 生成 Allure 步骤代码，使得可以在流水线步骤中生成 Allure 报告。注意，命令行参数最好明确 Allure Commanline 的安装名，否则，插件将自动选择找到的第一个合适的安装。
+
+![Pipeline step generation](https://docs.qameta.io/allure/images/jenkins_plugin_pipeline_step_builder.png)
+
+流水线脚本:
+```groovy
+node {
+// script body
+
+allure([
+         includeProperties: false,
+         jdk: '',
+         properties: [[key: 'allure.issues.tracker.pattern', value: 'http://tracker.company.com/%s']],
+         reportBuildPolicy: 'ALWAYS',
+         results: [[path: 'target/allure-results'], [path: 'other_target/allure-results']]
+         ])
+}
+```
+
+要从流水线中使用 Allure 报告，可以调用 Allure DSL 方法作为脚本:
+
+```groovy
+stage('reports') {
+    steps {
+    script {
+            allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'target/allure-results']]
+            ])
+    }
+    }
+}
+```
+
+#### 13.3. TeamCity
+
+##### 13.3.1. 安装
+
+1. [安装 Allure TeamCity 插件](https://confluence.jetbrains.com/display/TCD18/Installing+Additional+Plugins)
+2. 从 [latest release](http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/) 下载最新的 **allure-commandline-x.x.zip**
+3. 将下载的文件复制到 `<TeamCity Data Directory>/plugins/.tools/allure-commandline.zip`。此步骤不需要重新启动服务器。
+
+> **提示**：如果代理没有收到命令行，我们可以为每个代理手动执行。在 /opt/TeamCity/buildAgent/tools 中创建命令行文件夹。将存档解压到命令行文件夹。授予所有文件夹权限 755 和 teamCity:teamcity。重启代理。
+
+##### 13.3.2. 配置
+
+1. 打开生成配置。
+2. 确保您的构建[生成 Allure XML 文件](https://github.com/allure-framework/allure-core/wiki#gathering-information-about-tests))。
+3. 进入构建步骤并添加 Allure 报告构建步骤。
+4. (可选)在执行步骤中: 选择 `Even if some of the previous steps failed` 去为失败的测试生成报告
+![TeamCity plugin add step](https://docs.qameta.io/allure/images/teamcity_plugin_add_build_step.png)
+5. 配置步骤
+![TeamCity plugin install](https://docs.qameta.io/allure/images/teamcity_plugin_configure_build_step.png)
+
+如果你升级 Allure TeamCity 插件，你需要移除旧的 Allure 报告生成功能。
+
+##### 13.3.3. 使用
+
+构建完成后，您将获得 Allure 报告作为构建工件的一部分 — 只需打开 index.html
+![TeamCity plugin usage](https://docs.qameta.io/allure/images/teamcity_plugin_usage.png)
+
+#### 13.4. Bamboo
+
+##### 13.4.1. 安装
+
+1. 在 “Plugin Manager” 页安装 [Allure 插件](https://confluence.atlassian.com/upm/finding-new-marketplace-apps-302812383.html)。
+2. 你可以：
+  a. 从 github 下载最新版本的 allure-commandline.zip，并将其解压缩到您的 Bamboo 服务器上
+  b. 或者允许 Bamboo 插件自动下载 Allure
+3. Allure Bamboo 插件将在安装时添加新的可执行服务器功能。不过，您可以决定更改 Allure 版本或拥有多个版本的 Allure 可执行文件。
+要使用提取目录[定义一个新的可执行功能](https://confluence.atlassian.com/bamboo/defining-a-new-executable-capability-289277164.html)，您需要打开“Executables”管理菜单项，然后在描述中选择“add an executable as a server capability”链接。您需要选择“Allure Report”作为功能类型。
+![Add capability](https://docs.qameta.io/allure/images/bamboo_add_capability.png)
+
+可执行标签定义了 Allure 可执行文件的版本，它将被自动下载。版本应设置在标签名称的末尾(如:“Allure 2.3.1”或“Allure 2.4-BETA1”)。
+
+##### 13.4.2. 配置
+
+1. 在 "PLANS" 组下打开 "Allure Report" 管理员菜单选项
+![Allure Report Config](https://docs.qameta.io/allure/images/bamboo_admin_allure_report.png)
+2. 如果有必要，可以配置 "Allure local storage"，它定义了一个目录，用于存储构建的 Allure 报告
+
+**请注意**，Allure Bamboo 插件将报告存储在与 Bamboo 服务器运行的同一文件系统上，而且它不会自动清理目录。因此，您可能需要手动配置旧报表的删除。
+
+3. 你可以决定在你所有的构建中启用 Allure Bamboo 插件。在这种默认情况下，它将尝试为 Bamboo 实例中每一次失败的构建构建一个报告。你可以随时为每个特定的计划关闭/打开它:
+![Plan configuration](https://docs.qameta.io/allure/images/bamboo_plan_configuration.png)
+4. 您可以选择不同版本的诱惑可执行的每个计划的基础上。您可以决定仅为失败的构建构建报告(通过选中相应的复选框)
+5. 如果您的构建计划生成许多不同类型的制品，您可能想要选择 Allure 结果中制品的特定名称，这是 Allure Bamboo 插件要使用的(通过在“Artifact name to use”文本框中输入)，最常见的名称是“allure-results”
+6. 确保你的构建[产生 Allure 结果文件](https://github.com/allure-framework/allure-core/wiki#gathering-information-about-tests)
+7. 另外，您应该配置 Allure artifacts，以便每个 job 都能收集到它。只需向 job 中添加以下定义:
+![Allure Artifacts Definition](https://docs.qameta.io/allure/images/bamboo_artifacts_definition.png)
+8. 对于每个正确配置的计划，你应该能够看到“Allure Report”标签的结果:
+![Allure Report Tab](https://docs.qameta.io/allure/images/bamboo_allure_tab.png)
+
+##### 13.4.3. 在 AWS S3 中存储 Allure 报告
+
+您可以决定将您的制品和 Allure 报告存储在 Amazon S3 中，而在默认情况下，Bamboo 是不提供这种存储的。但是你可以通过添加 "-Dbamboo.darkfeature.artifacthandlers=true" 来启用 Bamboo 实例。这将使您能够使用 "Artifact handlers" 管理菜单项配置制品处理程序，并允许将 AWS S3 配置为所有制品的主存储(包括构建的 Allure 报告)。
+
+> **注意**："Artifact handlers" 特性不被 Atlassian 官方支持，所以使用它的风险由你自己承担。
+
+##### 13.4.4. 故障排除
+
+**未配置制品**
+
+如果你没有正确配置 Allure 制品或构建没有产生 Allure 结果，你应该看到以下错误:
+![Allure no artifacts](https://docs.qameta.io/allure/images/bamboo_no_artifacts.png)
+
+**Empty report 选项卡**
+
+如果成功生成了报表，但后来删除了，您应该会看到 empty report 选项卡。
+
+**未知错误**
+
+如果在 Allure 报告生成过程中出现了问题，您应该会在 Allure 选项卡中看到异常。如果你决定在 allure-bamboo 提一个 issue，可以提供以下类似信息:
+![Allure unknown error](https://docs.qameta.io/allure/images/bamboo_unknown_error.png)
+
+#### 13.5. Codefresh
+
+##### 13.5.1. 配置
+
+Codefresh 将所有 Allure 报告存储在云存储中。目前已有针对 Google Cloud 和AWS 的集成。
+
+首先，通过单击左侧侧边栏上的 Account Settings，进入帐户配置。在名为 Integrations 的第一部分中，向下滚动到 Cloud Storage:
+![Setup Test report location](https://docs.qameta.io/allure/images/codefresh_cloud_storage.png)
+
+单击 configure 按钮，并在下面的屏幕中根据云提供商输入您的云设置。请确保记下 bucket 名，因为它将在稍后的流水线定义中使用。
+
+##### 13.5.2. 用法
+
+Codefresh 提供了一个可以创建报表的插件。该[插件](https://codefresh.io/docs/docs/codefresh-yaml/steps/freestyle/)只是插入到任何 [Codefresh 流水线](https://codefresh.io/docs/docs/codefresh-yaml/what-is-the-codefresh-yaml/)中，默认情况下在 allure-results 中查找测试结果。
+```yaml
+ my_unit_test_reporting_step:
+   title: Generate test reporting
+   image: codefresh/cf-docker-test-reporting
+   environment:
+     - BUCKET_NAME=my-bucket-name
+     - CF_STORAGE_INTEGRATION=google
+```
+
+如果使用另一个目录来保存 Allure 结果，则必须使用 `ALLURE_DIR` 环境变量来指定它。
+```yaml
+ my_unit_test_reporting_step:
+   title: Generate test reporting
+   image: codefresh/cf-docker-test-reporting
+   working_directory: './my-git-project'
+   environment:
+     - BUCKET_NAME=my-bucket-name
+     - ALLURE_DIR=my-custom-allure-results-folder
+     - CF_STORAGE_INTEGRATION=google
+```
+
+一旦您运行了流水线，一个新的 **Test Report** 按钮将出现在每个构建的旁边。点击它，你会看到你的 Allure 报告。
+![Viewing test results for a build](https://docs.qameta.io/allure/images/codefresh_view_results.png)
+
+更多详情请浏览[文档](https://codefresh.io/docs/docs/testing/test-reports/)
+
+##### 13.5.3. 历史测试数据
+
+Codefresh 会自动将以前构建的结果保存在云存储中,此行为不需要配置。当你运行更多的构建时，你会在你的 Allure 结果中看到历史趋势。
+
+#### 13.6. Gradle
+
+用于 Gradle 的 Allure 插件允许将 Allure 监听器集成到基于 Gradle 的项目中的 TestNG、Junit4、Cucumber JVM 和 Spock框架中，还提供了一些用于构建单个项目或多项目报告的任务。
+
+##### 13.6.1. 自动配置 Junit4 和 TestNG
+
+插件能够使用 Junit4 和 TestNG 的 Gradle 集成，所以如果你正在使用其中一个框架，配置看起来非常简单:
+
+```groovy
+buildscript {
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
+}
+
+    plugins {
+        id 'io.qameta.allure'
+    }
+
+    allure {
+        version = '2.2.1'
+        autoconfigure = true
+     }
+```
+
+这里你只需要两个参数: `autoconfigure` - 这是一个允许框架检测的标志。如果您启用了它，插件将自动添加正确的侦听器和 aspectjweaver runtime agent 的依赖项以及 `version` - 该参数指定用于下载和构建报告的 Allure 命令行。
+
+应用自动配置后，`test` 任务执行后获得的 Allure 结果将存储在 `build/allure-results` 中。
+
+建立报告执行 `allure` Gradle 任务:
+
+```bash
+./gradlew clean build allure
+```
+
+注意，如果您没有指定版本，那么插件将不会创建任何与 Allure-related 任务。因此，如果您只想创建用于进一步处理的结果，请省略 `version` 参数。
+
+##### 13.6.2. 为特定的测试框架进行配置
+
+插件为 4 个不同的框架提供了一个配置闭包参数: Junit4、TestNG、Cucumber JVM 和 Spock。
+
+让我们看看基于 Spock 的构建脚本是什么样的:
+```groovy
+buildscript {
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
+}
+
+plugins {
+        id 'io.qameta.allure'
+}
+
+allure {
+    version = '2.2.1'
+    aspectjweaver = true
+
+    useSpock {
+        version = '2.0-BETA12'
+    }
+}
+```
+
+这里使用 `aspectjweaver` 标志为您的项目添加运行时代理需要的相应依赖项，并 `useSpock` 为 Allure Spock 适配器依赖项配置一个版本。
+
+##### 13.6.3. 完整的配置
+```groovy
+allure {
+    version = '2.2.1'
+
+    autoconfigure = false
+
+    String allureJavaVersion = '2.0-BETA9'
+
+    aspectjweaver = true
+
+    boolean clean = true
+
+    resultsDir = file('/path/to/project/module/build/allure-results')
+
+    reportDir = file('build/reports/allure-report')
+
+    String configuration = 'testCompile'
+
+    useJunit4 {
+       version = '2.0-BETA12'
+    }
+
+    useTestNG {
+       version = '2.0-BETA12'
+       spi-off = false
+    }
+
+    useCucumberJVM {
+       version = '2.0-BETA12'
+    }
+
+    useSpock {
+       version = '2.0-BETA12'
+    }
+
+    downloadLink = 'https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/2.2.1/allure-2.2.1.zip'
+    // Allure >= 2.8.0 is no longer available on Bintray
+    // downloadLink = 'http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.8.1/allure-commandline-2.8.1.zip'
+}
+```
+
+- **boolean** `autoconfigure` (`default = false`) - 指定自动配置用法，插件将尝试找到 Gradle 提供的测试平台集成(目前仅适用于 Junit4 和 TestNG )
+- **boolean** `aspectjveaver` - 指定 aspectjweaver 运行时代理的 inclusion/exclusion
+- **boolean** `clean` (`default = true`) - 启用 Allure 命令行工具的 `--clean`，默认为 `true`
+- **String** `version` - 指定报告生成器的版本，注意，该属性是启用 `allure` 和 `aggregatedAllureReport` 任务的必备属性
+- **String** `configuration` (`default = 'testCompile'`) - 绑定插件依赖关系的配置名
+- **File** `resultsDir` - 当前项目的 Allure 结果目录，默认在 `build\allure-results`
+- **File** `reportDir` - 当前项目的 Allure 报告目录，默认在 `build\reports\allure-report`
+- **String** `allureJavaVersion` (`default = '2.0-BETA9'`) - 用于自动配置的 allure java 发行版
+- **String** `downloadLink` - 自定义的 Allure 分布下载的位置，默认从 bintray 下载指定的版本，并安装到项目根目录的 `.allure` 目录。由于 Allure 在Bintray 上不再维护，因此若想使用 Allure >= 2.8.0，必须配置为其在 Maven Central 的下载地址
+
+##### 13.6.4. 任务
+
+为了方便自己，您可以使用插件中定义的一些任务。
+
+**allure**
+
+为给定的输入目录列表创建 Allure 报告
+
+参数:
+- **File** `reportDir` - Allure 报告的目录
+- **boolean** `clean` - 启用 Allure 命令行工具的 `--clean` 选项
+- **String** `version` - Allure 命令行版本，将尝试在您项目根目录的 .allure 文件夹中尝试该版本的命令行工具
+- **List<File>** `resultsDirs` - Allure 结果目录的列表
+
+因此，若一个多模块项目生成 Allure 报告，你将不得不定义自己的 `allureAggregatedReport` 任务，例如:
+
+```groovy
+plugins {
+    id 'io.qameta.allure'
+}
+
+allprojects { project ->
+
+    apply plugin: 'io.qameta.allure'
+
+    allure {
+        version = '2.1.0'
+    }
+}
+
+import io.qameta.allure.gradle.task.AllureReport
+
+task allureAggregatedReport(type: AllureReport) {
+    resultsDirs = subprojects.allure.resultsDir
+}
+```
+
+然后像这样调用它: `./gradlew clean build allureAggregatedReport`
+
+**downloadAllure**
+
+从提供的 url 下载 Allure 命令行，并将其保存到项目根目录的 `.allure` 文件夹中。
+
+- **String** `src` - 指定 Allure Comandline 下载位置的 url
+- **String** `version` - 指定要下载的 Allure Comandline 的版本
+- **File** `dest` - 安装 Allure Comandline 的目标文件夹
+
+`allure` 任务依赖于 `downloadAllure`，所以在默认情况下不需要手动调用它，无论何时 `allure` 任务被调用，它都会首先调用 `downloadAllure`。
+
+**serve**
+
+可用于在生成后在默认浏览器中生成和打开报表。
+
+- **String** `version` - 在 .allure/version 中发现 Allure Commandline 的安装
+- **List<File>** `resultsDirs` - 结果文件的目录列表
+
+默认情况下，`serve` 任务是由插件配置好的，当执行时，将在默认的浏览器中打开一个单一模块的报告。
+
+示例: `./gradlew clean build serve`
+
+#### 13.7. Maven
+
+这个插件在 Maven 构建过程中通过[现有的 XML 文件](https://github.com/allure-framework/allure-core/wiki#gathering-information-about-tests)生成 Allure 报告。
+
+##### 13.7.1. 安装
+
+将 allure-maven-plugin 添加到 pom.xml 文件中的构建部分。
+
+*pom.xml*
+```xml
+<project>
+    ...
+    <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.8</version>
+    </plugin>
+    ...
+</project>
+```
+
+##### 13.7.2. 配置
+
+**属性处理**
+
+从 2.5 版本开始，报告生成可做配置。有以下几种方法：
+
+**直接从源代码**
+
+把 **allure.properties** (Allure 1.5 以上是 **report.properties**) 放到 classpath。支持 class 路径和 test class 路径同时编译。
+
+**或在配置中指定 properties**
+
+*pom.xml*
+```xml
+<plugin>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-maven</artifactId>
+    <configuration>
+       <properties>
+           <allure.issues.tracker.pattern>http://example.com/%s</allure.issues.tracker.pattern>
+       </properties>
+    </configuration>
+</plugin>
+```
+
+**或指定 propertiesFilePath**
+
+*pom.xml*
+```xml
+<configuration>
+   <propertiesFilePath>path/to/your/allure.properties</propertiesFilePath>
+</configuration>
+```
+
+**报告版本**
+
+从 2.6 开始，这个插件从默认的 [url](https://dl.bintray.com/qameta/generic/io/qameta/allure/allure) 下载使用 Allure 构建一个报告，Allure 会被提取并放入在项目的 `.allure` 目录中。
+
+Allure 的默认版本是 **2.7.0**
+
+*pom.xml*
+```xml
+<configuration>
+    <reportVersion>2.7.0</reportVersion>
+</configuration>
+```
+
+如果您同时配置了 `reportVersion` 和 `allureDownloadUrl` (见上文)，您可以使用 Allure >= 2.8.0。
+
+您可以指定自己的下载 url，也可以使用系统属性 `allure.download.url` 指定文件路径。(%s替换为 `reportVersion` 的配置)
+
+*pom.xml*
+```xml
+<configuration>
+    <!-- Allure < 2.7.0 (default value): download from Bintray -->
+    <allureDownloadUrl>https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/%s/allure-%s.zip</allureDownloadUrl>
+    <!-- Allure >= 2.8.0: download from Maven Central -->
+    <!-- <allureDownloadUrl>http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</allureDownloadUrl> -->
+    <!-- Custom URL -->
+    <!-- <allureDownloadUrl>https://example.com/allure/allure-2.0.1.zip</allureDownloadUrl> -->
+</configuration>
+```
+
+**结果目录**
+
+一般来说，Allure results 目录是由 allure 适配器创建的目录，包含 allure 文件和附件。此路径可以是相对于构建目录(对于 maven 来说就是目标目录)或绝对路径。
+
+默认值是 "**allure-results**"
+
+系统属性 **allure.results.directory**
+
+*pom.xml*
+```xml
+<configuration>
+    <reportDirectory>allure-report</reportDirectory>
+</configuration>
+```
+
+##### 13.7.3. 用法
+
+您可以使用以下命令生成报告:
+
+- `mvn allure:serve`
+
+报表将生成到临时文件夹中，由 Web 服务器启动。您还可以配置服务器超时。默认值是 “**3600**”(一小时)。
+
+系统属性 **allure.serve.timeout**
+
+- `mvn allure:report`
+
+报告会生成到目录：**target/site/allure-maven/index.html**
 
 ----
 
-<div id="_allure_plugins_system"></div>
-
 ## 14. Allure 插件系统
+
+#### 14.1. Java 插件 API
+#### 14.2. JS 插件 API
+#### 14.3. 写一个新插件
+#### 14.4. 已有的插件
 
 ----
