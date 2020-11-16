@@ -1,7 +1,7 @@
 ---
-title: Allure Framework
+title: Allure
 layout: allure
-category: DOC
+category: 扩展
 ---
 
 **Allure 框架是一个既灵活又轻量的多语言测试报告工具，它不仅以简洁的 web 报表形式展示了所测试的内容，而且允许参与开发过程的每个人从每天执行的测试中提取最大限度的有用信息。**

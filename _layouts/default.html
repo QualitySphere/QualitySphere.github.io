@@ -49,11 +49,10 @@
 					<a href="{{ site.baseurl }}/">{{ home.title }}</a>
 				</li>
 			</ul>
-
+			{% assign grouped = site.docs | group_by: 'category' %}
 			<ul>
-				{% assign grouped = site.docs | group_by: 'category' %}
 				{% for group in grouped %}
-				{% if group.name != 'DOC' %}
+				{% if group.name != '扩展' %}
 				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
 					{% assign items = group.items | sort: 'order' %}
 					<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
@@ -69,10 +68,20 @@
 			</ul>
 
 			<ul>
-				<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">
-					{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}
-					<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>
+				{% for group in grouped %}
+				{% if group.name == '扩展' %}
+				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
+					{% assign items = group.items | sort: 'order' %}
+					<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
+					<ul>
+						{% for item in items %}
+						<li class="nav-item {% if item.url == page.url %}current{% endif %}"><a
+								href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></li>
+						{% endfor %}
+					</ul>
 				</li>
+				{% endif %}
+				{% endfor %}
 			</ul>
 		</nav>
 	</header>

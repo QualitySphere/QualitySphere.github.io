@@ -1,6 +1,6 @@
 ---
 title: Nirvana
-category: 联盟
+category: 扩展
 order: 41
 ---
 
