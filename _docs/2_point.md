@@ -19,4 +19,4 @@ order: 23
 
 ### 评级体系的指标制定
 
-![](/images/rating.png)
+![](/images/point.png)

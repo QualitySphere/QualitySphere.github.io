@@ -15,37 +15,50 @@ order: 31
 #### File Tree
 
 ```text
-.
-├── LICENSE
-├── README.cn.md
-├── README.md
-├── docker-compose.yaml
-├── docs
-│   ├── dashboard.png
-│   ├── database.svg
-│   ├── framework.svg
-│   ├── project.png
-│   ├── qap.png
-│   ├── sprint.png
-│   └── tracker.png
-├── grafana
-│   ├── Dockerfile
-│   └── provisioning
-├── svc
-│   ├── Dockerfile
-│   ├── Dockerfile-svc-base
-│   ├── health_check.sh
-│   ├── launch.sh
-│   ├── requirements.txt
-│   ├── svcClient
-│   └── utils
+qsphere-ui
 └── ui
     ├── Dockerfile
     ├── README.md
     ├── health_check.sh
     ├── nginx.conf
-    ├── package-lock.json
     ├── package.json
     ├── public
+    |   ├── favicon.ico
+    |   ├── logo.png
+    |   └── index.html
     └── src
+        ├── assets
+        ├── components
+        ├── router
+        ├── services
+        ├── store
+        └── views
+```
+
+```text
+qsphere-board
+└── grafana
+    ├── Dockerfile
+    ├── health_check.sh
+    └── provisioning
+        ├── datasources
+        └── dashboards
+```
+
+```text
+qsphere-svc
+└── svc
+    ├── Dockerfile
+    ├── Dockerfile-svc-base
+    ├── health_check.sh
+    ├── launch.sh
+    ├── requirements.txt
+    ├── utils
+    └── svcClient
+        ├── db
+        ├── models
+        ├── api
+        ├── services
+        ├── specs
+        └── utils
 ```
