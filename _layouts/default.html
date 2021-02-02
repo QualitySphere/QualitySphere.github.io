@@ -49,10 +49,11 @@
 					<a href="{{ site.baseurl }}/">{{ home.title }}</a>
 				</li>
 			</ul>
-			{% assign grouped = site.docs | group_by: 'category' %}
+			{% assign groups = site.docs | group_by: 'category' %}
+
 			<ul>
-				{% for group in grouped %}
-				{% if group.name != '扩展' %}
+				{% for group in groups %}
+				{% if group.name == 'QSphere' %}
 				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
 					{% assign items = group.items | sort: 'order' %}
 					<a>{{ group.name }}</a>
@@ -69,7 +70,43 @@
 			</ul>
 
 			<ul>
-				{% for group in grouped %}
+				{% for group in groups %}
+				{% if group.name == '规范' %}
+				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
+					{% assign items = group.items | sort: 'order' %}
+					<a>{{ group.name }}</a>
+					<ul>
+						{% for item in items %}
+						<li class="nav-item {% if item.url == page.url %}current{% endif %}">
+							<a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+
+			<ul>
+				{% for group in groups %}
+				{% if group.name == '关于' %}
+				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
+					{% assign items = group.items | sort: 'order' %}
+					<a>{{ group.name }}</a>
+					<ul>
+						{% for item in items %}
+						<li class="nav-item {% if item.url == page.url %}current{% endif %}">
+							<a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+
+			<ul>
+				{% for group in groups %}
 				{% if group.name == '扩展' %}
 				<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
 					{% assign items = group.items | sort: 'order' %}
