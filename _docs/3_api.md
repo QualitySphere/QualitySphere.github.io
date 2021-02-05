@@ -36,7 +36,7 @@ order: 32
 <script>
     window.onload = function() {
       const ui = SwaggerUIBundle({
-        url: "/objects/openapi.json",
+        url: "/objects/openapi-v2.json",
         validatorUrl: null,
         dom_id: '#swagger-ui',
         deepLinking: true,
