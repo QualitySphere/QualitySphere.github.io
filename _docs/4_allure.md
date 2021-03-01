@@ -85,7 +85,7 @@ scoop update allure
 
 ##### 2.1.4. 手动安装
 
-1. 从 [Maven Central](http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/) 下载最新版本的 zip 归档文件。
+1. 从 [Maven Central](https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/) 下载最新版本的 zip 归档文件。
 2. 解压到 allure-commandline 目录。
 3. 进入 bin 目录。
 4. 在 Windows 上使用 allure.bat，在其他 Unix 平台上使用 allure。
