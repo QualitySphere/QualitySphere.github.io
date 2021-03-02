@@ -39,10 +39,11 @@ PG_HOST | QSphere DB 主机名 | qsphere-db
 PG_PORT | QSphere DB 端口 | 5432
 PG_USER | QSphere DB 用户名 | postgres
 PG_PASS | QSphere DB 密码 | password
-SVC_IMG | QSphere Service 容器镜像 | bxwill/qsphere:svc-latest
-BOARD_IMG | QSphere Board 容器镜像 | bxwill/qsphere:board-latest
-UI_IMG | QSphere UI 容器镜像 | bxwill/qsphere:ui-latest
-UI_PORT | QSphere UI 服务端口 | 80
+QS_REGISTRY | QSphere 镜像仓库路径 | bxwill/qsphere
+QS_VER | QSphere 版本 | latest
+QS_USER | QSphere 用户名 | admin
+QS_PASS | QSphere 密码 | password
+QS_PORT | QSphere Web 端口 | 80
 LOG_DEBUG | Debug 日志模式 | false
 AUTO_SYNC | 自动同步数据开关 | true
 
