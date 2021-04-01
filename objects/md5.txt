@@ -1,0 +1,8 @@
+08964f77b19f5fa02f6b199ef2f26a91 *SSLPoke.class
+4ed3719f429f057bf92de95368f7581f *atlassian-agent.jar
+12176a9cc944f3ed93a1e4c9a289d155 *md5.txt
+f80465e9d8cea2b48da01f5aba236b59 *msyh.ttf
+99a4ac21fdb1513176b5a273160f99f2 *mysql-connector-java-5.1.49-bin.jar
+675bda4e36666f6b15ca263e3dd704ea *mysql-connector-java-5.1.49.jar
+7c674fb5d865dc7a501eeea135234bb8 *openapi-v1.json
+96a686fa621188cf27566ddabd44ffaf *openapi-v2.json
