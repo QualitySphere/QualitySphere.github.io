@@ -1,0 +1,45 @@
+<!--Logo & Menu Section-->
+<nav class="navbar navbar-default" style="background-color: #343a40; border: 0;">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <h1>
+                <a class="navbar-brand" href="#" title="QSphere">
+                    <img class="img-responsive"
+                         src="/img/logo.png"
+                         style="height:50px;" alt="QSphere"/>
+                </a>
+            </h1>
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul id="menu-office" class="nav navbar-nav navbar-right">
+            {% for item in site.nav %}
+                <li class="menu-item menu-item-type-custom menu-item-object-custom dropdown {% if page.category == item.name %}current-menu-item active{% endif %}">
+                    {% if item.url %}
+                    <a href="{{item.url}}">{{item.name}}</a>
+                    {% else %}
+                    <a>{{item.name}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu default">
+                        {% for subitem in item.subnav %}
+                        <li class="menu-item page_item dropdown dropdown-submenu">
+                            <a href="{{ subitem.url }}" {% if subitem.target %}target={{subitem.target}}{% endif %}>{{ subitem.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

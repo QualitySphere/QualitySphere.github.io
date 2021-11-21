@@ -2,22 +2,24 @@
 # Site
 
 title: QSphere
-url: ""
+url: "https://qualithsphere.gitee.io"
 baseurl:
 google_analytics_key:
 show_full_navigation: true
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
-description: Product documentation template for Jekyll.
+description: Quality Sphere - 质量平台
 author:
-  name:
-  email:
+  name: Will
+  email: v.stone@163.com
   twitter: # twitter username without the @ symbol
+  github: seoktaehyeon
 social:
   name: QSphere
   links:
-    - https://github.com/QualitySphere/qsphere
+    - https://github.com/QualitySphere
+    - https://gitee.com/QualitySphere
 
 # -----
 # Build
@@ -27,6 +29,7 @@ timezone: Aisa/Shanghai
 permalink: pretty
 
 plugins:
+  - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-feed
@@ -36,6 +39,14 @@ exclude:
   - Gemfile.lock
   - README.md
   - LICENCE
+  - .sass-cache/
+  - .jekyll-cache/
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - Dockerfile
 
 collections:
   docs:
@@ -77,3 +88,60 @@ defaults:
 types:
   - minor
   - major
+
+# -----------
+# QSphere
+
+nav:
+  - name: 欢迎使用
+    url: '/'
+  - name: QSphere
+    subnav:
+      - name: 背景
+        url: '/qsphere/background'
+      - name: 愿景
+        url: '/qsphere/vision'
+      - name: 架构
+        url: '/qsphere/framework'
+      - name: 功能
+        url: '/qsphere/feature'
+      - name: 安装部署
+        url: '/qsphere/deploy'
+      - name: 快速开始
+        url: '/qsphere/usage'
+      - name: Q&A
+        url: '/qsphere/qna'
+      - name: 变更记录
+        url: '/qsphere/change'
+  - name: 规范
+    subnav:
+      - name: 缺陷管理
+        url: '/standard/issue'
+      - name: 用例管理
+        url: '/standard/case'
+      - name: 指标
+        url: '/standard/point'
+  - name: 关于
+    subnav:
+      - name: 源代码
+        url: '/about/code'
+      - name: 接口文档
+        url: '/about/api'
+      - name: 致谢
+        url: '/about/thanks'
+      - name: 成员
+        url: '/about/team'
+  - name: 更多发现
+    subnav:
+      - name: OpenDevOps
+        url: '/ext/odo'
+      - name: Hybrid Robot
+        url: 'https://pypi.org/project/hrobot/'
+        target: '_blank'
+      - name: Allure 框架中文手册
+        url: '/ext/allure'
+        target: '_blank'
+
+copyright: |
+  版权归 <a href="/"><b>QSphere</b></a> 所有<br>
+  Copyright ©2017-2021 Quality Sphere All Rights Reserved
