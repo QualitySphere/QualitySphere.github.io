@@ -9,11 +9,10 @@ show_full_navigation: true
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
-description: Quality Sphere - 质量平台
+description: 质量平台 Quality Sphere
 author:
   name: Will
   email: v.stone@163.com
-  twitter: # twitter username without the @ symbol
   github: seoktaehyeon
 social:
   name: QSphere
@@ -136,12 +135,11 @@ nav:
       - name: OpenDevOps
         url: '/ext/odo'
       - name: Hybrid Robot
-        url: 'https://pypi.org/project/hrobot/'
-        target: '_blank'
+        url: '/ext/hrobot'
       - name: Allure 框架中文手册
         url: '/ext/allure'
         target: '_blank'
 
 copyright: |
   版权归 <a href="/"><b>QSphere</b></a> 所有<br>
-  Copyright ©2017-2021 Quality Sphere All Rights Reserved
+  Copyright ©2019-2021 Quality Sphere All Rights Reserved

@@ -5,9 +5,9 @@
     <link rel="shortcut icon" href="/img/logo.png"/>
     
     {% if page.title == 'index' %}
-    <title>{{ site.title }}</title>
+    <title>{{ site.title }} | {{ site.description }}</title>
     {% else %}
-    <title>{{ page.title }} | {{ site.title }}</title>
+    <title>{{ page.title }} | {{ site.title }} | {{ site.description }}</title>
     {% endif %}
 
     <link rel='dns-prefetch' href='//qualitysphere.gitee.io'/>
